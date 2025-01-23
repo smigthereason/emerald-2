@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Offers = () => {
   return (
-    <div className="relative h-96">
+    <div className="relative h-96 mb-8">
     <div className="absolute z-[0] w-[50%] h-[50%] right-20 bottom-40 bg-black" />
       <img
         className="w-full h-full object-cover backdrop-filter backdrop-blur-lg"
