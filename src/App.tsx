@@ -1,6 +1,7 @@
 import './App.css'
 import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Routes } from 'react-router-dom';
+import Home from './pages/Home'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (
@@ -8,7 +9,7 @@ const App: React.FC = () => {
       <Navbar />
 
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Home />} />
         {/* <Route path="/about-us" element={<AboutUs />} /> */}
         {/* <Route path="/contacts" element={<Contacts />} /> */}
         {/* <Route path="/services" element={<Services />} /> */}
