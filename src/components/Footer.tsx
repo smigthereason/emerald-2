@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
-                  to="/favourites"
+                  to="/favourites-page"
                   className="no-underline hover:text-[#617583]"
                 >
                   Favourites
