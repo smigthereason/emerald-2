@@ -18,11 +18,11 @@ const Categories = () => {
   return (
     <div className="py-8">
       {/* Title Section */}
-      <h2 className="text-center text-2xl font-bold mb-4">
-        <span className="text-black">further </span>categories
+      <h2 className="text-center text-2xl font-light mb-4">
+        <span className="text-black font-bold">further </span>categories
       </h2>
       <div className="flex justify-center mb-6">
-        <div className="border-b-2 w-12"></div>
+        <div className="border-b-2 border-black w-16 "></div>
       </div>
 
       {/* Grid Section */}

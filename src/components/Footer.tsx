@@ -21,22 +21,30 @@ const Footer: React.FC = () => {
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
                   to="/new-arrivals"
-                  className="no-underline hover:text-[#ff6633] "
+                  className="no-underline hover:text-[#617583] "
                 >
                   New Arrivals
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
-                <Link to="/sale" className="no-underline hover:text-[#ff6633]">
+                <Link to="/sale" className="no-underline hover:text-[#617583]">
                   Sale &amp; Clearance
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
-                  to="/about-us"
-                  className="no-underline hover:text-[#ff6633]"
+                  to="/about"
+                  className="no-underline hover:text-[#617583]"
                 >
                   About Us
+                </Link>
+              </li>
+              <li className="transform transition duration-300 hover:scale-95">
+                <Link
+                  to="/favourites"
+                  className="no-underline hover:text-[#617583]"
+                >
+                  Favourites
                 </Link>
               </li>
             </ul>
@@ -48,20 +56,20 @@ const Footer: React.FC = () => {
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
                   to="/size-guide"
-                  className="no-underline hover:text-[#ff6633]"
+                  className="no-underline hover:text-[#617583]"
                 >
                   Size Guide
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
-                <Link to="/faq" className="no-underline hover:text-[#ff6633]">
+                <Link to="/faq" className="no-underline hover:text-[#617583]">
                   FAQs
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
                   to="/store-locator"
-                  className="no-underline hover:text-[#ff6633]"
+                  className="no-underline hover:text-[#617583]"
                 >
                   Store Locator
                 </Link>
@@ -69,7 +77,7 @@ const Footer: React.FC = () => {
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
                   to="/gift-cards"
-                  className="no-underline hover:text-[#ff6633]"
+                  className="no-underline hover:text-[#617583]"
                 >
                   Gift Cards
                 </Link>
@@ -83,7 +91,7 @@ const Footer: React.FC = () => {
               <li className="transform transition duration-300 hover:scale-95">
                 <a
                   href="https://instagram.com"
-                  className="no-underline hover:text-[#ff6633]"
+                  className="no-underline hover:text-[#617583]"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -93,7 +101,7 @@ const Footer: React.FC = () => {
               <li className="transform transition duration-300 hover:scale-95">
                 <a
                   href="https://tiktok.com"
-                  className="no-underline hover:text-[#ff6633] "
+                  className="no-underline hover:text-[#617583] "
                   target="_blank"
                   rel="noopener noreferrer"
                 >
