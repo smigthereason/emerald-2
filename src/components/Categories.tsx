@@ -1,9 +1,9 @@
-import Jack from "../assets/Images/jacket.png"
-import Dress from "../assets/Images/dress.png"
-import Heels from "../assets/Images/heels.png"
-import Tops from "../assets/Images/blouse.png"
-import Skirt from "../assets/Images/skirt.png"
-import Jeans from "../assets/Images/jeans.png"
+import Jack from "../assets/icons/jacket.png"
+import Dress from "../assets/icons/dress.png"
+import Heels from "../assets/icons/heels.png"
+import Tops from "../assets/icons/blouse.png"
+import Skirt from "../assets/icons/skirt.png"
+import Jeans from "../assets/icons/jeans.png"
 
 const Categories = () => {
   const categories = [

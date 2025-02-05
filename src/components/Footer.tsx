@@ -33,10 +33,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
-                <Link
-                  to="/about"
-                  className="no-underline hover:text-[#617583]"
-                >
+                <Link to="/about" className="no-underline hover:text-[#617583]">
                   About Us
                 </Link>
               </li>
@@ -63,17 +60,13 @@ const Footer: React.FC = () => {
                   Size Guide
                 </Link>
               </li>
-              <li className="transform transition duration-300 hover:scale-95">
-                <Link to="/faq" className="no-underline hover:text-[#617583]">
-                  FAQs
-                </Link>
-              </li>
+
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
-                  to="/store-locator"
+                  to="/shipping"
                   className="no-underline hover:text-[#617583]"
                 >
-                  Store Locator
+                  Shipping
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">

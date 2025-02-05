@@ -6,7 +6,7 @@ const Hero = () => {
       <div className="absolute z-[0] w-[50%] h-[50%] right-20 bottom-40 bg-black" />
       <img
         className="w-full h-full object-cover backdrop-filter backdrop-blur-lg"
-        src="src/assets/Logos/hero1.jpg"
+        src="src/assets/bg-images/hero1.jpg"
         alt="hero1"
       />
       <div className="absolute z-[0] w-[100%] h-[100%] right-0 top-0 bg-black/50" />
