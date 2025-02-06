@@ -9,6 +9,7 @@ import About from "./pages/About";
 import SizeChart from "./pages/SizeChart";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Login from "./pages/Login";
+import Cart from "./pages/Cart";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { FavouritesProvider } from "./components/FavouritesContext";
 
@@ -27,6 +28,7 @@ const App: React.FC = () => {
           <Route path="/size-chart" element={<SizeChart />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
 
         <Footer />

@@ -128,7 +128,7 @@ const Login: React.FC = () => {
         >
           <div
             className={`
-              absolute bg-gradient-to-t from-[#d88598ab] to-[#e47a93] 
+              bg-gradient-to-t from-[#d88598ab] to-[#e47a93] 
               text-white relative left-[-100%] h-full w-[200%]
               transition-transform duration-1000 ease-in-out
               ${isRightPanelActive ? "translate-x-1/2" : "translate-x-0"}

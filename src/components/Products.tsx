@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import ProductCard from "./ProductCard";
-import { products } from "../data/products"; // Adjust the path if necessary
+import { products } from "../data/products"; 
 
 const Products: React.FC = () => {
   const [visibleCount, setVisibleCount] = useState<number>(6);

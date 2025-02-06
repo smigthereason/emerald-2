@@ -52,7 +52,7 @@ const FavouritesPage: React.FC = () => {
       {favouriteProducts.length === 0 ? (
         <p>No favourite products yet.</p>
       ) : (
-        <div className="grid grid-cols-3 gap-8 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8">
           {favouriteProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
