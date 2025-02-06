@@ -33,9 +33,9 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
-                <Link to="/about" className="no-underline hover:text-[#617583]">
+                <HashLink to="/about#abt" className="no-underline hover:text-[#617583]">
                   About Us
-                </Link>
+                </HashLink>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
                 <HashLink

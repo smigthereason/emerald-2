@@ -12,7 +12,7 @@ const Categories = () => {
     { name: "JACKETS", icon:<img src={Jack} alt="jacket" className="w-32 h-32 mb-4 filter invert" /> },
     { name: "SKIRTS", icon:<img src={Skirt} alt="skirts" className="w-32 h-32 mb-4 filter invert" />},
     { name: "DRESSES", icon:<img src={Dress} alt="dress" className="w-32 h-32 mb-4 filter invert" />},
-    { name: "HEELS", icon:<img src={Heels} alt="heels" className="w-32 h-32 mb-4 filter invert" />},
+    { name: "SHOES", icon:<img src={Heels} alt="heels" className="w-32 h-32 mb-4 filter invert" />},
   ];
 
   return (
