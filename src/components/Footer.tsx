@@ -54,7 +54,7 @@ const Footer: React.FC = () => {
             <ul className="text-xl space-y-1 text-center md:text-left">
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
-                  to="/size-guide"
+                  to="/size-chart"
                   className="no-underline hover:text-[#617583]"
                 >
                   Size Guide
@@ -114,12 +114,12 @@ const Footer: React.FC = () => {
               Copyright © All Rights Reserved
             </p>
             <p className="text-sm text-gray-400 transform transition duration-300 hover:scale-110">
-              <Link
-                to="/privacy-policy"
+              <HashLink
+                to="/privacy-policy#pp"
                 className="no-underline hover:text-[#352f2d]"
               >
                 Privacy Policy
-              </Link>
+              </HashLink>
             </p>
             <p className="text-sm text-gray-400 transform transition duration-300 hover:scale-110">
               <Link

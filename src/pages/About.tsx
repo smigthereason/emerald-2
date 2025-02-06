@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import TypedJS from "../components/TypedJS";
+import Title from "../components/Title";
 
 const About = () => {
   useEffect(() => {
@@ -53,12 +54,7 @@ const About = () => {
 
         {/* Right Text Section */}
         <div className="w-full sm:w-3/6 flex flex-col justify-center p-10 relative sm:left-32 left-2 -top-20 sm:top-0 sm:text-center">
-          <h2 className="text-2xl font-light mb-4">
-            <span className="text-black font-bold">Our </span>Story
-          </h2>
-          <div className="flex justify-center mb-6">
-            <div className="border-b-2 border-black w-16 "></div>
-          </div>
+        <Title highlightText="Our" mainText="Story" />
           <p className="text-gray-600 mt-4 max-w-full">
             Emerald Fashion was born out of a love for fashion, sustainability,
             and individuality. We believe that looking good shouldn’t come at
@@ -78,16 +74,11 @@ const About = () => {
       <div
         className="relative w-full max-w-6xl h-[600px] mx-auto mt-20 flex"
         data-aos="fade-up"
-        data-aos-delay="300"
+        data-aos-delay="100"
       >
         {/* left Text Section */}
         <div className=" w-full sm:w-3/6 flex flex-col justify-center p-10 relative -top-40 sm:top-0">
-          <h2 className="text-center text-2xl font-light mb-4">
-            <span className="text-black font-bold">Why Thrift </span>With Us?
-          </h2>
-          <div className="flex justify-center mb-6">
-            <div className="border-b-2 border-black w-16 "></div>
-          </div>
+        <Title highlightText="Why Thrift" mainText="With Us?" />
 
           <ul className="relative sm:list-disc sm:list-inside list-none  mt-4 text-gray-700  sm:text-left left-0">
             <li>
@@ -127,14 +118,7 @@ const About = () => {
         data-aos-delay="300"
       >
         <div className="w-full sm:w-3/6 flex flex-col justify-center items-center p-10 text-center">
-          <h2 className=" text-2xl font-light mb-4">
-            <span className="text-black font-bold">Join the </span> <br />Glow-Up
-            Movement
-          </h2>
-
-          <div className="flex justify-center mb-6">
-            <div className="border-b-2 border-black w-16"></div>
-          </div>
+        <Title highlightText="Join the" mainText="Glow-Up Movement" />
 
           <p className="text-gray-600 mt-4 text-center">
             At Emerald Fashion, we’re not just selling clothes—we’re helping you

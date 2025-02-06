@@ -68,19 +68,19 @@ const Navbar: React.FC = () => {
       {/* Right Side: Login and Cart Icons */}
       <div className="absolute -right-2 sm:right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-4">
         {/* Login Icon */}
-        <button aria-label="Login">
+        <Link to="/login">
           <PiUserBold
             size={window.innerWidth < 640 ? 20 : 28}
             className="transform transition duration-300 hover:scale-95 "
           />
-        </button>
+        </Link>
         {/* Cart Icon */}
-        <button aria-label="View cart">
+        <Link to="/cart">
           <IoCartOutline
             size={window.innerWidth < 640 ? 24 : 28}
             className="transform transition duration-300 hover:scale-95"
           />
-        </button>
+        </Link>
       </div>
     </nav>
   );

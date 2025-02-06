@@ -6,6 +6,9 @@ import SearchResults from "./pages/SearchResults";
 import ProductDetail from "./pages/ProductDetail";
 import FavouritesPage from "./pages/FavouritesPage";
 import About from "./pages/About";
+import SizeChart from "./pages/SizeChart";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Login from "./pages/Login";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { FavouritesProvider } from "./components/FavouritesContext";
 
@@ -21,6 +24,9 @@ const App: React.FC = () => {
           <Route path="/product-detail" element={<ProductDetail />} />
           <Route path="/favourites-page" element={<FavouritesPage />} />
           <Route path="/about" element={<About />} />
+          <Route path="/size-chart" element={<SizeChart />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
 
         <Footer />
