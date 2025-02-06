@@ -27,7 +27,7 @@ const Products: React.FC = () => {
       <div className="flex justify-center mb-6">
         <div className="border-b-2 border-black w-16"></div>
       </div>
-      <div className="grid grid-cols-3 gap-8 mt-8">
+      <div className="grid grid-row-1 gap-8 mt-8 sm:grid-cols-3">
         <AnimatePresence>
           {visibleProducts.map((product) => (
             <ProductCard key={product.id} product={product} />

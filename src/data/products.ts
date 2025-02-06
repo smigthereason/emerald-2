@@ -11,7 +11,7 @@ export const products: Product[] = [
   {
     id: "product1",
     title: "Product 1",
-    brief: "A brief title",
+    brief: "Deep Blue Sea Jeans", 
     price: "$99",
     image: "src/assets/Images/p5.jpeg",
   },
@@ -27,14 +27,14 @@ export const products: Product[] = [
     title: "Product 3",
     brief: "A brief title",
     price: "$99",
-    image: "src/assets/Images/p6.jpeg",
+    image: "src/assets/Images/p8.jpeg",
   },
   {
     id: "product4",
     title: "Product 4",
     brief: "A brief title",
     price: "$99",
-    image: "src/assets/Images/p7.jpeg",
+    image: "src/assets/Images/p4.jpeg",
   },
   {
     id: "product5",

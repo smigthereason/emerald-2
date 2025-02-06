@@ -4,7 +4,7 @@ import { HashLink } from "react-router-hash-link";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-screen text-black font-light text-2xl overflow-x-hidden p-4">
+    <footer className="w-6/6 sm:w-screen text-black font-light text-2xl overflow-x-hidden p-4">
       <div className="px-4 py-10">
         <div className="flex flex-col md:flex-row md:justify-between items-start gap-4">
           {/* Logo */}
