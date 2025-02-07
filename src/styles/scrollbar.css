@@ -1,0 +1,23 @@
+Custom scrollbar styles
+.scrollbar-custom::-webkit-scrollbar {
+    width: 8px; 
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent; 
+    border-radius: 10px; 
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: #ec4899; 
+    border-radius: 10px; 
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: #db2777; 
+  }
+  
+  /* Remove scrollbar arrows */
+  .scrollbar-custom::-webkit-scrollbar-button {
+    display: none; 
+  }

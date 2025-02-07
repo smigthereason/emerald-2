@@ -12,27 +12,30 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { FavouritesProvider } from "./components/FavouritesContext";
+import { CartProvider } from "./components/CartContext"; // Import CartProvider
 
 const App: React.FC = () => {
   return (
     <FavouritesProvider>
-      <Router>
-        <Navbar />
+      <CartProvider>
+        <Router>
+          <Navbar />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<SearchResults />} />
-          <Route path="/product-detail" element={<ProductDetail />} />
-          <Route path="/favourites-page" element={<FavouritesPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/size-chart" element={<SizeChart />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/cart" element={<Cart />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/product-detail" element={<ProductDetail />} />
+            <Route path="/favourites-page" element={<FavouritesPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/size-chart" element={<SizeChart />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<Cart />} />
+          </Routes>
 
-        <Footer />
-      </Router>
+          <Footer />
+        </Router>
+      </CartProvider>
     </FavouritesProvider>
   );
 };
