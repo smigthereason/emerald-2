@@ -1,5 +1,6 @@
 // products.ts
 export interface Product {
+  discount: number;
   id: string;
   title: string;
   brief: string;
@@ -11,9 +12,10 @@ export const products: Product[] = [
   {
     id: "product1",
     title: "Product 1",
-    brief: "Deep Blue Sea Jeans", 
+    brief: "Deep Blue Sea Jeans",
     price: "$99",
     image: "src/assets/Images/p5.jpeg",
+    discount: 0
   },
   {
     id: "product2",
@@ -21,6 +23,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p4.jpeg",
+    discount: 0
   },
   {
     id: "product3",
@@ -28,6 +31,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p1.jpg",
+    discount: 0
   },
   {
     id: "product4",
@@ -35,6 +39,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p2.jpg",
+    discount: 0
   },
   {
     id: "product5",
@@ -42,6 +47,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p12.jpeg",
+    discount: 0
   },
   {
     id: "product6",
@@ -49,6 +55,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p13.jpeg",
+    discount: 0
   },
   // Add additional products as needed…
   {
@@ -57,6 +64,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p15.jpg",
+    discount: 0
   },
   {
     id: "product8",
@@ -64,6 +72,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p3.jpg",
+    discount: 0
   },
   {
     id: "product9",
@@ -71,6 +80,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p16.jpg",
+    discount: 0
   },
   {
     id: "product10",
@@ -78,6 +88,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p17.jpg",
+    discount: 0
   },
   {
     id: "product11",
@@ -85,6 +96,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p19.jpg",
+    discount: 0
   },
   {
     id: "product12",
@@ -92,6 +104,7 @@ export const products: Product[] = [
     brief: "A brief title",
     price: "$99",
     image: "src/assets/Images/p20.jpg",
+    discount: 0
   },
   // Add additional products as needed…
 ];

@@ -7,6 +7,7 @@ import { useCart } from "./CartContext";
 import { motion } from "framer-motion";
 
 interface Product {
+  discount: number;
   id: string;
   title: string;
   brief: string;
@@ -62,7 +63,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Always Visible Icons Below Image for Small Screens */}
       <div className="relative flex -top-8 sm:hidden justify-center space-x-6 m-4 p-2">
-        <Link to={`/${product.id}`}>
+      <Link to={`/details/${product.id}`}>
           <IoEyeSharp className="text-black text-3xl" />
         </Link>
         <button
@@ -87,15 +88,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span className="text-lg sm:text-2xl font-bold">{product.price}</span>
           <div className="flex flex-col sm:flex-row justify-evenly items-center gap-4 sm:gap-16">
           <button
-            className="bg-black text-white px-4 py-2 rounded hover:bg-[#ff5630]"
+            className="px-4 py-2 border border-[#D8798F] text-[#D8798F] rounded-full text-sm hover:bg-[#D8798F] hover:text-white transition"
             onClick={() => addToCart(product)} // Add product to cart
           >
               Add to Cart
             </button>
             <Link
               to={`/${product.id}`}
-              className="bg-black text-white px-4 py-2 rounded hover:bg-[#ff5630]"
-            >
+              className="px-4 py-2 border border-[#D8798F] text-[#D8798F] rounded-full text-sm hover:bg-[#D8798F] hover:text-white transition">
+            
               Buy
             </Link>
           </div>

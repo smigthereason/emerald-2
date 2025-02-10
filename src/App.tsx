@@ -10,9 +10,12 @@ import SizeChart from "./pages/SizeChart";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
+import Contact from "./pages/Contact";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { FavouritesProvider } from "./components/FavouritesContext";
-import { CartProvider } from "./components/CartContext"; // Import CartProvider
+import { CartProvider } from "./components/CartContext"; 
+import Sales from "./pages/Sales";
+import Details from "./pages/Details";
 
 const App: React.FC = () => {
   return (
@@ -31,6 +34,9 @@ const App: React.FC = () => {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/login" element={<Login />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/sales" element={<Sales />} />
+            <Route path="/details/:id" element={<Details />} />
           </Routes>
 
           <Footer />

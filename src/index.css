@@ -31,39 +31,63 @@
 
 
 
-/* Hide default scrollbars */
-* {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-}
-
-*::-webkit-scrollbar {
-  display: none; /* Webkit browsers (Chrome, Safari) */
-}
-
-/* Custom scrollbar container */
 .custom-scrollbar-container {
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
   position: relative;
-  overflow: hidden;
+  max-height: 500px;
 }
 
-/* Custom scrollbar track */
+.custom-scrollbar-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+}
+
 .custom-scrollbar-track {
   position: absolute;
+  left: 48vw;
   top: 0;
-  right: 0;
-  bottom: 0;
-  width: 8px;
+  width: 6px;
+  height: 100%;
   background: transparent;
+  border-radius: 3px;
 }
 
-/* Custom scrollbar thumb */
 .custom-scrollbar-thumb {
+  width: 100%;
+  background: #d8798f;
+  border-radius: 3px;
   position: absolute;
   top: 0;
-  right: 0;
+  transition: transform 0.2s ease-in-out;
+}
+/* Custom scrollbar for WebKit browsers */
+::-webkit-scrollbar {
+  width: 6px; /* Scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track */
+  margin: 5px; /* Push scrollbar slightly inward */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d8798f;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Increase scrollbar thickness as user scrolls */
+::-webkit-scrollbar-thumb:hover {
   width: 8px;
-  background: rgb(55, 0, 128);
-  border-radius: 8px; /* Rounded corners */
-  transition: height 0.2s ease;
+}
+
+/* Dynamic scrollbar size change on scroll */
+.custom-scrollbar-container::-webkit-scrollbar-thumb {
+  height: 100px; /* Default size */
+}
+
+/* Using JavaScript to dynamically increase scrollbar size */
+.custom-scrollbar-container.scrolling::-webkit-scrollbar-thumb {
+  height: 150px; /* Increased size when scrolling */
 }

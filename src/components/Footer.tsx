@@ -28,15 +28,24 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
-                <Link to="/sale" className="no-underline hover:text-[#617583]">
+                <Link to="/sales" className="no-underline hover:text-[#617583]">
                   Sale &amp; Clearance
                 </Link>
               </li>
               <li className="transform transition duration-300 hover:scale-95">
-                <HashLink to="/about#abt" className="no-underline hover:text-[#617583]">
+                <HashLink
+                  to="/about#abt"
+                  className="no-underline hover:text-[#617583]"
+                >
                   About Us
                 </HashLink>
               </li>
+            </ul>
+          </div>
+
+          {/* Support & Resources */}
+          <div className="w-full md:w-1/6 mb-6 md:mb-0">
+            <ul className="text-xl space-y-1 text-center md:text-left">
               <li className="transform transition duration-300 hover:scale-95">
                 <HashLink
                   to="/favourites-page#fav"
@@ -46,12 +55,6 @@ const Footer: React.FC = () => {
                   Favourites
                 </HashLink>
               </li>
-            </ul>
-          </div>
-
-          {/* Support & Resources */}
-          <div className="w-full md:w-1/6 mb-6 md:mb-0">
-            <ul className="text-xl space-y-1 text-center md:text-left">
               <li className="transform transition duration-300 hover:scale-95">
                 <Link
                   to="/size-chart"
@@ -67,14 +70,6 @@ const Footer: React.FC = () => {
                   className="no-underline hover:text-[#617583]"
                 >
                   Shipping
-                </Link>
-              </li>
-              <li className="transform transition duration-300 hover:scale-95">
-                <Link
-                  to="/gift-cards"
-                  className="no-underline hover:text-[#617583]"
-                >
-                  Gift Cards
                 </Link>
               </li>
             </ul>

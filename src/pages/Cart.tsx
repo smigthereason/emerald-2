@@ -6,7 +6,7 @@ import useCustomScrollbar from "../data/useCustomScrollbar";
 
 const Cart = () => {
   const { cart, removeFromCart } = useCart(); // Get cart data
-  const containerRef = useCustomScrollbar(); // Get ref for custom scrollbar
+  const { containerRef, thumbRef } = useCustomScrollbar(); // Get ref for custom scrollbar
 
   return (
     <div className="min-h-screen bg-white rounded-lg shadow-lg">
@@ -31,33 +31,41 @@ const Cart = () => {
 
             {/* Scrollable container for cart items */}
             {/* <CustomScrollbar> */}
-            <div
-              ref={containerRef}
-              className=" custom-scrollbar-container space-y-6 max-h-[500px] "
-            >
-              {cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center space-x-4 bg-[#fff4f3] p-4 rounded-lg"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-medium text-gray-800">{item.title}</h3>
-                    <p className="text-gray-500 text-sm">{item.brief}</p>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-red-500 text-sm mt-2"
-                    >
-                      Remove
-                    </button>
+            <div className="relative">
+              <div
+                ref={containerRef}
+                className="custom-scrollbar-container space-y-6 max-h-[500px]"
+              >
+                {cart.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center space-x-4 bg-[#fff4f3] p-4 rounded-lg"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-20 h-20 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-medium text-gray-800">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-500 text-sm">{item.brief}</p>
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-red-500 text-sm mt-2"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <span className="font-medium">{item.price}</span>
                   </div>
-                  <span className="font-medium">{item.price}</span>
-                </div>
-              ))}
+                ))}
+              </div>
+              {/* Custom Scrollbar Track */}
+              <div className="custom-scrollbar-track">
+                <div ref={thumbRef} className="custom-scrollbar-thumb"></div>
+              </div>
             </div>
             {/* </CustomScrollbar> */}
           </div>
