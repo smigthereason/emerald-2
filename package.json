@@ -42,7 +42,7 @@
     "globals": "^15.14.0",
     "postcss": "^8.4.31",
     "postcss-nesting": "^13.0.1",
-    "tailwind-scrollbar": "^4.0.0",
+    "tailwind-scrollbar": "^3.0.2",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5"
