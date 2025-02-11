@@ -19,6 +19,16 @@ def create_app():
 
     # Load configuration
     app.config.from_object('config.Config')
+    
+     # Configure CORS
+    CORS(app, resources={
+        r"/*": {
+            "origins": ["http://localhost:5173"],  # Your React app's URL
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        }
+    })
 
     # Initialize extensions
     db.init_app(app)
