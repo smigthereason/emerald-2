@@ -11,7 +11,7 @@ const Offers = () => {
       />
        <div className="absolute z-[0] w-[100%] h-[100%] right-0 top-0 bg-black/50" />
 
-      <Link to="/" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center border-8 h-64 w-4/5">
+      <Link to="/sales" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center border-8 h-64 w-4/5">
         <h1 className="text-lg sm:text-2xl font-medium mt-6">NEW COLLECTION</h1>
         <span className="text-3xl sm:text-6xl font-bold mt-6">25% OFF</span>
         <div className="space-x-4 relative top-4">

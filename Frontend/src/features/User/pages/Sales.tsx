@@ -24,21 +24,22 @@ const SalesClearance: React.FC = () => {
     alert(`${productTitle} added to cart!`);
   };
 
-  const handleAddToWishlist = (productId: number, productTitle: string) => {
-    toggleFavourite(productId.toString());
+  // Updated to use the product's string ID directly
+  const handleAddToWishlist = (productId: string, productTitle: string) => {
+    toggleFavourite(productId);
     alert(`${productTitle} added to favourites!`);
   };
 
   return (
     <div className="min-h-screen">
       {/* Hero Banner */}
-      <div className="relative w-full h-[400px] bg-gradient-to-r from-[#d88598ab] to-[#e47a93] flex items-center justify-center text-center text-white">
+      <div className="relative w-full h-[400px] flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black bg-opacity-40">
-        <img
-        className="w-full h-full object-cover backdrop-filter backdrop-blur-lg"
-        src="src/assets/bg-images/sale2.jpg"
-        alt="sale2"
-      /> 
+          <img
+            className="w-full h-full object-cover backdrop-filter backdrop-blur-lg"
+            src="src/assets/bg-images/sale2.jpg"
+            alt="sale2"
+          />
         </div>
         <div className="relative z-10">
           <h1 className="text-4xl font-bold uppercase">🔥 Clearance Sale 🔥</h1>
@@ -83,7 +84,7 @@ const SalesClearance: React.FC = () => {
           filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="box bg-white shadow-lg rounded-lg overflow-hidden "
+              className="box bg-white shadow-lg rounded-lg overflow-hidden"
             >
               <img
                 src={product.image}
@@ -95,9 +96,9 @@ const SalesClearance: React.FC = () => {
                 <p className="text-gray-500">{product.brief}</p>
                 <p className="mt-2 text-gray-500">
                   <span className="text-red-500 font-bold">
-                    $
+                    Ksh
                     {(
-                      parseFloat(product.price.replace("$", "")) *
+                      parseFloat(product.price.replace("Ksh", "")) *
                       (1 - product.discount / 100)
                     ).toFixed(2)}
                   </span>{" "}
@@ -109,7 +110,7 @@ const SalesClearance: React.FC = () => {
                   {product.discount}% OFF
                 </span>
                 <div className="mt-4 flex justify-center gap-4">
-                  <button 
+                  <button
                     className="px-4 py-2 bg-[#D8798F] text-white rounded-full text-sm hover:bg-[#B25671] transition"
                     onClick={() => handleAddToCart(product.title)}
                   >
@@ -119,7 +120,7 @@ const SalesClearance: React.FC = () => {
                     className="px-4 py-2 border border-[#D8798F] text-[#D8798F] rounded-full text-sm hover:bg-[#D8798F] hover:text-white transition"
                     onClick={(e) => {
                       e.preventDefault();
-                      handleAddToWishlist(Number(product.id), product.title);
+                      handleAddToWishlist(product.id, product.title);
                     }}
                   >
                     Wishlist

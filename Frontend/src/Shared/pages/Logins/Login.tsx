@@ -120,7 +120,7 @@ const Login: React.FC = () => {
         >
           <form
             onSubmit={handleSignUp}
-            className="bg-white flex flex-col items-center justify-center h-full text-center px-12"
+            className=" bg-white flex flex-col items-center justify-center h-full text-center px-12"
           >
             <h1 className="font-bold text-2xl mb-2">Create Account</h1>
             <div className="social-container flex my-5">

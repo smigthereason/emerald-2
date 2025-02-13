@@ -61,7 +61,7 @@ const SizeChart: React.FC = () => {
         Select the size that most closely matches your body measurements.
       </p>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse bg-white shadow-md rounded-lg">
+        <table className="table w-full border-collapse bg-white shadow-md rounded-lg">
           <thead>
             <tr className="bg-gray-100">
               <th className="border p-3 text-left font-semibold text-gray-700">Sizes</th>

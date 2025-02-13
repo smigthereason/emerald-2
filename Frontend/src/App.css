@@ -11,7 +11,7 @@ body {
 
 /* Light mode styles */
 
-body.light .line{
+body.light .line {
   background-color: #000000;
 }
 /* Footer text */
@@ -19,40 +19,68 @@ body.light footer {
   filter: brightness(0) invert(0);
 }
 
-
-
-
-
-
 /* Highlight primary components using the primary color */
-body.dark  {
+body.dark {
   background-color: #000000;
   color: white;
 }
 
 /* Footer text */
-body.dark footer,body.dark span {
+body.dark footer,
+body.dark span {
   color: white;
 }
 
 /* For logo images */
 /* If your logo is an inline SVG, change the fill: */
-body.dark .category, body.dark .cart {
-  background-color:#2c2b2b93;
+body.dark .category,
+body.dark .cart {
+  background-color: #2c2b2b93;
   border: 1px solid #fcfcfc93;
 }
-body.dark .line{
+body.dark .line {
   filter: brightness(0) invert(1);
 }
-body.dark .box{
+body.dark .box,
+body.dark .cart-item,
+body.dark .cart-total {
   border: 1px solid #fcfcfc93;
   background-color: #2c2b2b93;
 }
+body.dark .table {
+  border: 1px solid #fcfcfc93;
+  background-color: #2c2b2b93;
+  color: white;
+}
 
 /* If your logo is an image, you might invert its colors using filter: */
-body.dark img.logo, footer {
+body.dark img.logo,
+footer,
+body.dark .panel img {
   filter: brightness(0) invert(1);
 }
-body.dark .layer{
+body.dark .layer,
+body.dark .form {
   background-color: transparent;
+}
+body.dark .panel {
+  border: 1px solid #fcfcfc93;
+  background-color: black;
+  filter: grayscale(20%);
+}
+body.dark .cart-item h3 {
+  color: white;
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-right {
+  animation: slide-right 0.3s ease-out;
 }

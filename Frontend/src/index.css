@@ -64,6 +64,7 @@
 /* Custom scrollbar for WebKit browsers */
 ::-webkit-scrollbar {
   width: 6px; /* Scrollbar width */
+  height: 500px;
 }
 
 ::-webkit-scrollbar-track {

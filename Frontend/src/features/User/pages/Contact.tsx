@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
             }
           `}
         >
-          <form className="bg-white flex flex-col items-center justify-center h-full text-center px-12">
+          <form className="panel bg-white flex flex-col items-center justify-center h-full text-center px-12">
             <h1 className="font-bold text-2xl mb-2">Make an Enquiry</h1>
             <div className="social-container flex my-5">
               <img src={contactIcon} alt="contact" className="w-10 h-10" />
@@ -74,7 +74,7 @@ const Contact: React.FC = () => {
             ${isRightPanelActive ? "-translate-x-full" : ""}
           `}
         >
-          <form className="bg-white flex flex-col items-center justify-center h-full text-center px-12">
+          <form className="panel bg-white flex flex-col items-center justify-center h-full text-center px-12">
             <h1 className="font-bold text-2xl mb-2">Give Feedback</h1>
             <div className="social-container flex my-5">
               <img src={contactIcon} alt="feedback" className="w-16 h-16" />
@@ -118,7 +118,7 @@ const Contact: React.FC = () => {
         >
           <div
             className={`
-              bg-gradient-to-t from-[#d88598ab] to-[#e47a93] 
+              panel bg-gradient-to-t from-[#d88598ab] to-[#e47a93] 
               text-white relative left-[-100%] h-full w-[200%]
               transition-transform duration-1000 ease-in-out
               ${isRightPanelActive ? "translate-x-1/2" : "translate-x-0"}
