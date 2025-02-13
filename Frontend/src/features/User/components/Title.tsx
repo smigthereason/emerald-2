@@ -13,7 +13,7 @@ const Title: React.FC<TitleProps> = ({ mainText, highlightText }) => {
         {mainText}
       </h2>
       <div className="flex justify-center mb-6">
-        <div className="border-b-2 border-black w-16"></div>
+        <div className="line border-b-2 border-black w-16"></div>
       </div>
     </div>
   );

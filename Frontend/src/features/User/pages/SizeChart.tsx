@@ -1,4 +1,5 @@
 import React from 'react';
+import Title from "../components/Title";
 
 const SizeChart: React.FC = () => {
   const sizeData = [
@@ -55,7 +56,7 @@ const SizeChart: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Size Chart</h2>
+      <Title highlightText="Size" mainText="Chart" />
       <p className="text-center text-gray-600 mb-6">
         Select the size that most closely matches your body measurements.
       </p>

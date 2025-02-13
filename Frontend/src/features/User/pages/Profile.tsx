@@ -10,6 +10,10 @@ const Profile: React.FC = () => {
   const [showFavorites, setShowFavorites] = useState(false);
   const { toggleFavourite } = useFavourites();
 
+  // Separate state for toggling password visibility
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   // Dummy orders with status
   const orderHistory = [
     { id: 1, items: 3, total: 59.99, status: "Completed" },
@@ -87,7 +91,7 @@ const Profile: React.FC = () => {
               {orderHistory.map((order) => (
                 <li
                   key={order.id}
-                  className="p-3 border rounded-lg mb-2 flex justify-between items-center"
+                  className="p-3 border rounded-lg mb-2 sm:flex justify-between items-center bg-gray-200 grid grid-cols-14"
                 >
                   <span>
                     Order #{order.id} - {order.items} items
@@ -110,20 +114,40 @@ const Profile: React.FC = () => {
           {/* Change Password */}
           <div className="bg-white shadow-lg rounded-2xl p-6">
             <h3 className="text-lg font-bold mb-4">Change Password</h3>
-            <input
-              type="password"
-              placeholder="New Password"
-              className="border p-2 w-full rounded-lg mb-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              className="border p-2 w-full rounded-lg mb-2"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
+            {/* New Password Input */}
+            <div className="flex items-center">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                placeholder="New Password"
+                className="border p-2 w-40 sm:w-11/12 rounded-lg mb-2 bg-gray-200"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="ml-2 text-sm text-gray-600"
+              >
+                {showNewPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            {/* Confirm Password Input */}
+            <div className="flex items-center">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                className="border p-2 w-40 sm:w-11/12  rounded-lg mb-2 bg-gray-200"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="ml-2  text-sm text-gray-600"
+              >
+                {showConfirmPassword ? "Hide" : "Show"}
+              </button>
+            </div>
             <button
               onClick={handlePasswordChange}
               className="mt-4 w-full bg-[#D8798F] text-white hover:bg-white hover:text-[#D8798F] hover:border hover:border-[#D8798F] transition py-2 rounded-lg font-semibold"

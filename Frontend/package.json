@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.4.0",
     "@mui/material": "^6.4.0",
     "@react-spring/web": "^9.7.5",
+    "@tanstack/react-table": "^8.21.2",
     "aos": "^2.3.4",
     "framer-motion": "^12.1.0",
     "lucide-react": "^0.474.0",

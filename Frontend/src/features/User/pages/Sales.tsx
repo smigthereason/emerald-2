@@ -30,7 +30,7 @@ const SalesClearance: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       {/* Hero Banner */}
       <div className="relative w-full h-[400px] bg-gradient-to-r from-[#d88598ab] to-[#e47a93] flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black bg-opacity-40">
@@ -83,7 +83,7 @@ const SalesClearance: React.FC = () => {
           filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden "
+              className="box bg-white shadow-lg rounded-lg overflow-hidden "
             >
               <img
                 src={product.image}

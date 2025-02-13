@@ -28,7 +28,7 @@ const About = () => {
           src="src/assets/bg-images/about1.jpg"
           alt="About Emerald"
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className=" layer absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center">
           <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 font-beau">
             <TypedJS strings={categories} />
@@ -49,7 +49,7 @@ const About = () => {
             src="src/assets/bg-images/about2.jpg"
             alt="About Emerald"
           />
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="layer absolute inset-0 bg-black/20" />
         </div>
 
         {/* Right Text Section */}
@@ -67,7 +67,7 @@ const About = () => {
       </div>
 
       <div className="flex justify-center -mt-12 sm:mt-12">
-        <div className="border-b-2 border-black/40 w-32 sm:w-60 -rotate-45 "></div>
+        <div className="line border-b-2 border-black/40 w-32 sm:w-60 -rotate-45 "></div>
       </div>
 
       {/* Additional Section 2 */}
@@ -102,12 +102,12 @@ const About = () => {
             src="src/assets/bg-images/about3.jpg"
             alt="About Emerald"
           />
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="layer absolute inset-0 bg-black/20" />
         </div>
       </div>
 
       <div className="flex justify-center -mt-12 sm:mt-12 relative -top-56 sm:top-0">
-        <div className="border-b-2 border-black/40 w-32 sm:w-60 rotate-45 "></div>
+        <div className="line border-b-2 border-black/40 w-32 sm:w-60 rotate-45 "></div>
       </div>
 
       {/* Additional Section 3 */}

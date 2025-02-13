@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
 import ProductCard from "./ProductCard";
 import { products } from "../../../data/products"; 
+import Title from "./Title";
 
 const Products: React.FC = () => {
   const [visibleCount, setVisibleCount] = useState<number>(6);
-  const visibleProducts = products.slice(0, visibleCount);
+
+  // Create a memoized shuffled copy so it doesn't change on every render.
+  const shuffledProducts = useMemo(() => {
+    return [...products].sort(() => Math.random() - 0.5);
+  }, []);
+
+  const visibleProducts = shuffledProducts.slice(0, visibleCount);
 
   const loadMoreProducts = () => {
-    setVisibleCount((prevCount) => prevCount + 6);
+    setVisibleCount(prevCount => prevCount + 6);
   };
 
   const seeLessProducts = () => {
-    setVisibleCount(6);
+    setVisibleCount(prevCount => Math.max(prevCount - 6, 6));
     window.scrollTo({
       top: 650,
       behavior: "smooth",
@@ -21,12 +28,7 @@ const Products: React.FC = () => {
 
   return (
     <div className="py-8">
-      <h2 className="text-center text-2xl font-light mb-4">
-        <span className="text-black font-bold">featured </span>items
-      </h2>
-      <div className="flex justify-center mb-6">
-        <div className="border-b-2 border-black w-16"></div>
-      </div>
+      <Title highlightText="featured" mainText="items" />
       <div className="grid grid-row-1 gap-8 mt-8 sm:grid-cols-3">
         <AnimatePresence>
           {visibleProducts.map((product) => (
@@ -34,7 +36,7 @@ const Products: React.FC = () => {
           ))}
         </AnimatePresence>
       </div>
-      {visibleCount < products.length && (
+      {visibleCount < shuffledProducts.length && (
         <div className="flex justify-center mt-8">
           <button
             onClick={loadMoreProducts}
@@ -49,7 +51,6 @@ const Products: React.FC = () => {
           <button
             onClick={seeLessProducts}
             className="bg-white text-[#D8798F] px-6 py-2 rounded-full hover:bg-[#D8798F] hover:text-white border border-[#D8798F]"
-
           >
             See Less
           </button>

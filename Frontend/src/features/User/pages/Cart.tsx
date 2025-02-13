@@ -9,7 +9,7 @@ const Cart = () => {
   const { containerRef, thumbRef } = useCustomScrollbar(); // Get ref for custom scrollbar
 
   return (
-    <div className="min-h-screen bg-white rounded-lg shadow-lg">
+    <div className="cart min-h-screen bg-white rounded-lg shadow-lg">
       <div className="max-w-6xl mx-auto p-6">
         {/* Header */}
         <div className="mb-8">
@@ -39,7 +39,7 @@ const Cart = () => {
                 {cart.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center space-x-4 bg-[#fff4f3] p-4 rounded-lg sm:h-[200px]"
+                    className="item flex items-center space-x-4 bg-[#fff4f3] p-4 rounded-lg sm:h-[200px]"
                   >
                     <img
                       src={item.image}

@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
           {/* Logo */}
           <div className="w-full md:w-1/6 flex justify-center md:justify-start mb-6 md:mb-0">
             <img
-              className="h-auto w-48"
+              className=" h-auto w-48"
               src="/src/assets/Logos/e-logo1.png"
               alt="Emerald Logo"
             />

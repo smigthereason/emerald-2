@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { IoCartOutline } from "react-icons/io5";
 import { PiUserBold } from "react-icons/pi";
 import Search from "./Search";
-import { useCart } from "../../../Shared/hooks/CartContext"; // Adjust the path as needed
+import { useCart } from "../../../Shared/hooks/CartContext"; 
+import ThemeToggle from "../../../Shared/hooks/ThemeToggle";
 
 const Navbar: React.FC = () => {
   const { cart } = useCart(); // Access cart items from the CartContext
@@ -21,13 +22,13 @@ const Navbar: React.FC = () => {
           <Link to="/">
             {/* Logo for larger screens */}
             <img
-              className="hidden sm:block h-auto w-64"
+              className="logo hidden sm:block h-auto w-64"
               src="/src/assets/Logos/e5.png"
               alt="E Logo"
             />
             {/* Logo for smaller screens */}
             <img
-              className="block sm:hidden h-16 w-16 relative right-24"
+              className="logo block sm:hidden h-16 w-16 relative right-36"
               src="/src/assets/Logos/black-hq.png"
               alt="E Logo Small"
             />
@@ -59,6 +60,9 @@ const Navbar: React.FC = () => {
 
       {/* Right Side: Login and Cart Icons */}
       <div className="absolute -right-2 sm:right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-4">
+
+      <ThemeToggle />
+
         {/* Login Icon */}
         <Link to="/login">
           <PiUserBold
