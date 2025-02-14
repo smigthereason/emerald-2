@@ -7,6 +7,8 @@ export interface Product {
   price: string;
   image: string;
   tag: string;
+  color: string[];
+  size: string[];
 }
 
 /**
@@ -42,212 +44,259 @@ export const products: Product[] = [
   // Tops (12 products) – images: t1-t12.jpg, tag: "tops"
   {
     id: "product1",
-    title: "Product 1",
-    brief: "Stylish top 1",
+    title: "Wrap Blouse",
+    brief: "Features V-neckline with long, voluminous sleeves and  ruched waistline",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t1.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["black", "green"],
+    size: ["S", "M", "L", "XL"],
   },
   {
     id: "product2",
-    title: "Product 2",
-    brief: "Stylish top 2",
+    title: "Ruched Crop Top",
+    brief: "Featuring a ruched front with adjustable tie detailing, a cropped length and a figure-hugging fit",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t2.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["black", "green"],
+    size: ["XS", "S", "M"],
   },
   {
     id: "product3",
-    title: "Product 3",
-    brief: "Stylish top 3",
+    title: "Twisted Front Crop Top",
+    brief: "Show off your style with this trendy brown crop top! The twisted front design creates a flattering silhouette, while the spaghetti straps and ruched details add a touch of femininity. Pair it with high-waisted jeans or a skirt for a fashionable and effortless look",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t3.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["pastel brown"],
+    size: ["S", "M"],
+    
   },
   {
     id: "product4",
-    title: "Product 4",
-    brief: "Stylish top 4",
+    title: "Off-Shoulder Blouse",
+    brief: "The asymmetrical neckline and draped design exude sophistication, while the gathered side details create a flattering fit.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t4.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["Almond"],
+    size: ["S", "M", "L"],
   },
   {
     id: "product5",
-    title: "Product 5",
-    brief: "Stylish top 5",
+    title: "Ribbed Sleeveless Top",
+    brief: "Designed with a high neckline and a form-fitting silhouette, this piece is perfect for layering or wearing on its own.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t5.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["black"],
+    size: ["XS", "S", "M"],
   },
   {
     id: "product6",
-    title: "Product 6",
-    brief: "Stylish top 6",
+    title: " Cutout Long-Sleeve Crop Top",
+    brief: "Make a bold statement with this sleek black long-sleeve crop top featuring an edgy cutout design. Perfect for a night out or styling up your casual wear.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t6.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["black", "blue", "white"],
+    size: ["XS", "S", "M"],
   },
   {
     id: "product7",
-    title: "Product 7",
-    brief: "Stylish top 7",
+    title: "Lace Elegance Puff Sleeve Blouse",
+    brief: "Stay effortlessly stylish with this white lace puff sleeve crop top. The delicate embroidery and sweetheart neckline add a romantic touch to your outfit.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t7.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["timber-wolf"],
+    size: ["M", "L", "XL"],
   },
   {
     id: "product8",
-    title: "Product 8",
-    brief: "Stylish top 8",
+    title: "Wrap & Flare Heart Print Blouse",
+    brief: "This charming red wrap blouse with tiny heart prints and a waist tie is perfect for date nights or casual outings. The peplum silhouette adds a flattering fit.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t8.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["burgundy"],
+    size: ["M", "L", "XL", "2XL"],
   },
   {
     id: "product9",
-    title: "Product 9",
-    brief: "Stylish top 9",
+    title: "Halter Crop Top",
+    brief: "Show off your confident style with this soft pink halter crop top. The ruched front and deep V-neckline create a flattering and trendy look.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t9.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["pink", "rose-brown"],
+    size: ["XS", "S", "M", "L", "XL"],
   },
   {
     id: "product10",
-    title: "Product 10",
-    brief: "Stylish top 10",
+    title: "Ribbed Knit Asymmetric Hem Tee",
+    brief: "A modern twist on the classic tee, this ribbed knit short-sleeve top features an asymmetric hem and contrast trim, making it a perfect go-to piece for any wardrobe.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t10.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["gray"],
+    size: ["XS", "S", "M"],
   },
   {
     id: "product11",
-    title: "Product 11",
-    brief: "Stylish top 11",
+    title: "Wrap-Style Long Sleeve Crop Top",
+    brief: "A stylish and figure-hugging wrap crop top with long sleeves, designed with a deep V-neckline and a flattering crossover fit. Ideal for a trendy, casual, or night-out ensemble.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t11.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["pastel-brown"],
+    size: [ "S", "M"],
   },
   {
     id: "product12",
-    title: "Product 12",
-    brief: "Stylish top 12",
+    title: "Elegant Drape V-Neck Blouse",
+    brief: "A sophisticated sleeveless blouse featuring a deep V-neck draped front and a cinched waist, perfect for pairing with high-waisted trousers for a chic, polished look.",
     price: randomPriceForTag("tops"),
     image: "src/assets/Images/tops/t12.jpg",
     discount: 0,
-    tag: "tops"
+    tag: "tops",
+    color: ["light-green"],
+    size: [ "M"],
   },
 
   // Skirts (12 products) – images: s1-s12.jpg, tag: "skirts"
   {
     id: "product13",
-    title: "Product 13",
-    brief: "Elegant skirt 1",
+    title: "Chic Plaid Mini Skirt",
+    brief: "A stylish plaid mini skirt with a high-waisted fit, perfect for pairing with blazers or casual tops. The edgy belt adds a modern touch to your outfit.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s1.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["purple"],
+    size: ["XS", "S", "M"],
   },
   {
     id: "product14",
-    title: "Product 14",
-    brief: "Elegant skirt 2",
+    title: "Floral Ruched Mini Skirt",
+    brief: "A delicate and trendy floral-print ruched mini skirt. Designed with a body-hugging fit and side drawstrings for an adjustable length, making it perfect for any occasion.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s2.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["tumble-weed", "beige"],
+    size: ["M"],
   },
   {
     id: "product15",
-    title: "Product 15",
-    brief: "Elegant skirt 3",
+    title: "Ribbed Knit Midi Skirt",
+    brief: "A cozy and sophisticated ribbed midi skirt with a side slit. The soft knit fabric offers comfort and elegance, ideal for both casual and semi-formal looks.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s3.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["pastel-brown"],
+    size: ["S", "M", "L", "XL"],
   },
   {
     id: "product16",
-    title: "Product 16",
-    brief: "Elegant skirt 4",
+    title: "Mermaid Maxi Skirt",
+    brief: "A beautifully flowing mermaid-style maxi skirt with a high waist, designed to accentuate your silhouette. A perfect choice for a refined yet stylish look.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s4.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["coffee-brown", "black", "white", "gray"],
+    size: ["S", "M", "L", "XL"],
   },
   {
     id: "product17",
-    title: "Product 17",
-    brief: "Elegant skirt 5",
+    title: "Slit Midi Skirt",
+    brief: "A versatile ribbed black midi skirt featuring a chic side slit. Easy to pair with any top and shoes for a comfortable yet trendy outfit.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s5.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["black", "white", "gray"],
+    size: ["S", "M"],
   },
   {
     id: "product18",
-    title: "Product 18",
-    brief: "Elegant skirt 6",
+    title: "Boho Floral Wrap Maxi Skirt",
+    brief: "A stunning floral wrap maxi skirt with a high slit and tie-up waist. The flowy design and lightweight fabric make it ideal for a breezy, bohemian-inspired look.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s6.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["tan"],
+    size: ["M", "L", "XL", "3XL"],
   },
   {
     id: "product19",
-    title: "Product 19",
-    brief: "Elegant skirt 7",
+    title: "Elegant Burgundy Maxi",
+    brief: "A sophisticated A-line maxi skirt in rich burgundy, paired with a black ribbed sweater and statement clutch. Perfect for formal occasions or upscale events.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s7.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["burgundy"],
+    size: ["S", "M"],
   },
   {
     id: "product20",
-    title: "Product 20",
-    brief: "Elegant skirt 8",
+    title: "Plaid Mini Skirt",
+    brief: "A flirty plaid mini skirt in pink and black tones.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s8.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["smoky-black"],
+    size: ["XS","S"],
   },
   {
     id: "product21",
-    title: "Product 21",
-    brief: "Elegant skirt 9",
+    title: "Classic Plaid Pleated Skirt",
+    brief: "A timeless pleated mini skirt featuring a blue and white plaid pattern. Reminiscent of preppy school uniforms with a modern twist.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s9.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["blue"],
+    size: ["S", "M"],
   },
   {
     id: "product22",
-    title: "Product 22",
-    brief: "Elegant skirt 10",
+    title: "Black Knit Mini",
+    brief: "A sleek black ribbed mini skirt paired with a matching turtleneck sweater and thigh-high boots. A monochromatic look perfect for evening outings.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s10.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["black"],
+    size: ["S", "M", "L"],
   },
   {
     id: "product23",
-    title: "Product 23",
-    brief: "Elegant skirt 11",
+    title: "Ribbed Mocha Side-Slit",
+    brief: "A figure-hugging ribbed midi skirt in warm mocha brown featuring a daring side slit. Perfect for creating a sophisticated silhouette for both casual and dressy occasions.",
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s11.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["coffee-brown"],
+    size: ["S", "M", "L"],
   },
   {
     id: "product24",
@@ -256,446 +305,547 @@ export const products: Product[] = [
     price: randomPriceForTag("skirts"),
     image: "src/assets/Images/skirts/s12.jpg",
     discount: 0,
-    tag: "skirts"
+    tag: "skirts",
+    color: ["grullo-stripes"],
+    size: [ "L", "XL", "2XL"],
   },
 
   // Shoes (12 products) – images: h1-h12.jpg, tag: "shoe"
   {
     id: "product25",
-    title: "Product 25",
-    brief: "Comfortable shoe 1",
+    title: "Lace-Up Platform Boots",
+    brief: " Mauve-brown platform ankle boots with lace-up detail and chunky heel. Perfect for adding edge to any outfit while maintaining comfort with the platform design.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h1.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["mauve-brown"],
+    size: ["4", "5", "6"],
   },
   {
     id: "product26",
-    title: "Product 26",
-    brief: "Comfortable shoe 2",
+    title: "Classic Nude Stilettos",
+    brief: "Timeless pointed-toe pumps in a versatile nude shade with sleek stiletto heels. An essential wardrobe staple that elongates the legs.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h2.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["nude"],
+    size: ["5", "6", "7", "8"],
   },
   {
     id: "product27",
-    title: "Product 27",
-    brief: "Comfortable shoe 3",
+    title: "Air Jordan 1s High-Top",
+    brief: "Pink High-Top Air Jordans with blue accents and white soles. A stylish and comfortable choice for sneakerheads and streetwear enthusiasts.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h3.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["pink"],
+    size: ["5", "6"],
+
   },
   {
     id: "product28",
-    title: "Product 28",
-    brief: "Comfortable shoe 4",
+    title: "Custom Air Force 1s",
+    brief: "Custom Hight-Top White Air Force !s with blue butterfly accents and a platform sole. A unique and trendy choice for sneaker lovers.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h4.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["white"],
+    size: ["5", "6", "7"],
   },
   {
     id: "product29",
-    title: "Product 29",
-    brief: "Comfortable shoe 5",
+    title: "Black Air Jordan 1s",
+    brief: "Black High-Top Air Jordans with white accents and a platform sole. A bold and edgy choice for sneakerheads and streetwear enthusiasts.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h5.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["black"],
+    size: ["5", "6", "7", "8"],
   },
   {
     id: "product30",
-    title: "Product 30",
-    brief: "Comfortable shoe 6",
+    title: "Strappy Platform Sandals",
+    brief: " Bold black platform sandals featuring wraparound ankle straps and a chunky heel. The dramatic criss-cross design adds a modern, edgy touch.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h6.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["black"],
+    size: ["5", "6", "7", "8"],
   },
   {
     id: "product31",
-    title: "Product 31",
-    brief: "Comfortable shoe 7",
+    title: "Rose Gold Strappy Heels",
+    brief: "Elegant metallic rose gold sandals with delicate strappy design and stiletto heel. Perfect for special occasions with their luxe finish.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h7.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["rose-gold"],
+    size: [ "6", "7", "8"],
   },
   {
     id: "product32",
-    title: "Product 32",
-    brief: "Comfortable shoe 8",
+    title: "Cognac Cross-Strap Sandals",
+    brief: "Sophisticated brown leather sandals with unique cross-strap design and stiletto heel. The warm cognac tone and modern styling make these versatile for both day and evening wear.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h8.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["cognac"],
+    size: ["5", "6", "7", "8"],
   },
   {
     id: "product33",
-    title: "Product 33",
-    brief: "Comfortable shoe 9",
+    title: "Blush and Gold Double Strap Slides",
+    brief: "Minimalist sandals featuring pink leather straps with metallic gold accents. The dual-strap design offers a modern take on classic slides, perfect for everyday summer wear.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h9.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["blush-gold"],
+    size: ["5", "6", "7", "8"],
   },
   {
     id: "product34",
-    title: "Product 34",
-    brief: "Comfortable shoe 10",
+    title: "Linen Buckle Slides",
+    brief: "Elegant slip-on sandals with a textured linen strap and oversized gold buckle detail. The neutral color palette makes these versatile for both casual and semi-formal occasions.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h10.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["brown"],
+    size: ["5", "6", "7", "8"],
   },
   {
     id: "product35",
-    title: "Product 35",
-    brief: "Comfortable shoe 11",
+    title: "Two-Tone Crossover Sandals",
+    brief: "Comfortable leather sandals with cream and brown crisscross straps. The classic design combines sophistication with practicality, ideal for daily wear.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h11.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["cream-brown"],
+    size: ["5", "6", "7", "8"],
   },
   {
     id: "product36",
-    title: "Product 36",
-    brief: "Comfortable shoe 12",
+    title: "Navy Chain-Link T-Strap",
+    brief: " Chic navy blue sandals featuring gold chain-link accents and T-strap design. Complemented by a matching ankle strap and delicate golden ankle chain, perfect for elevating casual outfits.",
     price: randomPriceForTag("shoe"),
     image: "src/assets/Images/shoes/h12.jpg",
     discount: 0,
-    tag: "shoe"
+    tag: "shoe",
+    color: ["navy-blue"],
+    size: ["5", "6", "7", "8"],
   },
 
   // Pants (12 products) – images: p1-p12.jpeg, tag: "pant"
   {
     id: "product37",
-    title: "Product 37",
-    brief: "Casual pant 1",
+    title: "Butterfly Print Wide-Leg Jeans",
+    brief: "Black distressed wide-leg jeans featuring white butterfly and star prints. The combination of edgy rips and whimsical butterfly motifs creates a unique street-style statement piece.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p1.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["black"],
+    size: ["S", "M", "L"],
   },
   {
     id: "product38",
-    title: "Product 38",
-    brief: "Casual pant 2",
+    title: "Classic High-Waist Skinny Jeans",
+    brief: "Dark wash high-waisted skinny jeans with subtle fading and stretch fabric. Perfect for everyday wear, these versatile jeans pair well with both casual and dressy tops.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p2.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["blue"],
+    size: ["XS", "S", "M"]
   },
   {
     id: "product39",
-    title: "Product 39",
-    brief: "Casual pant 3",
+    title: "Loose Fit Mom Jeans",
+    brief: "Light wash high-waisted mom jeans with a relaxed straight leg fit. These vintage-inspired jeans offer a comfortable, casual silhouette perfect for achieving that classic retro look.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p3.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["light-blue"],
+    size: ["M", "L"]
   },
   {
     id: "product40",
-    title: "Product 40",
-    brief: "Casual pant 4",
+    title: "High-Rise Wide-Leg Jeans",
+    brief: " Classic black wide-leg jeans with a high-rise waist. The dramatic flare and full-length cut create an elongated silhouette, ideal for both casual and semi-formal occasions.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p4.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["black"],
+    size: ["S", "M", "L"]
+  
   },
   {
     id: "product41",
-    title: "Product 41",
-    brief: "Casual pant 5",
+    title: "Butterfly Embroidered Wide-Leg Jeans",
+    brief: "Light wash wide-leg jeans featuring white butterfly embroidery. These statement jeans combine a comfortable relaxed fit with playful butterfly designs for a unique, feminine look.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p5.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["light-blue"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product42",
-    title: "Product 42",
-    brief: "Casual pant 6",
+    title: "Butterfly Print Wide-Leg Pants",
+    brief: "Black wide-leg pants featuring white butterfly motifs scattered throughout. The pants have a high-waist design with a single button closure and raw hem detailing.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p6.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["black"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product43",
-    title: "Product 43",
-    brief: "Casual pant 7",
+    title: "High-Waist Flared Jeans",
+    brief: "Form-fitting high-waisted jeans in medium wash denim that flare dramatically from the knee down, paired with white sneakers for a casual yet stylish look.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p7.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["blue"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product44",
-    title: "Product 44",
-    brief: "Casual pant 8",
+    title: "Distressed Cargo Wide-Leg Jeans",
+    brief: "Wide-leg cargo jeans in light wash denim featuring multiple utility pockets and strategic distressing. The relaxed silhouette is complemented by raw hem details and ripped accents.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p8.jpeg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["light-blue"],
+    size: ["XS", "S", "M"]
   },
   {
     id: "product45",
-    title: "Product 45",
-    brief: "Casual pant 9",
+    title: "High-Waist Cargo Flare Jeans",
+    brief: " Fitted high-waisted flared jeans in dark wash denim with cargo pocket details on the sides. The silhouette gradually widens from knee to hem for a modern interpretation of classic cargo pants.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p9.jpg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["deep-blue"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product46",
-    title: "Product 46",
-    brief: "Casual pant 10",
+    title: "Heavily Distressed Wide-Leg Jeans",
+    brief: "Oversized wide-leg jeans in acid wash denim featuring extensive distressing and ripped details throughout. The relaxed fit and dramatic wide-leg silhouette are styled with white sneakers for a contemporary streetwear look.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p10.jpg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["acid-wash"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product47",
-    title: "Product 47",
-    brief: "Casual pant 11",
+    title: "High Waist Mom Jeans",
+    brief: "high-waisted mom jeans with a wide leg fit. Vintage-inspired look, comfortable, casual silhouette. ",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p11.jpg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["acid-wash"],
+    size: ["S", "M"]
   },
   {
     id: "product48",
-    title: "Product 48",
-    brief: "Casual pant 12",
+    title: "Rugged High Waist Jeans",
+    brief: "Classic black rugged jeans with a high-rise waist. The full-length cut creates an elongated silhouette, ideal for streetwear fashion.",
     price: randomPriceForTag("pant"),
     image: "src/assets/Images/pants/p12.jpg",
     discount: 0,
-    tag: "pant"
+    tag: "pant",
+    color: ["black"],
+    size: ["S", "M"]
   },
 
   // Jackets (12 products) – images: j1-j12.jpg, tag: "jacket"
   {
     id: "product49",
-    title: "Product 49",
-    brief: "Warm jacket 1",
+    title: "Two-Tone Plaid Jacket",
+    brief: " Oversized button-up jacket featuring a unique split design with brown and white plaid patterns. Includes functional chest pockets and black button closures, perfect for casual layering.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j1.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["brown"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product50",
-    title: "Product 50",
-    brief: "Warm jacket 2",
+    title: "Vintage Varsity Jacket",
+    brief: " Retro-style varsity jacket in tan and white with Legendary text and teddy bear patches. Features classic ribbed collar, cuffs, and hem with snap button closure and contrast sleeves.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j2.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["tan"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product51",
-    title: "Product 51",
-    brief: "Warm jacket 3",
+    title: "Classic Letterman Jacket",
+    brief: " Traditional black and white varsity jacket with 'B' letter patch. Features silver snap buttons, striped ribbing details, and contrasting white sleeves for an authentic athletic look.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j3.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["black"],
+    size: ["M", "L", "XL", "2XL"]
   },
   {
     id: "product52",
-    title: "Product 52",
-    brief: "Warm jacket 4",
+    title: " Cropped Denim Jacket",
+    brief: "Light-wash denim jacket with a cropped silhouette and raw hem detailing. Features classic chest pockets and button closures with an intentionally worn, vintage aesthetic.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j4.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["light-blue"],
+    size: ["XS", "S", "M"]
   },
   {
     id: "product53",
-    title: "Product 53",
-    brief: "Warm jacket 5",
+    title: "Tweed Biker Jacket",
+    brief: " Sophisticated black and white tweed jacket with leather panel detailing and silver zipper accents. Features a motorcycle-inspired design combined with classic bouclé fabric for an edgy yet elegant look.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j5.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["black"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product54",
-    title: "Product 54",
-    brief: "Warm jacket 6",
+    title: "Mint Cropped Puffer Jacket",
+    brief: "Trendy cropped puffer jacket in a soft mint green color featuring elastic cuffs, zip closure, and high collar. Perfect for casual winter styling with a modern, relaxed fit.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j6.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["mint-green"],
+    size: ["S"]
   },
   {
     id: "product55",
-    title: "Product 55",
-    brief: "Warm jacket 7",
+    title: "Oversized Puffer Jacket",
+    brief: " Neutral-toned oversized puffer jacket in beige with ribbed cuffs, high neck, and zip closure. Features a boxy silhouette ideal for layering over winter outfits.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j7.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["beige"],
+    size: ["M", "L", "XL"]
   },
   {
     id: "product56",
-    title: "Product 56",
-    brief: "Warm jacket 8",
+    title: "Classic Black Puffer Jacket",
+    brief: "Timeless black puffer jacket with a high collar, zip front closure, and quilted design. Combines warmth with versatile style for everyday winter wear.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j8.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["black"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product57",
-    title: "Product 57",
-    brief: "Warm jacket 9",
+    title: "Drawstring Trench Coat",
+    brief: "Stylish olive green trench coat featuring drawstring waist detail, button closures, and 3/4 sleeves. The lightweight design includes classic lapels and a flared silhouette.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j9.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["olive-green"],
+    size: ["L", "XL", "2XL"]
   },
   {
     id: "product58",
-    title: "Product 58",
-    brief: "Warm jacket 10",
+    title: "Cropped Denim Jacket",
+    brief: "Edgy cropped denim jacket in washed grey with raw hem details and silver button closures. Features traditional chest pockets and a vintage-inspired distressed finish.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j10.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["washed-grey"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product59",
-    title: "Product 59",
-    brief: "Warm jacket 11",
+    title: "Classic Denim Jacket",
+    brief: " A relaxed-fit denim jacket in a vintage-inspired medium wash. Features traditional chest pockets, metal button closures, and an oversized silhouette perfect for layering over any outfit.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j11.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["light-wash"],
+    size: ["S", "M"]
   },
   {
     id: "product60",
-    title: "Product 60",
-    brief: "Warm jacket 12",
+    title: "Sherpa-Lined Denim Jacket",
+    brief: " A classic denim jacket with cozy sherpa fleece lining, perfect for adding warmth to any winter outfit. Features traditional button closures and a versatile medium wash that pairs well with any look.",
     price: randomPriceForTag("jacket"),
     image: "src/assets/Images/jackets/j12.jpg",
     discount: 0,
-    tag: "jacket"
+    tag: "jacket",
+    color: ["medium-wash"],
+    size: ["S", "M", "L"]
   },
 
   // Dresses (12 products) – images: d1-d12.jpg, tag: "dresses"
   {
     id: "product61",
-    title: "Product 61",
-    brief: "Elegant dress 1",
+    title: "Ruched Gray Statement Dress",
+    brief: "A form-fitting gray dress featuring distinctive ruched detailing, statement puff sleeves, and a unique floral-inspired tie detail at the bodice. Perfect for evening events or special occasions.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d1.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["gray"],
+    size: ["XS", "S", "M"]
   },
   {
     id: "product62",
-    title: "Product 62",
-    brief: "Elegant dress 2",
+    title: " Collared Knit Dress",
+    brief: "An elegant cream-colored knit dress with a textured waffle pattern, featuring a crisp white collar and cuffs. The fitted silhouette and sophisticated details make it ideal for business or formal settings.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d2.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["cream"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product63",
-    title: "Product 63",
-    brief: "Elegant dress 3",
+    title: "Wrap Sweater Dress",
+    brief: "A cozy ribbed knit dress in charcoal gray with a flattering wrap design, V-neckline, and tie waist. Long sleeves and a fitted silhouette create a polished yet comfortable look.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d3.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["charcoal-gray"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product64",
-    title: "Product 64",
-    brief: "Elegant dress 4",
+    title: "Floral Corset Mini Dress",
+    brief: "A romantic cream-colored dress with delicate brown floral print, featuring a structured corset bodice and dramatic off-shoulder puff sleeves. The ruched skirt adds elegant detail.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d4.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["cream"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product65",
-    title: "Product 65",
-    brief: "Elegant dress 5",
+    title: "Leather Overall Dress",
+    brief: "A modern black faux leather pinafore dress paired with a white ribbed turtleneck. Features functional straps, front pocket detail, and a sleek minimalist design perfect for contemporary style.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d5.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["black"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product66",
-    title: "Product 66",
-    brief: "Elegant dress 6",
+    title: "Mock Neck Swing Dress",
+    brief: " A sleek black mock neck dress featuring a relaxed A-line silhouette. This sleeveless design offers effortless elegance with its flowing cut, perfect for both casual and dressy occasions.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d6.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["black"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product67",
-    title: "Product 67",
-    brief: "Elegant dress 7",
+    title: "Heart Print Mini Dress",
+    brief: "A playful black and white mini dress adorned with scattered heart prints. Features a fitted bodice, spaghetti straps, and a flared skirt design that creates a charming, feminine silhouette.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d7.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["polka-dot"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product68",
-    title: "Product 68",
-    brief: "Elegant dress 8",
+    title: "Nautical Stripe Wrap Dress",
+    brief: " A crisp white dress with navy vertical stripes featuring a deep V-neck wrap design. The pleated skirt and defined waist create a flattering summer silhouette perfect for daytime events.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d8.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["white"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product69",
-    title: "Product 69",
-    brief: "Elegant dress 9",
+    title: "Floral Wrap Romper",
+    brief: " A romantic white romper with delicate yellow floral prints, featuring long sleeves and a wraparound tie waist. The textured fabric and ruffled hem add feminine charm to this versatile piece.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d9.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["white"],
+    size: ["S", "M", "L"]
   },
   {
     id: "product70",
-    title: "Product 70",
-    brief: "Elegant dress 10",
+    title: "Mesh Sleeve Bodycon Dress",
+    brief: " An elegant black bodycon dress with dramatic sheer mesh balloon sleeves adorned with sparkly rhinestones. The high neck and fitted silhouette create a sophisticated evening look perfect for special occasions.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d10.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["black"],
+    size: ["XS","S", "M"]
   },
   {
     id: "product71",
-    title: "Product 71",
-    brief: "Elegant dress 11",
+    title: "Floral Mini Dress",
+    brief: "An ethereal white and pink mini dress with romantic 3D floral appliqués throughout. The off-shoulder ruffle neckline and ruched design create a dreamy, feminine silhouette perfect for special occasions.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d11.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["white-pink"],
+    size: ["XS", "S", "M"]
+
   },
   {
     id: "product72",
-    title: "Product 72",
-    brief: "Elegant dress 12",
+    title: "Two-Tone Turtleneck Dress",
+    brief: "A striking bodycon sweater dress featuring a black and cream color block design with ribbed knit texture. The turtleneck and form-fitting silhouette create an elegant winter look.",
     price: randomPriceForTag("dresses"),
     image: "src/assets/Images/dresses/d12.jpg",
     discount: 0,
-    tag: "dresses"
+    tag: "dresses",
+    color: ["black-cream"],
+    size: ["S", "M", "L"]
   }
 ];

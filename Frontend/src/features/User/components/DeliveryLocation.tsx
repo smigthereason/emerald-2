@@ -7,7 +7,14 @@ type DeliveryLocations = {
   };
   };
 
-const DeliveryLocation = () => {
+  interface DeliveryLocationProps {
+    onShippingCostChange: (cost: number) => void;
+    onLocationChange: (location: string) => void;
+  }
+
+ 
+
+const DeliveryLocation = ({ onShippingCostChange, onLocationChange }: DeliveryLocationProps) => {
   const [selectedRegion, setSelectedRegion] = useState<keyof DeliveryLocations | ''>('');
   const [selectedPoint, setSelectedPoint] = useState('');
   const [shippingCost, setShippingCost] = useState(0);
@@ -46,9 +53,22 @@ const DeliveryLocation = () => {
 
   useEffect(() => {
     if (selectedRegion) {
-      setShippingCost(deliveryLocations[selectedRegion as keyof DeliveryLocations].rate);
+      const newShippingCost = deliveryLocations[selectedRegion].rate;
+      setShippingCost(newShippingCost);
+      onShippingCostChange(newShippingCost);
+    } else {
+      setShippingCost(0);
+      onShippingCostChange(0);
     }
-  }, [deliveryLocations, selectedRegion]);
+  }, [selectedRegion, deliveryLocations, onShippingCostChange]);
+
+  useEffect(() => {
+    if (selectedPoint) {
+      onLocationChange(`${selectedPoint}, ${selectedRegion}`);
+    } else {
+      onLocationChange('');
+    }
+  }, [onLocationChange, selectedPoint, selectedRegion]);
 
   return (
     <div>
@@ -60,17 +80,17 @@ const DeliveryLocation = () => {
         <div className="mt-2 space-y-4 ">
           {/* Region Selection */}
           <div>
-            <select
+                   <select
               value={selectedRegion}
               onChange={(e) => {
-                setSelectedRegion(e.target.value);
+                setSelectedRegion(e.target.value as keyof DeliveryLocations);
                 setSelectedPoint('');
               }}
-              className="bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#D8798F] focus:border-transparent"
+              className=" pay bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#D8798F] focus:border-transparent"
             >
-              <option value="">Select Region</option>
+              <option value="" >Select Region</option>
               {Object.keys(deliveryLocations).map((region) => (
-                <option key={region} value={region}>
+                <option key={region} value={region} className='pay bg-white' >
                   {region}
                 </option>
               ))}
@@ -83,11 +103,11 @@ const DeliveryLocation = () => {
               <select
                 value={selectedPoint}
                 onChange={(e) => setSelectedPoint(e.target.value)}
-                className="bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#D8798F] focus:border-transparent"
+                className="pay bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#D8798F] focus:border-transparent"
               >
-                <option value="">Select Pickup Point</option>
+                <option value=""  >Select Pickup Point</option>
                 {deliveryLocations[selectedRegion].points.map((point) => (
-                  <option key={point} value={point}>
+                  <option key={point} value={point} >
                     {point}
                   </option>
                 ))}
@@ -101,7 +121,7 @@ const DeliveryLocation = () => {
       <div className="mt-6 flex justify-between">
         <span className="text-gray-600">Shipping Cost</span>
         <span className="font-medium">
-          KES {shippingCost.toFixed(2)}
+          KSH {shippingCost.toFixed(2)}
         </span>
       </div>
 
@@ -117,3 +137,4 @@ const DeliveryLocation = () => {
 };
 
 export default DeliveryLocation;
+

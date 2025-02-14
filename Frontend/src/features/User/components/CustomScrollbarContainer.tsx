@@ -2,9 +2,10 @@ import { ReactNode, useEffect, useRef } from 'react';
 
 interface CustomScrollbarContainerProps {
   children: ReactNode;
+  className?: string; // Add className prop
 }
 
-const CustomScrollbarContainer = ({ children }: CustomScrollbarContainerProps) => {
+const CustomScrollbarContainer = ({ children, className }: CustomScrollbarContainerProps) => {
   const scrollThumbRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +30,7 @@ const CustomScrollbarContainer = ({ children }: CustomScrollbarContainerProps) =
   }, []);
 
   return (
-    <div className="custom-scrollbar-wrapper">
+    <div className={`custom-scrollbar-wrapper ${className}`}>
       <style>{`
         /* Apply to all scrollbars */
         .custom-scrollbar-wrapper {

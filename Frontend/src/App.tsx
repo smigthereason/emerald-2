@@ -97,6 +97,7 @@ const App: React.FC = () => {
               <Route path="jackets" element={<Jackets />} />
               <Route path="skirts" element={<Skirts />} />
               <Route path="shoes" element={<Shoes />} />
+              <Route path="product-detail/:id" element={<ProductDetail />} />
             </Route>
 
             {/* Catch all route */}

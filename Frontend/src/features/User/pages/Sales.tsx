@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFavourites } from "../../../Shared/hooks/FavouritesContext";
-import { products, Product } from "../../../data/products"; // Import products
+import { useCart } from "../../../Shared/hooks/CartContext";
+import { Product, products } from "../../../data/products"; // Import products
+
+
 
 // Randomly generate discount values
 const discountedProducts: Product[] = products.map((product) => ({
@@ -12,6 +15,7 @@ const discountedProducts: Product[] = products.map((product) => ({
 const SalesClearance: React.FC = () => {
   const { toggleFavourite } = useFavourites();
   const [selectedDiscount, setSelectedDiscount] = useState<number | null>(null);
+  const { addToCart } = useCart();
 
   // Filter sale items based on discount selection
   const filteredProducts = selectedDiscount
@@ -20,9 +24,13 @@ const SalesClearance: React.FC = () => {
       )
     : discountedProducts;
 
-  const handleAddToCart = (productTitle: string) => {
-    alert(`${productTitle} added to cart!`);
-  };
+ 
+    const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>, productTitle: string) => {
+      e.stopPropagation();
+      addToCart(products.find((p) => p.title === productTitle)!);
+      alert(`${productTitle} added to cart!`);
+    };
+  
 
   // Updated to use the product's string ID directly
   const handleAddToWishlist = (productId: string, productTitle: string) => {
@@ -93,7 +101,7 @@ const SalesClearance: React.FC = () => {
               />
               <div className="p-4 text-center">
                 <h3 className="font-semibold text-lg">{product.title}</h3>
-                <p className="text-gray-500">{product.brief}</p>
+                <p className="text-gray-500 mt-4 h-40">{product.brief}</p>
                 <p className="mt-2 text-gray-500">
                   <span className="text-red-500 font-bold">
                     Ksh
@@ -112,7 +120,7 @@ const SalesClearance: React.FC = () => {
                 <div className="mt-4 flex justify-center gap-4">
                   <button
                     className="px-4 py-2 bg-[#D8798F] text-white rounded-full text-sm hover:bg-[#B25671] transition"
-                    onClick={() => handleAddToCart(product.title)}
+                    onClick={(e) => handleAddToCart(e, product.title)}
                   >
                     Add to Cart
                   </button>

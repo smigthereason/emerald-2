@@ -43,7 +43,8 @@ body.dark .line {
 }
 body.dark .box,
 body.dark .cart-item,
-body.dark .cart-total {
+body.dark .cart-total,
+body.dark .pay {
   border: 1px solid #fcfcfc93;
   background-color: #2c2b2b93;
 }

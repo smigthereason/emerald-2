@@ -11,6 +11,8 @@ interface Product {
   id: string;
   title: string;
   brief: string;
+  color: string[];
+  size: string[];
   price: string;
   image: string;
   tag: string; 
@@ -31,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) =
     if (isAdmin) {
       navigate(`/admin/product/${product.id}`);
     } else {
-      navigate(`/product/${product.id}`);
+      navigate(`/product-detail/${product.id}`);
     }
   };
 
@@ -65,15 +67,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) =
 
         {/* Hover Icons for Large Screens */}
         <div className="absolute inset-0 hidden sm:flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="flex space-x-4">
-            <button onClick={(e) => e.stopPropagation()}>
-              <IoEyeSharp className="text-white text-4xl" />
-            </button>
+          <div className="flex space-x-2">
+           
             <button onClick={handleFavouriteClick}>
               {favourites.includes(product.id) ? (
-                <MdFavorite className="text-red-500 text-3xl" />
+                <MdFavorite className="text-red-500 text-5xl" />
               ) : (
-                <MdFavoriteBorder className="text-white text-3xl" />
+                <MdFavoriteBorder className="text-white text-5xl" />
               )}
             </button>
           </div>
@@ -97,9 +97,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) =
       {/* Product Details */}
       <div className="p-2 sm:p-4 relative bottom-12 sm:bottom-0">
         <h3 className="text-lg sm:text-xl font-bold mb-2">{product.title}</h3>
-        <p className="text-sm text-gray-500 mb-4">{product.brief}</p>
+        {/* <p className="text-sm text-gray-500 mb-4">{product.brief}</p> */}
         <div className="flex flex-col justify-between items-center space-y-4">
-          <span className="text-lg sm:text-2xl font-bold">{product.price}</span>
+          <span className="text-lg sm:text-2xl font-light">{product.price}</span>
           <div className="flex flex-col sm:flex-row justify-evenly items-center gap-4 sm:gap-16">
             <button
               className="px-4 py-2 border border-[#D8798F] text-[#D8798F] rounded-full text-sm hover:bg-[#D8798F] hover:text-white transition"
