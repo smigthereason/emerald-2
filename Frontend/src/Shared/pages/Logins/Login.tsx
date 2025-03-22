@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import googleIcon from "/src/assets/icons/google.png";
+import googleIcon from "/assets/icons/google.png";
 
 interface SignInData {
   email: string;

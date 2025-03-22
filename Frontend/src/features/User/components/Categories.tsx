@@ -1,12 +1,12 @@
 import { HashLink } from "react-router-hash-link";
 import Title from "../components/Title";
 
-import Jack from "/src/assets/icons/jacket.png";
-import Dress from "/src/assets/icons/dress.png";
-import Heels from "/src/assets/icons/heels.png";
-import TopsIcon from "/src/assets/icons/blouse.png";
-import Skirt from "/src/assets/icons/skirt.png";
-import Jeans from "/src/assets/icons/jeans.png";
+import Jack from "/assets/icons/jacket.png";
+import Dress from "/assets/icons/dress.png";
+import Heels from "/assets/icons/heels.png";
+import TopsIcon from "/assets/icons/blouse.png";
+import Skirt from "/assets/icons/skirt.png";
+import Jeans from "/assets/icons/jeans.png";
 
 const Categories = () => {
   const categories = [

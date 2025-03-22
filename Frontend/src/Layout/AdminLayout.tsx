@@ -94,12 +94,12 @@ const AdminLayout: React.FC = () => {
         <div>
           <img
             className="hidden sm:block h-auto w-60"
-            src="/src/assets/Logos/e5.png"
+            src="/assets/Logos/e5.png"
             alt="E Logo"
           />
           <img
             className="block sm:hidden h-16 w-16"
-            src="/src/assets/Logos/black-hq.png"
+            src="/assets/Logos/black-hq.png"
             alt="E Logo Small"
           />
         </div>

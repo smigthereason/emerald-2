@@ -5,6 +5,7 @@ import { PiUserBold } from "react-icons/pi";
 import Search from "./Search";
 import { useCart } from "../../../Shared/hooks/CartContext"; 
 import ThemeToggle from "../../../Shared/hooks/ThemeToggle";
+import Logo from "/assets/Logos/e6.png"
 
 const Navbar: React.FC = () => {
   const { cart } = useCart(); // Access cart items from the CartContext
@@ -22,14 +23,14 @@ const Navbar: React.FC = () => {
           <Link to="/">
             {/* Logo for larger screens */}
             <img
-              className="logo hidden sm:block h-auto w-64"
-              src="/src/assets/Logos/e5.png"
+              className="logo hidden sm:block h-auto w-48"
+              src={Logo}
               alt="E Logo"
             />
             {/* Logo for smaller screens */}
             <img
               className="logo block sm:hidden h-16 w-16 relative right-36"
-              src="/src/assets/Logos/black-hq.png"
+              src="/assets/Logos/black-hq.png"
               alt="E Logo Small"
             />
           </Link>

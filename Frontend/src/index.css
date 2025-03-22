@@ -33,24 +33,24 @@
 
 .custom-scrollbar-container {
   overflow-y: auto;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
   position: relative;
   max-height: 500px;
 }
 
 .custom-scrollbar-container::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+  display: none; 
 }
 
 .custom-scrollbar-track {
   position: absolute;
-  left: 48vw;
   top: 0;
   width: 6px;
   height: 100%;
   background: transparent;
   border-radius: 3px;
+  display: none;
 }
 
 .custom-scrollbar-thumb {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import contactIcon from "/src/assets/icons/contact.png";
+import contactIcon from "/assets/icons/contact.png";
 
 const Contact: React.FC = () => {
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
