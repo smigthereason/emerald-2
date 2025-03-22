@@ -1,6 +1,7 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  purge: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontFamily: {
@@ -8,6 +9,5 @@ module.exports = {
       },
     },
   },
-
-  plugins: [require("tailwind-scrollbar"),],
-};
+  plugins: [require("tailwind-scrollbar")],
+}
