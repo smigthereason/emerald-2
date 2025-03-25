@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { FavouritesProvider } from "./Shared/hooks/FavouritesContext";
 import { CartProvider } from "./Shared/hooks/CartContext";
 import { ThemeProvider } from "./Shared/hooks/ThemeContext";
+import { AuthProvider } from "./Shared/hooks/AuthContext"; // Ensure AuthProvider is imported
 
 // Layouts
 import AdminLayout from "./Layout/AdminLayout";
@@ -47,65 +48,67 @@ import Shoes from "./features/User/pages/Shoes";
 const App: React.FC = () => {
   // Wrap AdminLayout with a container that has the "admin" class
   const AdminWrapper: React.FC = () => (
-    <div className="admin ">
+    <div className="admin">
       <AdminLayout />
     </div>
   );
 
   return (
     <ThemeProvider>
-    <FavouritesProvider>
-      <CartProvider>
-        <Router>
-          <Routes>
-            {/* Admin Routes */}
-            <Route path="/admin" element={<AdminWrapper />}>
-              <Route index element={<Navigate to="/admin/dashboard" replace />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="customers" element={<Customers />} />
-              <Route path="statistics" element={<Stats />} />
-              <Route path="reviews" element={<Reviews />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="products" element={<Products />} />
-              <Route path="search" element={<SearchResults />} />
-              <Route path="transactions" element={<Transactions />} />
-              <Route path="product-detail" element={<ProductDetail />} />
-              <Route path="messages" element={<Messages />} />
-              <Route path="notifications" element={<Notifications />} />
-            </Route>
+      <FavouritesProvider>
+        <CartProvider>
+          <AuthProvider> {/* Wrap entire app with AuthProvider */}
+            <Router>
+              <Routes>
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminWrapper />}>
+                  <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="orders" element={<Orders />} />
+                  <Route path="customers" element={<Customers />} />
+                  <Route path="statistics" element={<Stats />} />
+                  <Route path="reviews" element={<Reviews />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="products" element={<Products />} />
+                  <Route path="search" element={<SearchResults />} /> {/* Already in place */}
+                  <Route path="transactions" element={<Transactions />} />
+                  <Route path="product-detail" element={<ProductDetail />} />
+                  <Route path="messages" element={<Messages />} />
+                  <Route path="notifications" element={<Notifications />} />
+                </Route>
 
-            {/* Auth Route */}
-            <Route path="/login" element={<Login />} />
+                {/* Auth Route */}
+                <Route path="/login" element={<Login />} />
 
-            {/* Client Routes */}
-            <Route path="/" element={<ClientLayout />}>
-              <Route index element={<Home />} />
-              <Route path="search" element={<SearchResults />} />
-              <Route path="favourites-page" element={<FavouritesPage />} />
-              <Route path="about" element={<About />} />
-              <Route path="size-chart" element={<SizeChart />} />
-              <Route path="privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="cart" element={<Cart />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="sales" element={<Sales />} />
-              <Route path="details/:id" element={<Details />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="tops" element={<Tops />} />
-              <Route path="pants" element={<Pants />} />
-              <Route path="dresses" element={<Dresses />} />
-              <Route path="jackets" element={<Jackets />} />
-              <Route path="skirts" element={<Skirts />} />
-              <Route path="shoes" element={<Shoes />} />
-              <Route path="product-detail/:id" element={<ProductDetail />} />
-            </Route>
+                {/* Client Routes */}
+                <Route path="/" element={<ClientLayout />}>
+                  <Route index element={<Home />} />
+                  <Route path="search" element={<SearchResults />} /> {/* Already in place */}
+                  <Route path="favourites-page" element={<FavouritesPage />} />
+                  <Route path="about" element={<About />} />
+                  <Route path="size-chart" element={<SizeChart />} />
+                  <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="cart" element={<Cart />} />
+                  <Route path="contact" element={<Contact />} />
+                  <Route path="sales" element={<Sales />} />
+                  <Route path="details/:id" element={<Details />} />
+                  <Route path="profile" element={<Profile />} />
+                  <Route path="tops" element={<Tops />} />
+                  <Route path="pants" element={<Pants />} />
+                  <Route path="dresses" element={<Dresses />} />
+                  <Route path="jackets" element={<Jackets />} />
+                  <Route path="skirts" element={<Skirts />} />
+                  <Route path="shoes" element={<Shoes />} />
+                  <Route path="product-detail/:id" element={<ProductDetail />} />
+                </Route>
 
-            {/* Catch all route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Router>
-      </CartProvider>
-    </FavouritesProvider>
+                {/* Catch all route */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Router>
+          </AuthProvider>
+        </CartProvider>
+      </FavouritesProvider>
     </ThemeProvider>
   );
 };

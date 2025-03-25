@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoCartOutline } from "react-icons/io5";
 import { PiUserBold } from "react-icons/pi";
-import Search from "./Search";
+import Search from "../../../Shared/pages/Searches/Search";
 import { useCart } from "../../../Shared/hooks/CartContext"; 
 import ThemeToggle from "../../../Shared/hooks/ThemeToggle";
 import Logo from "/assets/Logos/logoxxxx.png"

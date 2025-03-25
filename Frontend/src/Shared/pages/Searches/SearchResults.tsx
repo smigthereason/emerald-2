@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useAuth } from '../../hooks/AuthContext';
 
 interface SearchResult {
   id: number;
   title: string;
   description: string;
-  // Add more fields as needed based on your API response
+  type: 'product' | 'order' | 'user'; // Add type to distinguish result types
 }
 
 const SearchResults: React.FC = () => {
@@ -14,6 +15,9 @@ const SearchResults: React.FC = () => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Get the current user and their role
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -31,7 +35,17 @@ const SearchResults: React.FC = () => {
         }
         
         const data = await response.json();
-        setResults(data);
+        
+        // Filter results based on user role
+        const filteredResults = data.filter((result: SearchResult) => {
+          // Admin can see all types of results
+          if (user?.role === 'admin') return true;
+          
+          // Non-admin users can only see products
+          return result.type === 'product';
+        });
+        
+        setResults(filteredResults);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -40,7 +54,7 @@ const SearchResults: React.FC = () => {
     };
 
     fetchResults();
-  }, [query]);
+  }, [query, user]);
 
   if (loading) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
@@ -56,11 +70,26 @@ const SearchResults: React.FC = () => {
       {results.length === 0 ? (
         <p>No results found</p>
       ) : (
-        <div className="space-y-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map((result) => (
-            <div key={result.id} className="bg-white p-4 rounded-lg shadow">
-              <h2 className="text-xl font-semibold">{result.title}</h2>
-              <p className="text-gray-600 mt-2">{result.description}</p>
+            <div 
+              key={result.id} 
+              className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+            >
+              <h2 className="text-xl font-semibold mb-2">{result.title}</h2>
+              <p className="text-gray-600 mb-4">{result.description}</p>
+              
+              {/* Optional: Add type indicator for admin */}
+              {user?.role === 'admin' && (
+                <div className="text-sm text-gray-500 mt-2 flex justify-between items-center">
+                  <span>Type: {result.type}</span>
+                  {result.type === 'order' && (
+                    <button className="text-blue-500 hover:text-blue-700">
+                      View Details
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
