@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { products } from "../../../data/products";
 
 const mockChartData = [
   { month: "Jan", sales: 4000 },
@@ -93,31 +92,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recent Activity */}
-      <div className="bg-gray-200 p-6 rounded-2xl shadow-sm">
-        <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
-        <div className="space-y-4">
-          {products.slice(0, 5).map((product) => (
-            <div
-              key={product.id}
-              className="flex items-center justify-between py-3 border-b border-black last:border-0"
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-10 h-10 object-cover rounded-lg"
-                />
-                <div>
-                  <p className="font-medium">{product.title}</p>
-                  <p className="text-sm text-gray-500">{product.brief}</p>
-                </div>
-              </div>
-              <span className="text-sm text-gray-500">{product.price}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+    
     </div>
   );
 };

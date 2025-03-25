@@ -43,8 +43,8 @@ const Payment = () => {
               onClick={() => setPaymentMethod("mpesa")}
               className={`px-4 py-2 border rounded-lg transition-colors ${
                 paymentMethod === "mpesa"
-                  ? "bg-[#D8798F] text-white"
-                  : "bg-white text-[#D8798F] border-[#D8798F]"
+                  ? "bg-[#d66161] text-white"
+                  : "bg-white text-[#d66161] border-[#d66161]"
               }`}
             >
               M-PESA
@@ -54,8 +54,8 @@ const Payment = () => {
               onClick={() => setPaymentMethod("airtelMoney")}
               className={`px-4 py-2 border rounded-lg transition-colors ${
                 paymentMethod === "airtelMoney"
-                  ? "bg-[#D8798F] text-white"
-                  : "bg-white text-[#D8798F] border-[#D8798F]"
+                  ? "bg-[#d66161] text-white"
+                  : "bg-white text-[#d66161] border-[#d66161]"
               }`}
             >
               Airtel Money
@@ -98,7 +98,7 @@ const Payment = () => {
                       value={phoneNumber}
                       onChange={handlePhoneNumberChange}
                       placeholder="Enter phone number"
-                      className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D8798F] focus:border-transparent"
+                      className="bg-white w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d66161] focus:border-transparent"
                       maxLength={12}
                     />
                   </div>

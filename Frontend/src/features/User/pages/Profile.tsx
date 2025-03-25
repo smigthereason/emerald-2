@@ -84,7 +84,7 @@ const Profile: React.FC = () => {
             <span className="text-sm text-gray-500">SMS Alerts</span>
             <span className="text-green-500">● Active</span>
           </div>
-          <button className="mt-4 w-full bg-[#D8798F] text-white hover:bg-white hover:text-[#D8798F] hover:border hover:border-[#D8798F] transition py-2 rounded-lg font-semibold">
+          <button className="mt-4 w-full bg-[#d66161] text-white hover:bg-white hover:text-[#d66161] hover:border hover:border-[#d66161] transition py-2 rounded-lg font-semibold">
             Save
           </button>
         </div>
@@ -157,7 +157,7 @@ const Profile: React.FC = () => {
             </div>
             <button
               onClick={handlePasswordChange}
-              className="mt-4 w-full bg-[#D8798F] text-white hover:bg-white hover:text-[#D8798F] hover:border hover:border-[#D8798F] transition py-2 rounded-lg font-semibold"
+              className="mt-4 w-full bg-[#d66161] text-white hover:bg-white hover:text-[#d66161] hover:border hover:border-[#d66161] transition py-2 rounded-lg font-semibold"
             >
               Change Password
             </button>
@@ -172,7 +172,7 @@ const Profile: React.FC = () => {
           onClick={() => setShowFavorites(!showFavorites)}
         >
           <span className="text-lg font-semibold">Favorite Products</span>
-          <button className="bg-[#D8798F] text-white px-4 py-2 rounded-lg">
+          <button className="bg-[#d66161] text-white px-4 py-2 rounded-lg">
             {showFavorites ? "Hide" : "Show"}
           </button>
         </div>

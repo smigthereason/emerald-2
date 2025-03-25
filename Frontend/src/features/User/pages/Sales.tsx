@@ -54,7 +54,7 @@ const SalesClearance: React.FC = () => {
           <h1 className="text-4xl font-bold uppercase">🔥 Clearance Sale 🔥</h1>
           <p className="mt-4 text-lg">Up to 70% Off - Limited Stock!</p>
           <Link to="/">
-            <button className="mt-6 px-6 py-3 bg-white text-[#D8798F] font-semibold rounded-full shadow-md hover:bg-[#B25671] hover:text-white transition">
+            <button className="mt-6 px-6 py-3 bg-white text-[#d66161] font-semibold rounded-full shadow-md hover:bg-[#B25671] hover:text-white transition">
               Shop Now
             </button>
           </Link>
@@ -71,7 +71,7 @@ const SalesClearance: React.FC = () => {
               onClick={() => setSelectedDiscount(discount)}
               className={`px-5 py-2 rounded-full border-2 ${
                 selectedDiscount === discount
-                  ? "bg-[#D8798F] text-white border-[#B25671]"
+                  ? "bg-[#d66161] text-white border-[#B25671]"
                   : "border-gray-400 text-gray-700 hover:bg-gray-200"
               } transition`}
             >
@@ -120,13 +120,13 @@ const SalesClearance: React.FC = () => {
                 </span>
                 <div className="mt-4 flex justify-center gap-4">
                   <button
-                    className="px-4 py-2 bg-[#D8798F] text-white rounded-full text-sm hover:bg-[#B25671] transition"
+                    className="px-4 py-2 bg-[#d66161] text-white rounded-full text-sm hover:bg-[#B25671] transition"
                     onClick={(e) => handleAddToCart(e, product.title)}
                   >
                     Add to Cart
                   </button>
                   <button
-                    className="px-4 py-2 border border-[#D8798F] text-[#D8798F] rounded-full text-sm hover:bg-[#D8798F] hover:text-white transition"
+                    className="px-4 py-2 border border-[#d66161] text-[#d66161] rounded-full text-sm hover:bg-[#d66161] hover:text-white transition"
                     onClick={(e) => {
                       e.preventDefault();
                       handleAddToWishlist(product.id, product.title);

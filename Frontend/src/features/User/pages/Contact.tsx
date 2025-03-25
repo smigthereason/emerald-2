@@ -55,7 +55,7 @@ const Contact: React.FC = () => {
             ></textarea>
             <button
               className="
-               bg-[#D8798F] text-white rounded-full border border-[#B25671] 
+               bg-[#d66161] text-white rounded-full border border-[#B25671] 
                 text-xs font-bold uppercase px-12 py-3 
                 tracking-wider mt-4 
                 transition-transform duration-200 
@@ -96,7 +96,7 @@ const Contact: React.FC = () => {
             ></textarea>
             <button
               className="
-                bg-[#D8798F] text-white rounded-full border border-[#B25671] 
+                bg-[#d66161] text-white rounded-full border border-[#B25671] 
                 text-xs font-bold uppercase px-12 py-3 
                 tracking-wider mt-4 
                 transition-transform duration-200 
@@ -132,7 +132,7 @@ const Contact: React.FC = () => {
               </p>
               <button
                 onClick={handleEnquiryClick}
-                className="ghost bg-transparent border border-white text-white rounded-full text-xs font-bold uppercase px-12 py-3 tracking-wider transition-transform duration-200 hover:bg-white hover:text-[#D8798F]"
+                className="ghost bg-transparent border border-white text-white rounded-full text-xs font-bold uppercase px-12 py-3 tracking-wider transition-transform duration-200 hover:bg-white hover:text-[#d66161]"
               >
                 Enquiry Form
               </button>
@@ -146,7 +146,7 @@ const Contact: React.FC = () => {
               </p>
               <button
                 onClick={handleFeedbackClick}
-                className="ghost bg-transparent border border-white text-white rounded-full text-xs font-bold uppercase px-12 py-3 tracking-wider transition-transform duration-200 hover:bg-white hover:text-[#D8798F]"
+                className="ghost bg-transparent border border-white text-white rounded-full text-xs font-bold uppercase px-12 py-3 tracking-wider transition-transform duration-200 hover:bg-white hover:text-[#d66161]"
               >
                 Feedback Form
               </button>

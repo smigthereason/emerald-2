@@ -83,14 +83,14 @@
 //         <button
 //           onClick={() => handleQuantityChange(quantity - 1)}
 //           disabled={quantity <= 1}
-//           className="px-2 py-1 rounded-2xl hover:bg-[#D8798F] hover:text-white"
+//           className="px-2 py-1 rounded-2xl hover:bg-[#d66161] hover:text-white"
 //         >
 //           -
 //         </button>
 //         <span>{quantity}</span>
 //         <button
 //           onClick={() => handleQuantityChange(quantity + 1)}
-//           className="px-2 py-1 rounded-2xl hover:bg-[#D8798F] hover:text-white"
+//           className="px-2 py-1 rounded-2xl hover:bg-[#d66161] hover:text-white"
 //         >
 //           +
 //         </button>
@@ -196,14 +196,14 @@ const CartItem = ({
         <button
           onClick={() => handleQuantityChange(localQuantity - 1)}
           disabled={localQuantity <= 1}
-          className="px-2 py-1 rounded-2xl hover:bg-[#D8798F] hover:text-white"
+          className="px-2 py-1 rounded-2xl hover:bg-[#d66161] hover:text-white"
         >
           -
         </button>
         <span>{localQuantity}</span>
         <button
           onClick={() => handleQuantityChange(localQuantity + 1)}
-          className="px-2 py-1 rounded-2xl hover:bg-[#D8798F] hover:text-white"
+          className="px-2 py-1 rounded-2xl hover:bg-[#d66161] hover:text-white"
         >
           +
         </button>

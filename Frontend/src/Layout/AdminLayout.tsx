@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Outlet, Navigate, useNavigate, NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
-  Users,
+  // Users,
   Search,
   Mail,
   Bell,
@@ -57,11 +57,11 @@ const AdminLayout: React.FC = () => {
       path: "/admin/orders",
       icon: <ShoppingCart className="w-5 h-5" />,
     },
-    {
-      title: "Customers",
-      path: "/admin/customers",
-      icon: <Users className="w-5 h-5" />,
-    },
+    // {
+    //   title: "Customers",
+    //   path: "/admin/customers",
+    //   icon: <Users className="w-5 h-5" />,
+    // },
     {
       title: "Statistics",
       path: "/admin/statistics",
@@ -89,7 +89,7 @@ const AdminLayout: React.FC = () => {
     },
   ];
 
-  const Sidebar = ({ className = "max-h-[calc(100vh-100px)]" }) => (
+  const Sidebar = ({ className = "min-h-[calc(100vh-100px)]" }) => (
     <aside className={` bg-white rounded-2xl shadow-sm ${className}`}>
       <div className="p-4 flex items-center gap-2">
         <div>
@@ -123,8 +123,8 @@ const AdminLayout: React.FC = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors rounded-xl mb-1 ${
                 isActive
-                  ? "text-white bg-[#D8798F] font-medium"
-                  : "text-gray-600 hover:bg-[#D8798F] hover:text-white"
+                  ? "text-white bg-[#d66161] font-medium"
+                  : "text-gray-600 hover:bg-[#d66161] hover:text-white"
               }`
             }
           >
@@ -177,7 +177,7 @@ const AdminLayout: React.FC = () => {
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="relative">
                 <button
-                  className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-gray-400 hover:text-white bg-gray-50 rounded-lg hover:bg-[#D8798F] transition-colors"
+                  className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-gray-400 hover:text-white bg-gray-50 rounded-lg hover:bg-[#d66161] transition-colors"
                   onClick={() => navigate("/admin/notifications")}
                 >
                   <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -189,7 +189,7 @@ const AdminLayout: React.FC = () => {
                 )}
               </div>
               <button
-                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-gray-400 hover:text-white bg-gray-50 rounded-lg hover:bg-[#D8798F] transition-colors"
+                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-gray-400 hover:text-white bg-gray-50 rounded-lg hover:bg-[#d66161] transition-colors"
                 onClick={() => navigate("/admin/messages")}
               >
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5" />

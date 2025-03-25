@@ -42,12 +42,12 @@ const ProductDetails: React.FC = () => {
       <div className="max-w-lg bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-4">{product.title}</h2>
         <p className="text-gray-600 text-lg">{product.brief}</p>
-        <p className="mt-4 text-2xl font-semibold text-[#D8798F]">{product.price}</p>
+        <p className="mt-4 text-2xl font-semibold text-[#d66161]">{product.price}</p>
 
         {/* Wishlist & Cart Buttons */}
         <div className="flex items-center gap-4 mt-6">
           <button
-            className="px-6 py-3 bg-[#D8798F] text-white rounded-lg shadow-md hover:bg-[#B25671] transition"
+            className="px-6 py-3 bg-[#d66161] text-white rounded-lg shadow-md hover:bg-[#B25671] transition"
             onClick={() => addToCart(product)}
           >
             Add to Cart

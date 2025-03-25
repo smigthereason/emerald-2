@@ -60,7 +60,7 @@ const CartSummary = ({
             </span>
           </div>
 
-          <button className="w-full bg-white border border-[#D8798F] text-[#D8798F] py-3 rounded-lg hover:bg-[#D8798F] hover:text-white transition-colors mt-6">
+          <button className="w-full bg-white border border-[#d66161] text-[#d66161] py-3 rounded-lg hover:bg-[#d66161] hover:text-white transition-colors mt-6">
             CHECKOUT
           </button>
         </div>

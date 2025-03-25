@@ -86,7 +86,7 @@ const DeliveryLocation = ({ onShippingCostChange, onLocationChange }: DeliveryLo
                 setSelectedRegion(e.target.value as keyof DeliveryLocations);
                 setSelectedPoint('');
               }}
-              className=" pay bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#D8798F] focus:border-transparent"
+              className=" pay bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#d66161] focus:border-transparent"
             >
               <option value="" >Select Region</option>
               {Object.keys(deliveryLocations).map((region) => (
@@ -103,7 +103,7 @@ const DeliveryLocation = ({ onShippingCostChange, onLocationChange }: DeliveryLo
               <select
                 value={selectedPoint}
                 onChange={(e) => setSelectedPoint(e.target.value)}
-                className="pay bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#D8798F] focus:border-transparent"
+                className="pay bg-white w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#d66161] focus:border-transparent"
               >
                 <option value=""  >Select Pickup Point</option>
                 {deliveryLocations[selectedRegion].points.map((point) => (

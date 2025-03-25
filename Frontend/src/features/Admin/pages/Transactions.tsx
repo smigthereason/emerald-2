@@ -92,7 +92,7 @@ const Transactions = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-gray-900">Transactions</h1>
-        <button className="px-4 py-2 bg-[#D8798F] text-white rounded-lg hover:bg-[#c26276] transition-colors">
+        <button className="px-4 py-2 bg-[#d66161] text-white rounded-lg hover:bg-[#c26276] transition-colors">
           Export Report
         </button>
       </div>

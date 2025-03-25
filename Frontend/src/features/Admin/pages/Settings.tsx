@@ -44,7 +44,7 @@
 //     <div className="space-y-6">
 //       <div className="flex justify-between items-center">
 //         <h1 className="text-2xl font-semibold text-gray-900">Settings</h1>
-//         <button className="px-4 py-2 bg-[#D8798F] text-white rounded-lg hover:bg-[#c26276] transition-colors">
+//         <button className="px-4 py-2 bg-[#d66161] text-white rounded-lg hover:bg-[#c26276] transition-colors">
 //           Save Changes
 //         </button>
 //       </div>
@@ -53,7 +53,7 @@
 //         {settingsSections.map((section, index) => (
 //           <Card key={index}>
 //             <CardHeader className="flex flex-row items-center space-x-4">
-//               <div className="w-8 h-8 rounded-lg bg-[#D8798F] flex items-center justify-center">
+//               <div className="w-8 h-8 rounded-lg bg-[#d66161] flex items-center justify-center">
 //                 {section.icon}
 //               </div>
 //               <div>
@@ -74,7 +74,7 @@
 //                       <input
 //                         type={field.type}
 //                         defaultValue={field.value}
-//                         className="w-full px-3 py-2 border bg-gray-300/50 text-gray-900 rounded-lg focus:ring-2 focus:ring-[#D8798F] focus:border-[#D8798F] outline-none transition-colors"
+//                         className="w-full px-3 py-2 border bg-gray-300/50 text-gray-900 rounded-lg focus:ring-2 focus:ring-[#d66161] focus:border-[#d66161] outline-none transition-colors"
 //                       />
 //                     </div>
 //                   ))}
@@ -87,7 +87,7 @@
 //                       <input
 //                         type="checkbox"
 //                         defaultChecked={option.checked}
-//                         className="w-4 h-4 text-[#D8798F] border-gray-300 rounded focus:ring-[#D8798F]"
+//                         className="w-4 h-4 text-[#d66161] border-gray-300 rounded focus:ring-[#d66161]"
 //                       />
 //                       <label className="ml-2 text-sm text-gray-700">
 //                         {option.label}
@@ -183,7 +183,7 @@ const Settings = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-gray-900">Settings</h1>
-        <button className="px-4 py-2 bg-[#D8798F] text-white rounded-lg hover:bg-[#c26276] transition-colors">
+        <button className="px-4 py-2 bg-[#d66161] text-white rounded-lg hover:bg-[#c26276] transition-colors">
           Save Changes
         </button>
       </div>
@@ -192,7 +192,7 @@ const Settings = () => {
         {settingsSections.map((section, index) => (
           <Card key={index}>
             <CardHeader className="flex flex-row items-center space-x-4">
-              <div className="w-8 h-8 rounded-lg bg-[#D8798F]/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[#d66161]/10 flex items-center justify-center">
                 {section.icon}
               </div>
               <div>
@@ -214,7 +214,7 @@ const Settings = () => {
                         <input
                           type={field.type}
                           defaultValue={field.value}
-                          className="w-full px-3 py-2 border bg-gray-300/50 text-gray-900 rounded-lg focus:ring-2 focus:ring-[#D8798F] focus:border-[#D8798F] outline-none transition-colors"
+                          className="w-full px-3 py-2 border bg-gray-300/50 text-gray-900 rounded-lg focus:ring-2 focus:ring-[#d66161] focus:border-[#d66161] outline-none transition-colors"
                         />
                         {/* Toggle Password Button */}
                         {"name" in field && (
@@ -238,7 +238,7 @@ const Settings = () => {
                         <input
         type="checkbox"
         defaultChecked={option.checked}
-        className="w-4 h-4 bg-gray-300 border-[#D8798F] rounded focus:ring-[#D8798F] checked:bg-[#D8798F] checked:border-[#D8798F]"
+        className="w-4 h-4 bg-gray-300 border-[#d66161] rounded focus:ring-[#d66161] checked:bg-[#d66161] checked:border-[#d66161]"
       />
                       <label className="ml-2 text-sm text-gray-700">
                         {option.label}

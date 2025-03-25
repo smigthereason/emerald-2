@@ -218,7 +218,7 @@ const Login: React.FC = () => {
               </div>
               <button
                 type="submit"
-                className="bg-[#D8798F] text-white rounded-full border border-[#B25671] 
+                className="bg-[#d66161] text-white rounded-full border border-[#B25671] 
                 text-xs font-bold uppercase px-12 py-3 
                 tracking-wider mt-4 
                 transition-transform duration-200 
@@ -292,7 +292,7 @@ const Login: React.FC = () => {
               </a>
               <button
                 type="submit"
-                className="bg-[#D8798F] text-white rounded-full border border-[#B25671] 
+                className="bg-[#d66161] text-white rounded-full border border-[#B25671] 
                 text-xs font-bold uppercase px-12 py-3 
                 tracking-wider mt-4 
                 transition-transform duration-200 
@@ -336,7 +336,7 @@ const Login: React.FC = () => {
                   text-xs font-bold uppercase px-12 py-3 
                   tracking-wider
                   transition-transform duration-200 
-                  hover:bg-white hover:text-[#D8798F]"
+                  hover:bg-white hover:text-[#d66161]"
                   type="button"
                 >
                   Sign In
@@ -364,7 +364,7 @@ const Login: React.FC = () => {
                   text-xs font-bold uppercase px-12 py-3 
                   tracking-wider
                   transition-transform duration-200 
-                  hover:bg-white hover:text-[#D8798F]"
+                  hover:bg-white hover:text-[#d66161]"
                   type="button"
                 >
                   Sign Up
