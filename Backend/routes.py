@@ -1,12 +1,97 @@
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import db, Product, Cart, Order, Favorite, ShippingDetail, User
 from functools import wraps
+from flask import Blueprint, request, jsonify
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import (
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+    get_jwt,
+)
+from flask_cors import cross_origin
+from models import db, User, RevokedToken
 from datetime import datetime, timedelta
-import time
 
-routes_bp = Blueprint('routes', __name__)
+bcrypt = Bcrypt()
+auth_bp = Blueprint("auth", __name__)
+routes_bp = Blueprint("routes", __name__)
 
+# Constants for login attempt limits
+MAX_FAILED_ATTEMPTS = 3
+LOCKOUT_DURATION = timedelta(minutes=10)
+
+# Google OAuth route placeholder
+@auth_bp.route("/login/google", methods=["GET"])
+def google_login():
+    # This would be implemented with a library like authlib or directly with Google OAuth
+    # For now, just a placeholder
+    return jsonify({"message": "Google OAuth not implemented"}), 501
+
+@auth_bp.route("/register", methods=["POST", "OPTIONS"])
+@cross_origin(
+    origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    methods=["POST", "OPTIONS"],
+    supports_credentials=True
+)
+def register():
+    # Handle preflight OPTIONS request
+    if request.method == "OPTIONS":
+        response = jsonify({"message": "OK"})
+        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:5173')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        return response, 200
+
+    data = request.get_json()
+    
+    # Validate input data
+    if not data:
+        return jsonify({"error": "No input data provided"}), 400
+    
+    # Check for required fields
+    required_fields = ["username", "email", "password"]
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Missing required field: {field}"}), 400
+
+    try:
+        # Validate username and email
+        User.validate_username(data["username"])
+        User.validate_email(data["email"])
+
+        # Check if user already exists
+        existing_user = User.query.filter_by(email=data["email"]).first()
+        if existing_user:
+            return jsonify({"error": "Email already exists. Please use a different email."}), 400
+
+        # Create new user
+        user = User(
+            username=data["username"], 
+            email=data["email"]
+        )
+        user.set_password(data["password"])
+
+        db.session.add(user)
+        db.session.commit()
+
+        # Generate token for immediate login after registration
+        token = user.generate_token()
+
+        return jsonify({
+            "message": "User registered successfully",
+            "token": token,
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+            },
+        }), 201
+
+    except ValueError as ve:
+        # Catch specific validation errors
+        return jsonify({"error": str(ve)}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 # Role-based access control
 def admin_required(fn):

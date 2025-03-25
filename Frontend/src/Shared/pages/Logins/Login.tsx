@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import googleIcon from "/assets/icons/google.png";
 import Logo from "/assets/Logos/logoxxxx.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface SignInData {
   email: string;
@@ -9,7 +9,7 @@ interface SignInData {
 }
 
 interface SignUpData {
-  username: unknown;
+  username: string;
   name: string;
   email: string;
   password: string;
@@ -21,14 +21,15 @@ interface FormData {
 }
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     signIn: { email: "", password: "" },
     signUp: {
       username: "",
+      name: "",
       email: "",
       password: "",
-      name: "",
     },
   });
   const [error, setError] = useState("");
@@ -62,17 +63,23 @@ const Login: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "include", // Important for cookies
         body: JSON.stringify(formData.signIn),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Handle successful login - e.g., store token, redirect
-        console.log("Login successful:", data);
+        // Store the token in localStorage or sessionStorage
+        localStorage.setItem("token", data.token);
+
+        // Optional: Store user info
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Redirect to dashboard or home page
+        navigate("/");
       } else {
-        setError(data.message || "Login failed");
+        setError(data.error || "Login failed");
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
@@ -88,6 +95,7 @@ const Login: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           username: formData.signUp.username,
           email: formData.signUp.email,
@@ -98,14 +106,13 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Handle successful registration
-        console.log("Registration successful:", data);
-        setIsRightPanelActive(false); // Switch to login panel
+        // Existing success logic
       } else {
-        setError(data.message || "Registration failed");
+        // Handle error
+        setError(data.error || "Registration failed");
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
+      console.error("Registration error:", err);
       setError("Connection error. Please try again.");
     }
   };
@@ -162,13 +169,15 @@ const Login: React.FC = () => {
               {error && (
                 <span className="text-red-500 text-sm mt-2">{error}</span>
               )}
+              
+              
               <input
                 type="text"
-                placeholder="Name"
+                placeholder="Username"
                 className="bg-gray-100 border-none p-3 my-2 w-full rounded-md"
-                value={formData.signUp.name}
+                value={formData.signUp.username}
                 onChange={(e) =>
-                  handleInputChange("signUp", "name", e.target.value)
+                  handleInputChange("signUp", "username", e.target.value)
                 }
                 required
               />
