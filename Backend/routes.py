@@ -1,4 +1,5 @@
 from functools import wraps
+from flask import Flask, send_from_directory
 from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import (
@@ -7,9 +8,13 @@ from flask_jwt_extended import (
     get_jwt_identity,
     get_jwt,
 )
+from sqlalchemy.exc import IntegrityError
 from flask_cors import cross_origin
-from models import db, User, RevokedToken
+from models import db, User, RevokedToken, Product, Category, Cart, Favorite, Order, ShippingDetail
 from datetime import datetime, timedelta
+import os
+
+app = Flask(__name__) 
 
 bcrypt = Bcrypt()
 auth_bp = Blueprint("auth", __name__)
@@ -18,6 +23,11 @@ routes_bp = Blueprint("routes", __name__)
 # Constants for login attempt limits
 MAX_FAILED_ATTEMPTS = 3
 LOCKOUT_DURATION = timedelta(minutes=10)
+
+@app.route('/images/<path:filename>')
+def serve_images(filename):
+    return send_from_directory(os.path.join(app.root_path, 'assets/images'), filename)
+
 
 # Google OAuth route placeholder
 @auth_bp.route("/login/google", methods=["GET"])
@@ -104,48 +114,240 @@ def admin_required(fn):
         return fn(*args, **kwargs)
     return wrapper
 
-# Get all products with pagination
+
+
+@routes_bp.route('/products', methods=['POST'])
+def create_product():
+    """
+    Create a new product
+    """
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['title', 'description', 'price', 'quantity', 'tag', 'colors', 'sizes', 'category_id']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"{field} is required"}), 400
+        
+        # Check if category exists
+        category = Category.query.get(data['category_id'])
+        if not category:
+            return jsonify({"error": "Invalid category"}), 404
+        
+        # Create new product
+        new_product = Product(
+            title=data['title'],
+            description=data['description'],
+            price=data['price'],
+            discount=data.get('discount', 0.0),
+            quantity=data['quantity'],
+            tag=data['tag'],
+            colors=data['colors'],
+            sizes=data['sizes'],
+            category_id=data['category_id'],
+            images=data.get('images', [])
+        )
+        
+        # Validate discount
+        try:
+            new_product.validate_discount()
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
+        
+        db.session.add(new_product)
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Product created successfully", 
+            "product_id": new_product.id
+        }), 201
+    
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": "Database integrity error"}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
 @routes_bp.route('/products', methods=['GET'])
 def get_products():
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
-    products = Product.query.paginate(page=page, per_page=per_page, error_out=False)
-    return jsonify([{'id': p.id, 'name': p.name, 'price': p.price} for p in products.items]), 200
+    """
+    Retrieve all products with optional filtering and pagination
+    """
+    try:
+        # Pagination
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+        
+        # Filtering options
+        category_id = request.args.get('category_id', type=int)
+        min_price = request.args.get('min_price', type=float)
+        max_price = request.args.get('max_price', type=float)
+        tag = request.args.get('tag')
+        
+        # Base query
+        query = Product.query
+        
+        # Apply filters
+        if category_id:
+            query = query.filter_by(category_id=category_id)
+        
+        if min_price is not None:
+            query = query.filter(Product.price >= min_price)
+        
+        if max_price is not None:
+            query = query.filter(Product.price <= max_price)
+        
+        if tag:
+            query = query.filter_by(tag=tag)
+        
+        # Paginate results
+        paginated_products = query.paginate(page=page, per_page=per_page)
+        
+        return jsonify({
+            "products": [
+                {
+                    "id": product.id,
+                    "title": product.title,
+                    "description": product.description,
+                    "price": product.price,
+                    "discount": product.discount,
+                    "quantity": product.quantity,
+                    "tag": product.tag,
+                    "colors": product.colors,
+                    "sizes": product.sizes,
+                    "images": product.images,
+                    "category_id": product.category_id,
+                    "created_at": product.created_at.isoformat()
+                } for product in paginated_products.items
+            ],
+            "total_products": paginated_products.total,
+            "page": page,
+            "per_page": per_page,
+            "total_pages": paginated_products.pages
+        }), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-# Admin: Create product
-@routes_bp.route('/products', methods=['POST'])
-@jwt_required()
-@admin_required
-def create_product():
-    data = request.get_json()
-    product = Product(name=data['name'], price=data['price'])
-    db.session.add(product)
-    db.session.commit()
-    return jsonify({'message': 'Product created successfully'}), 201
+@routes_bp.route('/products/<int:product_id>', methods=['GET'])
+def get_product(product_id):
+    """
+    Retrieve a specific product by ID
+    """
+    product = Product.query.get_or_404(product_id)
+    
+    return jsonify({
+        "id": product.id,
+        "title": product.title,
+        "description": product.description,
+        "price": product.price,
+        "discount": product.discount,
+        "quantity": product.quantity,
+        "tag": product.tag,
+        "colors": product.colors,
+        "sizes": product.sizes,
+        "images": product.images,
+        "category_id": product.category_id,
+        "created_at": product.created_at.isoformat()
+    }), 200
 
-# Admin: Update product
-@routes_bp.route('/products/<int:product_id>', methods=['PATCH'])
-@jwt_required()
-@admin_required
+@routes_bp.route('/products/<int:product_id>', methods=['PUT'])
 def update_product(product_id):
-    data = request.get_json()
-    product = Product.query.get_or_404(product_id)
-    if 'name' in data:
-        product.name = data['name']
-    if 'price' in data:
-        product.price = data['price']
-    db.session.commit()
-    return jsonify({'message': 'Product updated successfully'}), 200
+    """
+    Update an existing product
+    """
+    try:
+        product = Product.query.get_or_404(product_id)
+        data = request.get_json()
+        
+        # Update fields that are present in the request
+        if 'title' in data:
+            product.title = data['title']
+        
+        if 'description' in data:
+            product.description = data['description']
+        
+        if 'price' in data:
+            product.price = data['price']
+        
+        if 'discount' in data:
+            product.discount = data['discount']
+        
+        if 'quantity' in data:
+            product.quantity = data['quantity']
+        
+        if 'tag' in data:
+            product.tag = data['tag']
+        
+        if 'colors' in data:
+            product.colors = data['colors']
+        
+        if 'sizes' in data:
+            product.sizes = data['sizes']
+        
+        if 'images' in data:
+            product.images = data['images']
+        
+        if 'category_id' in data:
+            # Verify category exists
+            category = Category.query.get(data['category_id'])
+            if not category:
+                return jsonify({"error": "Invalid category"}), 404
+            product.category_id = data['category_id']
+        
+        # Validate discount
+        try:
+            product.validate_discount()
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
+        
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Product updated successfully",
+            "product_id": product.id
+        }), 200
+    
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": "Database integrity error"}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
-# Admin: Delete product
 @routes_bp.route('/products/<int:product_id>', methods=['DELETE'])
-@jwt_required()
-@admin_required
 def delete_product(product_id):
-    product = Product.query.get_or_404(product_id)
-    db.session.delete(product)
-    db.session.commit()
-    return jsonify({'message': 'Product deleted successfully'}), 200
+    """
+    Delete a product
+    """
+    try:
+        product = Product.query.get_or_404(product_id)
+        
+        db.session.delete(product)
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Product deleted successfully"
+        }), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+# Error handlers
+@routes_bp.errorhandler(404)
+def resource_not_found(e):
+    return jsonify({"error": "Resource not found"}), 404
+
+@routes_bp.errorhandler(400)
+def bad_request(e):
+    return jsonify({"error": "Bad request"}), 400
+
+
+
+
 
 # Add product to cart
 @routes_bp.route('/cart', methods=['POST'])

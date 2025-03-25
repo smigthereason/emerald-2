@@ -84,23 +84,28 @@ class Tag(db.Model):
             raise ValueError("Invalid tag")
         return True
 
-# Product model
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text, nullable=False)
+    title = db.Column(db.String(200), nullable=False)  
+    description = db.Column(db.Text, nullable=False)  
     price = db.Column(db.Float, nullable=False)
     discount = db.Column(db.Float, default=0.0)
-    quantity = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False, default=1)  
+    tag = db.Column(db.String(50), nullable=False)  
+    colors = db.Column(JSON, nullable=False) 
+    sizes = db.Column(JSON, nullable=False)  
+    images = db.Column(JSON, nullable=True)  
+
+    # Add the foreign key to establish the relationship
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-    images = db.Column(JSON, nullable=True)
-    
+
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     product_tags = db.relationship('ProductTag', backref='product', lazy=True)
-    
+
     def validate_discount(self):
         if self.discount >= self.price:
             raise ValueError("Discount must be less than the product price")
+
 
 # Association table for Product - Tag many-to-many relationship
 class ProductTag(db.Model):

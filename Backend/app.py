@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 from auth import auth_bp
 from routes import routes_bp
-from models import db, RevokedToken  #  Import RevokedToken model
+from models import db, RevokedToken  
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
