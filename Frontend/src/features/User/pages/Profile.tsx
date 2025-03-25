@@ -8,7 +8,17 @@ const Profile: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showFavorites, setShowFavorites] = useState(false);
-  const { toggleFavourite } = useFavourites();
+  const {  toggleFavourite } = useFavourites();
+
+  // Dummy favorite products (can be updated with actual user data)
+  const favoriteProducts = products.slice(0, 3); // Take 3 sample products
+  const [favoriteProductsList, setFavoriteProductsList] =
+    useState(favoriteProducts);
+
+  const removeFromFavorites = (id: string) => {
+    toggleFavourite(id); // Remove from favorites in context
+    setFavoriteProductsList((prev) => prev.filter((item) => item.id !== id)); // Remove from UI
+  };
 
   // Separate state for toggling password visibility
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -19,9 +29,6 @@ const Profile: React.FC = () => {
     { id: 1, items: 3, total: 59.99, status: "Completed" },
     { id: 2, items: 2, total: 29.99, status: "Ongoing" },
   ];
-
-  // Dummy favorite products (can be updated with actual user data)
-  const favoriteProducts = products.slice(0, 3); // Take 3 sample products
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -173,7 +180,7 @@ const Profile: React.FC = () => {
         {/* Favorite Products List */}
         {showFavorites && (
           <div className="mt-4 space-y-6 max-h-[500px] overflow-y-auto custom-scrollbar-container">
-            {favoriteProducts.map((item) => (
+            {favoriteProductsList.map((item) => (
               <div
                 key={item.id}
                 className="flex items-center space-x-4 bg-[#fff4f3] p-4 rounded-lg sm:h-[200px]"
@@ -187,10 +194,7 @@ const Profile: React.FC = () => {
                   <h3 className="font-medium text-gray-800">{item.title}</h3>
                   <p className="text-gray-500 text-sm">{item.brief}</p>
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleFavourite(item.id);
-                    }}
+                    onClick={() => removeFromFavorites(item.id)}
                     className="mt-2"
                   >
                     <MdFavorite className="text-red-500 text-3xl" />

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import Logo from "/assets/Logos/e6.png"
+import Logo from "/assets/Logos/logoxxxx.png"
 
 const Footer: React.FC = () => {
   return (
@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
           {/* Logo */}
           <div className="w-full md:w-1/6 flex justify-center md:justify-start mb-6 md:mb-0">
             <img
-              className=" h-auto w-48"
+              className="logo h-auto w-48"
               src={Logo}
               alt="Emerald Logo"
             />

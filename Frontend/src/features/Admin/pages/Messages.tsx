@@ -59,13 +59,13 @@ const Messages: React.FC = () => {
             <p className="mb-4">{message.content}</p>
             <div>
               <textarea
-                className="w-full border rounded p-2 mb-2"
+                className="w-full border border-[#D8798F] rounded p-2 mb-2 bg-gray-300/50 text-black" 
                 placeholder="Write a reply..."
                 value={replies[message.id] || ""}
                 onChange={(e) => handleReplyChange(message.id, e.target.value)}
               />
               <button
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className="px-4 py-2 bg-transparent text-[#D8798f] rounded-3xl hover:text-white hover:bg-[#D8798F] border border-[#D8798F] transition-colors ease-in-out 300s"
                 onClick={() => handleSendReply(message.id)}
               >
                 Send Reply

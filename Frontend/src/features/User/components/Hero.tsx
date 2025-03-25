@@ -13,7 +13,7 @@ const Hero = () => {
 
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center">
         <h1 className="text-3xl sm:text-4xl font-bold mb-4">
-          EMERALD FASHION COLLECTION 2025
+          MY SHOP-KE COLLECTION 2025
         </h1>
 
         {/* <div className="relative top-4 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 items-center sm:items-start">

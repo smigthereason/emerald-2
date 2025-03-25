@@ -88,7 +88,7 @@ const Categories = () => {
       <div className=" grid grid-row-1 gap-6 max-w-4xl mx-auto sm:grid-cols-3">
         {categories.map((category, index) => (
           <HashLink to={category.route} key={index}>
-            <div className="category bg-black text-white flex flex-col justify-center items-center p-6 rounded-lg hover:bg-black/75 transition-all">
+            <div className="category bg-black text-white flex flex-col justify-center items-center p-6 rounded-lg hover:bg-black/50 transition-transform duration-300 hover:-translate-y-1 ">
               <div className="text-lg sm:text-5xl mb-4">{category.icon}</div>
               <h3 className="text-xl sm:text-lg font-bold">{category.name}</h3>
             </div>

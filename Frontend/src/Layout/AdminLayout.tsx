@@ -18,6 +18,7 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+import Logo from "/assets/Logos/logoxxxx.png"
 
 interface SidebarLink {
   title: string;
@@ -94,7 +95,7 @@ const AdminLayout: React.FC = () => {
         <div>
           <img
             className="hidden sm:block h-auto w-60"
-            src="/assets/Logos/e5.png"
+            src={Logo}
             alt="E Logo"
           />
           <img

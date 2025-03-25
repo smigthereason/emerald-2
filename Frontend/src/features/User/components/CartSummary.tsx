@@ -3,17 +3,19 @@ import DeliveryLocation from "./DeliveryLocation";
 import Payment from "./Payment";
 
 interface CartSummaryProps {
-  cart: { id: string; price: string }[]; // Define the structure of cart items
+  cart: { id: string; price: string }[]; 
   subtotal: number;
   total: number;
-//   cart: CartItem[];
-//   subtotal: number;
   shippingCost: number;
-//   total: number;
+  onShippingCostChange: (cost: number) => void; // Add this prop
 }
 
-const CartSummary = ({ cart, subtotal, total }: CartSummaryProps) => {
-  const [shippingCost, setShippingCost] = useState(0);
+const CartSummary = ({ 
+  cart, 
+  subtotal, 
+  total, 
+  onShippingCostChange 
+}: CartSummaryProps) => {
   const [, setLocation] = useState("");
 
   // Format number with thousands separator and KSH prefix
@@ -22,16 +24,9 @@ const CartSummary = ({ cart, subtotal, total }: CartSummaryProps) => {
     return `KSH ${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   };
 
-  // Handle shipping cost changes
-  const handleShippingCostChange = (cost: number): void => {
-    setShippingCost(cost);
-  };
-
   // Handle location changes and update shipping cost
   const handleLocationChange = (newLocation: string): void => {
     setLocation(newLocation);
-    const newShippingCost = newLocation.trim() !== "" ? 500 : 0;
-    setShippingCost(newShippingCost);
   };
 
   return (
@@ -52,7 +47,7 @@ const CartSummary = ({ cart, subtotal, total }: CartSummaryProps) => {
 
           {/* Delivery Location Section */}
           <DeliveryLocation
-            onShippingCostChange={handleShippingCostChange}
+            onShippingCostChange={onShippingCostChange}
             onLocationChange={handleLocationChange}
           />
         </div>
@@ -61,7 +56,7 @@ const CartSummary = ({ cart, subtotal, total }: CartSummaryProps) => {
           <div className="mt-4 flex justify-between border-t pt-4">
             <span className="text-gray-600">Total</span>
             <span className="font-medium">
-              {formatKSH(total + shippingCost)}
+              {formatKSH(total)}
             </span>
           </div>
 

@@ -4,7 +4,7 @@ import Title from '../components/Title';
 const PrivacyPolicy: React.FC = () => {
   return (
     <div id="pp" className="container mx-auto px-4 py-8 max-w-4xl ">
-      <h1 className="line text-7xl font-bold font-beau mb-6 text-gray-800">Privacy Policy</h1>
+      <h1 className="text-7xl font-bold font-beau mb-6 text-gray-800">Privacy Policy</h1>
       <Title highlightText="Website" mainText="Data Privacy" />
       
       <section className="mb-6 font-medium">

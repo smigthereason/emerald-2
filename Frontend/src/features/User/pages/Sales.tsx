@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFavourites } from "../../../Shared/hooks/FavouritesContext";
 import { useCart } from "../../../Shared/hooks/CartContext";
-import { Product, products } from "../../../data/products"; // Import products
+import { Product, products } from "../../../data/products"; 
+import IMG from "/assets/bg-images/sale2.jpg"
 
 
 
@@ -45,7 +46,7 @@ const SalesClearance: React.FC = () => {
         <div className="absolute inset-0 bg-black bg-opacity-40">
           <img
             className="w-full h-full object-cover backdrop-filter backdrop-blur-lg"
-            src="src/assets/bg-images/sale2.jpg"
+            src={IMG}
             alt="sale2"
           />
         </div>

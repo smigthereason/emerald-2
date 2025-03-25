@@ -1,6 +1,6 @@
 #root {
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem;
   text-align: center;
   text-decoration: none;
   overflow-x: hidden;
@@ -15,8 +15,11 @@ body.light .line {
   background-color: #000000;
 }
 /* Footer text */
-body.light footer {
-  filter: brightness(0) invert(0);
+
+body.light img.logo,
+footer img,
+body.light .panel img {
+  background-color: transparent;
 }
 
 /* Highlight primary components using the primary color */
@@ -56,9 +59,12 @@ body.dark .table {
 
 /* If your logo is an image, you might invert its colors using filter: */
 body.dark img.logo,
-footer,
+footer img,
 body.dark .panel img {
-  filter: brightness(0) invert(1);
+  border: 1px solid #fcfcfc93;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10%;
+  filter: grayscale(20%);
 }
 body.dark .layer,
 body.dark .form {
@@ -85,3 +91,5 @@ body.dark .cart-item h3 {
 .animate-slide-right {
   animation: slide-right 0.3s ease-out;
 }
+/* Increase padding on larger screens */
+

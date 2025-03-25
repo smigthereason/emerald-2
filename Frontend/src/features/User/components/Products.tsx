@@ -40,7 +40,7 @@ const Products: React.FC = () => {
         <div className="flex justify-center mt-8">
           <button
             onClick={loadMoreProducts}
-            className="bg-white text-[#D8798F] px-6 py-2 rounded-full hover:bg-[#D8798F] hover:text-white border border-[#D8798F]"
+            className="bg-white transition-transform duration-300 hover:-translate-y-1  text-[#d66161] px-6 py-2 rounded-full hover:bg-[#d66161] hover:text-white border border-[#d66161]"
           >
             Load More
           </button>
@@ -50,7 +50,7 @@ const Products: React.FC = () => {
         <div className="flex justify-center mt-4">
           <button
             onClick={seeLessProducts}
-            className="bg-white text-[#D8798F] px-6 py-2 rounded-full hover:bg-[#D8798F] hover:text-white border border-[#D8798F]"
+            className="bg-white transition-transform duration-300 hover:-translate-y-1  text-[#d66161] px-6 py-2 rounded-full hover:bg-[#d66161] hover:text-white border border-[#d66161]"
           >
             See Less
           </button>

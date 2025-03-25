@@ -55,7 +55,7 @@
 
 .custom-scrollbar-thumb {
   width: 100%;
-  background: #d8798f;
+  background: gray;
   border-radius: 3px;
   position: absolute;
   top: 0;
@@ -73,7 +73,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d8798f;
+  background: gray;
   border-radius: 3px;
   transition: all 0.3s ease-in-out; /* Smooth transition */
 }

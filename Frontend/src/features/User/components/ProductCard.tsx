@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoEyeSharp } from "react-icons/io5";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { useFavourites } from "../../../Shared/hooks/FavouritesContext";
-import { useCart } from "../../../Shared/hooks/CartContext";
 import { motion } from "framer-motion";
 
 interface Product {
@@ -15,20 +14,21 @@ interface Product {
   size: string[];
   price: string;
   image: string;
-  tag: string; 
+  tag: string;
 }
 
 interface ProductCardProps {
   product: Product;
-  isAdmin?: boolean; // optional flag to denote admin user
+  isAdmin?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  isAdmin = false,
+}) => {
   const { favourites, toggleFavourite } = useFavourites();
-  const { addToCart } = useCart();
   const navigate = useNavigate();
 
-  // Clicking the card navigates to the proper details page
   const handleCardClick = () => {
     if (isAdmin) {
       navigate(`/admin/product/${product.id}`);
@@ -37,27 +37,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) =
     }
   };
 
-  // Stop propagation so inner buttons don’t trigger the card click
   const handleFavouriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     toggleFavourite(product.id);
   };
 
-  const handleAddToCartClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    addToCart(product);
+  // State for expanding/collapsing brief text
+  const [isExpanded, setIsExpanded] = useState(false);
+  const maxLength = 50;
+
+  const toggleReadMore = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent clicking from navigating away
+    setIsExpanded(!isExpanded);
   };
 
   return (
     <motion.div
       onClick={handleCardClick}
-      className="box bg-white overflow-hidden border h-[650px] sm:h-auto rounded-lg shadow-lg cursor-pointer"
+      className="box bg-white  overflow-hidden border h-[650px] sm:h-auto rounded-lg shadow-lg cursor-pointer "
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Product Image with Hover Actions */}
+      {/* Product Image */}
       <div className="relative group top-0">
         <img
           className="w-56 sm:w-full h-[350px] sm:h-[400px] object-contain mx-auto mt-2 sm:mt-8 rounded-lg"
@@ -68,7 +71,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) =
         {/* Hover Icons for Large Screens */}
         <div className="absolute inset-0 hidden sm:flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="flex space-x-2">
-           
             <button onClick={handleFavouriteClick}>
               {favourites.includes(product.id) ? (
                 <MdFavorite className="text-red-500 text-5xl" />
@@ -80,7 +82,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) =
         </div>
       </div>
 
-      {/* Always Visible Icons Below Image for Small Screens */}
+      {/* Mobile View Icons */}
       <div className="relative flex -top-8 sm:hidden justify-center space-x-6 m-4 p-2">
         <button onClick={(e) => e.stopPropagation()}>
           <IoEyeSharp className="text-black text-3xl" />
@@ -97,21 +99,32 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = false }) =
       {/* Product Details */}
       <div className="p-2 sm:p-4 relative bottom-12 sm:bottom-0">
         <h3 className="text-lg sm:text-xl font-bold mb-2">{product.title}</h3>
-        {/* <p className="text-sm text-gray-500 mb-4">{product.brief}</p> */}
+
+        {/* Brief Text with "Read More" Toggle */}
+        <p className="text-sm text-gray-900 mb-4">
+          {isExpanded
+            ? product.brief
+            : `${product.brief.slice(0, maxLength)}...`}
+          {product.brief.length > maxLength && (
+            <button
+              onClick={toggleReadMore}
+              className="ml-1 text-gray-900/50 transition-transform duration-300 hover:-translate-y-1"
+            >
+              {isExpanded ? "Read Less" : "Read More"}
+            </button>
+          )}
+        </p>
+
         <div className="flex flex-col justify-between items-center space-y-4">
-          <span className="text-lg sm:text-2xl font-light">{product.price}</span>
+          <span className="text-lg sm:text-2xl font-light">
+            {product.price}
+          </span>
           <div className="flex flex-col sm:flex-row justify-evenly items-center gap-4 sm:gap-16">
             <button
-              className="px-4 py-2 border border-[#D8798F] text-[#D8798F] rounded-full text-sm hover:bg-[#D8798F] hover:text-white transition"
-              onClick={handleAddToCartClick}
+              className="px-4 py-2 border transition-transform duration-300 hover:-translate-y-1 border-[#d66161] text-[#d66161] rounded-full text-sm hover:bg-[#d66161] hover:text-white "
+              onClick={handleCardClick}
             >
-              Add to Cart
-            </button>
-            <button
-             className="glass-button px-4 py-2 sm:w-28 border border-[#D8798F] text-[#D8798F] rounded-full text-sm hover:bg-[#D8798F] hover:text-white transition transform hover:scale-105 animate-bounce"
-              onClick={(e) => e.stopPropagation()}
-            >
-              Buy
+              Shop
             </button>
           </div>
         </div>

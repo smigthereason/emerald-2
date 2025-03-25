@@ -5,7 +5,7 @@ import { PiUserBold } from "react-icons/pi";
 import Search from "./Search";
 import { useCart } from "../../../Shared/hooks/CartContext"; 
 import ThemeToggle from "../../../Shared/hooks/ThemeToggle";
-import Logo from "/assets/Logos/e6.png"
+import Logo from "/assets/Logos/logoxxxx.png"
 
 const Navbar: React.FC = () => {
   const { cart } = useCart(); // Access cart items from the CartContext

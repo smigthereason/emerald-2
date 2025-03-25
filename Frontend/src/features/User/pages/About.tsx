@@ -3,6 +3,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import TypedJS from "../components/TypedJS";
 import Title from "../components/Title";
+import Hero from "/assets/bg-images/about1.jpg";
+import About2 from "/assets/bg-images/about2.jpg";
+import About3 from "/assets/bg-images/about3.jpg";
 
 const About = () => {
   useEffect(() => {
@@ -12,7 +15,7 @@ const About = () => {
     });
   }, []);
 
-  const categories = ["Welcome to Emerald."];
+  const categories = ["Welcome to My ShopKe."];
 
   return (
     <div
@@ -25,7 +28,7 @@ const About = () => {
       <div className="relative sm:w-full  h-[300px] sm:h-[600px] mx-auto">
         <img
           className="w-full h-full object-cover"
-          src="src/assets/bg-images/about1.jpg"
+          src={Hero}
           alt="About Emerald"
         />
         <div className=" layer absolute inset-0 bg-black/50" />
@@ -46,7 +49,7 @@ const About = () => {
         <div className="hidden sm:inline relative w-2/6 h-full rounded-lg overflow-hidden">
           <img
             className="w-full h-full object-cover "
-            src="src/assets/bg-images/about2.jpg"
+            src={About2}
             alt="About Emerald"
           />
           <div className="layer absolute inset-0 bg-black/20" />
@@ -99,7 +102,7 @@ const About = () => {
         <div className="hidden sm:inline relative left-48 w-2/6 h-full rounded-lg overflow-hidden">
           <img
             className="w-full h-full object-cover "
-            src="src/assets/bg-images/about3.jpg"
+            src={About3}
             alt="About Emerald"
           />
           <div className="layer absolute inset-0 bg-black/20" />
