@@ -124,6 +124,9 @@ def seed_database():
         user2 = User(username="jane_doe", email="jane@example.com")
         user2.set_password("Strong456@")  # Meets all requirements
         
+        user3 = User(username="admin_user", email="admin@example.com", is_admin=True)
+        user3.set_password("Admin789!")  # Admin user
+        
         db.session.add_all([user1, user2])
         db.session.commit()
 

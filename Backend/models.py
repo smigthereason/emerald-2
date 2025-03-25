@@ -17,7 +17,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     failed_login_attempts = db.Column(db.Integer, default=0)
     last_failed_login = db.Column(db.DateTime, default=datetime.utcnow)
-    role = db.Column(db.String(20), default='user', nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
     image = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     

@@ -4,6 +4,7 @@ from flask import Blueprint, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import (
     create_access_token,
+    create_refresh_token,
     jwt_required,
     get_jwt_identity,
     get_jwt,
@@ -29,79 +30,169 @@ def serve_images(filename):
     return send_from_directory(os.path.join(app.root_path, 'assets/images'), filename)
 
 
-# Google OAuth route placeholder
-@auth_bp.route("/login/google", methods=["GET"])
-def google_login():
-    # This would be implemented with a library like authlib or directly with Google OAuth
-    # For now, just a placeholder
-    return jsonify({"message": "Google OAuth not implemented"}), 501
-
-@auth_bp.route("/register", methods=["POST", "OPTIONS"])
-@cross_origin(
-    origins=["http://localhost:5173", "http://127.0.0.1:5173"],
-    methods=["POST", "OPTIONS"],
-    supports_credentials=True
-)
+@app.route('/register', methods=['POST'])
 def register():
-    # Handle preflight OPTIONS request
-    if request.method == "OPTIONS":
-        response = jsonify({"message": "OK"})
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:5173')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
-        return response, 200
-
     data = request.get_json()
+
+    # Check if the required fields are present
+    if 'username' not in data or 'email' not in data or 'password' not in data or 'phone_number' not in data:
+        return jsonify({'error': 'Missing required fields'}), 400
     
-    # Validate input data
-    if not data:
-        return jsonify({"error": "No input data provided"}), 400
+    # Check if the user already exists
+    existing_user = User.query.filter_by(email=data['email']).first()
+    if existing_user:
+        return jsonify({'error': 'User with this email already exists'}), 400
     
-    # Check for required fields
-    required_fields = ["username", "email", "password"]
-    for field in required_fields:
-        if field not in data:
-            return jsonify({"error": f"Missing required field: {field}"}), 400
+    # Hash the password
+    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
 
-    try:
-        # Validate username and email
-        User.validate_username(data["username"])
-        User.validate_email(data["email"])
+    # Create a new user object
+    new_user = User(
+        username=data['username'],
+        email=data['email'],
+        password_hash=hashed_password,
+        is_admin=False,
+    )
 
-        # Check if user already exists
-        existing_user = User.query.filter_by(email=data["email"]).first()
-        if existing_user:
-            return jsonify({"error": "Email already exists. Please use a different email."}), 400
+    # Add to the database and commit
+    db.session.add(new_user)
+    db.session.commit()
 
-        # Create new user
-        user = User(
-            username=data["username"], 
-            email=data["email"]
-        )
-        user.set_password(data["password"])
+    return jsonify({'success': 'User registered successfully'}), 201
 
-        db.session.add(user)
-        db.session.commit()
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.json.get("email", None)
+    password_hash = request.json.get("password_hash", None)
 
-        # Generate token for immediate login after registration
-        token = user.generate_token()
+    # Query the user by email
+    user = User.query.filter_by(email=email).first()
 
+    # Check if the user exists and the password is correct
+    if user and bcrypt.check_password_hash(user.password_hash, password_hash):
+        access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
+
+        # Return tokens and the user's role
         return jsonify({
-            "message": "User registered successfully",
-            "token": token,
-            "user": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
-            },
-        }), 201
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "is_admin": user.is_admin  
+        })
+    else:
+        return jsonify({"message": "Invalid username or password"}), 401
 
-    except ValueError as ve:
-        # Catch specific validation errors
-        return jsonify({"error": str(ve)}), 400
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+@app.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    current_user_id = get_jwt_identity()
+    new_access_token = create_access_token(identity=current_user_id)
+    return jsonify({"access_token": new_access_token}), 200
+
+@app.route("/current_user", methods=["GET"])
+@jwt_required()
+def get_current_user():
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id)
+    if current_user:
+        return jsonify({
+            "id": current_user.id, 
+            "username": current_user.username, 
+            "email": current_user.email,
+            "is_admin": current_user.is_admin
+        }), 200
+    else:
+        return jsonify({"message": "User not found"}), 404
+
+
+
+BLACKLIST = set()
+# @jwt.token_in_blocklist_loader
+def check_if_token_in_blocklist(jwt_header, decrypted_token):
+    jti = decrypted_token["jti"]
+    return jti in BLACKLIST
+
+@app.route("/logout", methods=["POST"])
+@jwt_required()
+def logout():
+    jti = get_jwt()["jti"]
+    BLACKLIST.add(jti)
+    return jsonify({"success":"Logged out successfully"}), 200
+
+
+# # Google OAuth route placeholder
+# @auth_bp.route("/login/google", methods=["GET"])
+# def google_login():
+#     # This would be implemented with a library like authlib or directly with Google OAuth
+#     # For now, just a placeholder
+#     return jsonify({"message": "Google OAuth not implemented"}), 501
+
+# @auth_bp.route("/register", methods=["POST", "OPTIONS"])
+# @cross_origin(
+#     origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+#     methods=["POST", "OPTIONS"],
+#     supports_credentials=True
+# )
+# def register():
+#     # Handle preflight OPTIONS request
+#     if request.method == "OPTIONS":
+#         response = jsonify({"message": "OK"})
+#         response.headers.add('Access-Control-Allow-Origin', 'http://localhost:5173')
+#         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+#         response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+#         return response, 200
+
+#     data = request.get_json()
+    
+#     # Validate input data
+#     if not data:
+#         return jsonify({"error": "No input data provided"}), 400
+    
+#     # Check for required fields
+#     required_fields = ["username", "email", "password"]
+#     for field in required_fields:
+#         if field not in data:
+#             return jsonify({"error": f"Missing required field: {field}"}), 400
+
+#     try:
+#         # Validate username and email
+#         User.validate_username(data["username"])
+#         User.validate_email(data["email"])
+
+#         # Check if user already exists
+#         existing_user = User.query.filter_by(email=data["email"]).first()
+#         if existing_user:
+#             return jsonify({"error": "Email already exists. Please use a different email."}), 400
+
+#         # Create new user
+#         user = User(
+#             username=data["username"], 
+#             email=data["email"]
+#         )
+#         user.set_password(data["password"])
+
+#         db.session.add(user)
+#         db.session.commit()
+
+#         # Generate token for immediate login after registration
+#         token = user.generate_token()
+
+#         return jsonify({
+#             "message": "User registered successfully",
+#             "token": token,
+#             "user": {
+#                 "id": user.id,
+#                 "username": user.username,
+#                 "email": user.email,
+#             },
+#         }), 201
+
+#     except ValueError as ve:
+#         # Catch specific validation errors
+#         return jsonify({"error": str(ve)}), 400
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"error": str(e)}), 500
 
 # Role-based access control
 def admin_required(fn):
