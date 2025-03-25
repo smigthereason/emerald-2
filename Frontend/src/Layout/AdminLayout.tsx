@@ -5,7 +5,7 @@ import { Outlet, Navigate, useNavigate, NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   // Users,
-  Search,
+  // Search,
   Mail,
   Bell,
   ShoppingCart,
@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import Logo from "/assets/Logos/logoxxxx.png"
+import Search from "../Shared/pages/Searches/Search"
 
 interface SidebarLink {
   title: string;
@@ -164,13 +165,14 @@ const AdminLayout: React.FC = () => {
               <Menu className="w-6 h-6" />
             </button>
 
-            <div className="flex-1 flex items-center gap-4 bg-gray-300/50 rounded-lg px-4 py-2 max-w-md">
-              <Search className="w-4 h-4 text-gray-900 flex-shrink-0" />
+            <div className="flex-1 flex items-center gap-4 ">
+              {/* <Search className="w-4 h-4 text-gray-900 flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Search"
                 className="text-sm text-gray-900/50 bg-transparent outline-none w-full min-w-0"
-              />
+              /> */}
+              <Search />
             </div>
 
             {/* Right Side Actions */}

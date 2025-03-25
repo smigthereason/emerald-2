@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon } from 'lucide-react';
+import { useAuth } from '../../hooks/AuthContext';
 
 const SearchBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const navigate = useNavigate();
-
-  const handleSearch = (e: React.FormEvent) => {
+  
+  const { user } = useAuth();
+  
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      try {
+        // Determine search route based on user role
+        const searchRoute = user?.role === 'admin' 
+          ? `/admin/search?q=${encodeURIComponent(searchQuery.trim())}` 
+          : `/search?q=${encodeURIComponent(searchQuery.trim())}`;
+        
+        navigate(searchRoute);
+      } catch (error) {
+        console.error('Search navigation error:', error);
+      }
     }
   };
 
@@ -20,7 +32,7 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div className="relative flex items-center rounded w-64 top-24 left-14 sm:left-0">
+    <div className="relative flex items-center rounded w-64">
       <form onSubmit={handleSearch} className="flex w-full">
         <input
           type="text"
