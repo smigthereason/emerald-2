@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import Flask, send_from_directory
 from flask import Blueprint, request, jsonify
+from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import (
     create_access_token,
@@ -17,6 +18,7 @@ import os
 
 app = Flask(__name__) 
 
+
 bcrypt = Bcrypt()
 auth_bp = Blueprint("auth", __name__)
 routes_bp = Blueprint("routes", __name__)
@@ -30,35 +32,34 @@ def serve_images(filename):
     return send_from_directory(os.path.join(app.root_path, 'assets/images'), filename)
 
 
-@app.route('/register', methods=['POST'])
+@routes_bp.route('/register', methods=['POST'])
 def register():
+    if request.method == 'OPTIONS':  
+        return '', 200
+    
     data = request.get_json()
-
-    # Check if the required fields are present
-    if 'username' not in data or 'email' not in data or 'password' not in data or 'phone_number' not in data:
+    
+    if 'username' not in data or 'email' not in data or 'password' not in data:
         return jsonify({'error': 'Missing required fields'}), 400
     
-    # Check if the user already exists
     existing_user = User.query.filter_by(email=data['email']).first()
     if existing_user:
         return jsonify({'error': 'User with this email already exists'}), 400
     
-    # Hash the password
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
 
-    # Create a new user object
     new_user = User(
         username=data['username'],
         email=data['email'],
         password_hash=hashed_password,
-        is_admin=False,
+        is_admin=False
     )
 
-    # Add to the database and commit
     db.session.add(new_user)
     db.session.commit()
 
     return jsonify({'success': 'User registered successfully'}), 201
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -77,7 +78,7 @@ def login():
         return jsonify({
             "access_token": access_token,
             "refresh_token": refresh_token,
-            "is_admin": user.is_admin  
+            # "is_admin": user.is_admin  
         })
     else:
         return jsonify({"message": "Invalid username or password"}), 401

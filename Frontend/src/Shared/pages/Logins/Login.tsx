@@ -106,7 +106,8 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Existing success logic
+        navigate("/"); 
+          alert("Successful");
       } else {
         // Handle error
         setError(data.error || "Registration failed");
@@ -379,3 +380,6 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+
+

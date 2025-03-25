@@ -41,7 +41,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     const fetchCurrentUser = async () => {
       if (authToken) {
         try {
-          const response = await fetch("https://studypage.onrender.com/current_user", {
+          const response = await fetch("http://127.0.0.1:5000/current_user", {
             method: "GET",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${authToken}` },
           });
@@ -63,7 +63,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }, [authToken]);
 
   const signup = (username: string, email: string, password: string, navigate: (path: string) => void) => {
-    fetch("https://studypage.onrender.com/register", {
+    fetch("http://127.0.0.1:5000/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, password }),
@@ -71,7 +71,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          navigate("/login"); // ✅ Use navigate inside a component
+          navigate("/"); 
           alert(res.success);
         } else {
           alert(res.error || "Something went wrong");
@@ -81,7 +81,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const login = (email: string, password: string, navigate: (path: string) => void) => {
-    fetch("https://studypage.onrender.com/login", {
+    fetch("http://127.0.0.1:5000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -108,7 +108,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const logout = (navigate: (path: string) => void) => {
-    fetch("https://studypage.onrender.com/logout", {
+    fetch("http://127.0.0.1:5000/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     })
