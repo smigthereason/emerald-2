@@ -98,7 +98,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     login(formData.signIn.email, formData.signIn.password, navigate);
     console.log("Login successful. Token:", localStorage.getItem("token"));
-    navigate("/");
+    // navigate("/");
   };
   
   // const handleSignUp = async (e: React.FormEvent) => {
