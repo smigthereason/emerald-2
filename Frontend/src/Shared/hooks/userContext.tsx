@@ -37,31 +37,104 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // useEffect(() => {
+  //   const fetchCurrentUser = async () => {
+  //     if (authToken) {
+  //       try {
+  //         const response = await fetch("http://127.0.0.1:5000/current_user", {
+  //           method: "GET",
+  //           headers: { "Content-Type": "application/json", Authorization: `Bearer ${authToken}` },
+  //         });
+
+  //         const data = await response.json();
+  //         if (response.ok) {
+  //           setCurrentUser(data);
+  //         } else {
+  //           handleLogout();
+  //         }
+  //       } catch (error) {
+  //         handleLogout();
+  //       }
+  //     }
+  //     setLoading(false);
+  //   };
+
+  //   fetchCurrentUser();
+  // }, [authToken]);
+
+  // const signup = (username: string, email: string, password: string, navigate: (path: string) => void) => {
+  //   fetch("http://127.0.0.1:5000/register", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ username, email, password }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.success) {
+  //         navigate("/"); 
+  //         alert(res.success);
+  //       } else {
+  //         alert(res.error || "Something went wrong");
+  //       }
+  //     })
+  //     .catch(() => alert("Something went wrong"));
+  // };
+
+  // const login = (email: string, password: string, navigate: (path: string) => void) => {
+  //   fetch("http://127.0.0.1:5000/login", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ email, password }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.access_token) {
+  //         setAuthToken(res.access_token);
+  //         localStorage.setItem("token", res.access_token);
+  //         localStorage.setItem("refresh_token", res.refresh_token);
+  //         navigate("/"); // ✅ Use navigate inside a component
+  //         alert("Login success");
+  //       } else {
+  //         alert(res.error || "Invalid username or password");
+  //       }
+  //     });
+  // };
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       if (authToken) {
+        console.log("🔍 Sending Token in Header:", authToken); // ✅ Debug log
+  
         try {
           const response = await fetch("http://127.0.0.1:5000/current_user", {
             method: "GET",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${authToken}` },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`, // ✅ Send correct token format
+            },
           });
-
+  
           const data = await response.json();
+          console.log("🟢 Current User Response:", data); // ✅ Debug log
+  
           if (response.ok) {
             setCurrentUser(data);
           } else {
+            console.error("❌ Failed to fetch user:", data);
             handleLogout();
           }
         } catch (error) {
+          console.error("❌ Error fetching user:", error);
           handleLogout();
         }
       }
       setLoading(false);
     };
-
+  
     fetchCurrentUser();
   }, [authToken]);
-
+  
+  
   const signup = (username: string, email: string, password: string, navigate: (path: string) => void) => {
     fetch("http://127.0.0.1:5000/register", {
       method: "POST",
@@ -70,36 +143,43 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log("Signup Response:", res);
         if (res.success) {
-          navigate("/"); 
-          alert(res.success);
+          // ✅ Immediately log in after signup
+          login(email, password, navigate);
         } else {
           alert(res.error || "Something went wrong");
         }
       })
       .catch(() => alert("Something went wrong"));
   };
-
+  
+  
+  
   const login = (email: string, password: string, navigate: (path: string) => void) => {
     fetch("http://127.0.0.1:5000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password_hash: password }), // ✅ Send "password_hash"
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log("Login Response:", res);
         if (res.access_token) {
           setAuthToken(res.access_token);
           localStorage.setItem("token", res.access_token);
           localStorage.setItem("refresh_token", res.refresh_token);
-          navigate("/"); // ✅ Use navigate inside a component
+          navigate("/");
           alert("Login success");
         } else {
           alert(res.error || "Invalid username or password");
         }
-      });
+      })
+      .catch(() => alert("Something went wrong"));
   };
-
+  
+  
+  
   const handleLogout = () => {
     setAuthToken(null);
     setCurrentUser(null);

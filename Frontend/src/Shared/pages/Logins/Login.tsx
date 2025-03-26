@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import googleIcon from "/assets/icons/google.png";
 import Logo from "/assets/Logos/logoxxxx.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../hooks/userContext";
 
 interface SignInData {
   email: string;
@@ -22,6 +23,7 @@ interface FormData {
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { login, signup } = useUserContext();
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     signIn: { email: "", password: "" },
@@ -55,69 +57,90 @@ const Login: React.FC = () => {
     setError("");
   };
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  // const handleSignIn = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch("http://127.0.0.1:5000/login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       credentials: "include", 
+        
+  //       body: JSON.stringify({
+  //         email: formData.signIn.email,
+  //         password_hash: formData.signIn.password,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       // Store the token in localStorage or sessionStorage
+  //       localStorage.setItem("token", data.token);
+  //       console.log("token")
+
+  //       // Optional: Store user info
+  //       localStorage.setItem("user", JSON.stringify(data.user));
+
+  //       // Redirect to dashboard or home page
+  //       navigate("/");
+  //     } else {
+  //       setError(data.error || "Login failed");
+  //     }
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   } catch (err) {
+  //     setError("Connection error. Please try again.");
+  //   }
+  // };
+
+  const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await fetch("http://127.0.0.1:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Important for cookies
-        body: JSON.stringify(formData.signIn),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Store the token in localStorage or sessionStorage
-        localStorage.setItem("token", data.token);
-
-        // Optional: Store user info
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        // Redirect to dashboard or home page
-        navigate("/");
-      } else {
-        setError(data.error || "Login failed");
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      setError("Connection error. Please try again.");
-    }
+    login(formData.signIn.email, formData.signIn.password, navigate);
+    console.log("Login successful. Token:", localStorage.getItem("token"));
+    navigate("/");
   };
+  
+  // const handleSignUp = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch("http://127.0.0.1:5000/register", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       credentials: "include",
+  //       body: JSON.stringify({
+  //         username: formData.signUp.username,
+  //         email: formData.signUp.email,
+  //         password: formData.signUp.password,
+  //       }),
+  //     });
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+        
+  //       navigate("/login"); 
+  //         alert("Successful");
+  //     } else {
+  //       // Handle error
+  //       setError(data.error || "Registration failed");
+  //     }
+  //   } catch (err) {
+  //     console.error("Registration error:", err);
+  //     setError("Connection error. Please try again.");
+  //   }
+  // };
+
+  
+  const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await fetch("http://127.0.0.1:5000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          username: formData.signUp.username,
-          email: formData.signUp.email,
-          password: formData.signUp.password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        navigate("/"); 
-          alert("Successful");
-      } else {
-        // Handle error
-        setError(data.error || "Registration failed");
-      }
-    } catch (err) {
-      console.error("Registration error:", err);
-      setError("Connection error. Please try again.");
-    }
+    signup(formData.signUp.username, formData.signUp.email, formData.signUp.password, navigate);
+    console.log("Signup successful. Token:", localStorage.getItem("token"));
+    navigate("/login");
   };
-
+  
   const handleGoogleAuth = () => {
     window.location.href = "http://127.0.0.1:5000/login/google";
   };

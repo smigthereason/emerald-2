@@ -61,7 +61,29 @@ def register():
     return jsonify({'success': 'User registered successfully'}), 201
 
 
-@app.route('/login', methods=['POST'])
+# @routes_bp.route('/login', methods=['POST'])
+# def login():
+#     email = request.json.get("email", None)
+#     password_hash = request.json.get("password_hash", None)
+
+#     # Query the user by email
+#     user = User.query.filter_by(email=email).first()
+
+#     # Check if the user exists and the password is correct
+#     if user and bcrypt.check_password_hash(user.password_hash, password_hash):
+#         access_token = create_access_token(identity=user.id)
+#         refresh_token = create_refresh_token(identity=user.id)
+
+#         # Return tokens and the user's role
+#         return jsonify({
+#             "access_token": access_token,
+#             "refresh_token": refresh_token,
+#             "is_admin": user.is_admin  
+#         })
+#     else:
+#         return jsonify({"message": "Invalid username or password"}), 401
+
+@routes_bp.route('/login', methods=['POST'])
 def login():
     email = request.json.get("email", None)
     password_hash = request.json.get("password_hash", None)
@@ -71,30 +93,35 @@ def login():
 
     # Check if the user exists and the password is correct
     if user and bcrypt.check_password_hash(user.password_hash, password_hash):
-        access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
+        # ✅ Store email instead of user ID to avoid "Subject must be a string" error
+        access_token = create_access_token(identity=user.email)  
+        refresh_token = create_refresh_token(identity=user.email)
 
-        # Return tokens and the user's role
         return jsonify({
             "access_token": access_token,
             "refresh_token": refresh_token,
-            # "is_admin": user.is_admin  
+            "is_admin": user.is_admin  
         })
     else:
         return jsonify({"message": "Invalid username or password"}), 401
 
-@app.route('/refresh', methods=['POST'])
+
+@routes_bp.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh():
     current_user_id = get_jwt_identity()
     new_access_token = create_access_token(identity=current_user_id)
     return jsonify({"access_token": new_access_token}), 200
 
-@app.route("/current_user", methods=["GET"])
+
+@routes_bp.route("/current_user", methods=["GET"])
 @jwt_required()
 def get_current_user():
-    current_user_id = get_jwt_identity()
-    current_user = User.query.get(current_user_id)
+    current_user_email = get_jwt_identity()
+    print(f"🔍 Extracted JWT Identity: {current_user_email}")  # ✅ Debug log
+
+    current_user = User.query.filter_by(email=current_user_email).first()
+
     if current_user:
         return jsonify({
             "id": current_user.id, 
@@ -103,8 +130,8 @@ def get_current_user():
             "is_admin": current_user.is_admin
         }), 200
     else:
+        print("❌ User not found in database")  
         return jsonify({"message": "User not found"}), 404
-
 
 
 BLACKLIST = set()
@@ -113,7 +140,7 @@ def check_if_token_in_blocklist(jwt_header, decrypted_token):
     jti = decrypted_token["jti"]
     return jti in BLACKLIST
 
-@app.route("/logout", methods=["POST"])
+@routes_bp.route("/logout", methods=["POST"])
 @jwt_required()
 def logout():
     jti = get_jwt()["jti"]
