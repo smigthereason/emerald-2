@@ -40,7 +40,7 @@ const SearchBar: React.FC = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
-          className="px-2 py-1 rounded text-gray-700 focus:outline-none bg-gray-300 w-full"
+          className="px-2 py-1 rounded text-gray-700 focus:outline-none bg-white w-full"
         />
         <button
           type="submit"

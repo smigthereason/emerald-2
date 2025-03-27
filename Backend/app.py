@@ -21,26 +21,16 @@ def create_app():
     app.config.from_object("config.Config")
 
     # Configure CORS
-    CORS(
-        app,
-        resources={
-            r"/*": {
-                "origins": [
-                    "http://localhost:5173",  # Vite development server
-                    "http://127.0.0.1:5173",
-                    "http://localhost:3000",  # Common React development port
-                    "http://127.0.0.1:3000",
-                ],
-                "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-                "allow_headers": [
-                    "Content-Type",
-                    "Authorization",
-                    "Access-Control-Allow-Credentials",
-                ],
-                "supports_credentials": True,
-            }
-        },
-    )
+    # In app.py, modify the CORS configuration to:
+    CORS(app, 
+     resources={
+         r"/*": {
+             "origins": ["http://localhost:5173"],
+             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+             "allow_headers": ["Content-Type", "Authorization"],
+             "supports_credentials": True
+         }
+     })
 
     # Initialize extensions
     db.init_app(app)

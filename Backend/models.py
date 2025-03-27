@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
+from sqlalchemy import DateTime
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
 from sqlalchemy.dialects.postgresql import JSON
@@ -102,6 +103,13 @@ class Product(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     product_tags = db.relationship('ProductTag', backref='product', lazy=True)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            # ... other fields ...
+            "created_at": self.created_at.isoformat() if self.created_at else None
+        }
+        
     def validate_discount(self):
         if self.discount >= self.price:
             raise ValueError("Discount must be less than the product price")

@@ -57,81 +57,20 @@ const Login: React.FC = () => {
     setError("");
   };
 
-  // const handleSignIn = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch("http://127.0.0.1:5000/login", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include", 
-        
-  //       body: JSON.stringify({
-  //         email: formData.signIn.email,
-  //         password_hash: formData.signIn.password,
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       // Store the token in localStorage or sessionStorage
-  //       localStorage.setItem("token", data.token);
-  //       console.log("token")
-
-  //       // Optional: Store user info
-  //       localStorage.setItem("user", JSON.stringify(data.user));
-
-  //       // Redirect to dashboard or home page
-  //       navigate("/");
-  //     } else {
-  //       setError(data.error || "Login failed");
-  //     }
-  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //   } catch (err) {
-  //     setError("Connection error. Please try again.");
-  //   }
-  // };
-
-  const handleSignIn = (e: React.FormEvent) => {
+ 
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(formData.signIn.email, formData.signIn.password, navigate);
-    console.log("Login successful. Token:", localStorage.getItem("token"));
-    // navigate("/");
+    try {
+      await login(formData.signIn.email, formData.signIn.password, navigate);
+      console.log("Login successful. Token:", localStorage.getItem("token"));
+      // The navigation should be handled within the login function or auth context
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setError("Login failed. Please check your credentials.");
+    }
   };
   
-  // const handleSignUp = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch("http://127.0.0.1:5000/register", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include",
-  //       body: JSON.stringify({
-  //         username: formData.signUp.username,
-  //         email: formData.signUp.email,
-  //         password: formData.signUp.password,
-  //       }),
-  //     });
 
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-        
-  //       navigate("/login"); 
-  //         alert("Successful");
-  //     } else {
-  //       // Handle error
-  //       setError(data.error || "Registration failed");
-  //     }
-  //   } catch (err) {
-  //     console.error("Registration error:", err);
-  //     setError("Connection error. Please try again.");
-  //   }
-  // };
 
   
   const handleSignUp = (e: React.FormEvent) => {

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Plus,
   Search,
@@ -18,149 +19,259 @@ import {
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/Label";
+import { uploadToCloudinary } from '../../../lib/cloudinaryUtils';
 
-const mockProducts = [
-  {
-    id: 1,
-    name: "Premium Headphones",
-    category: "Tops",
-    price: 199.99,
-    stock: 45,
-    status: "In Stock",
-    image: "", // Added image field
-  },
-  {
-    id: 2,
-    name: "Wireless Mouse",
-    category: "Skirts",
-    price: 49.99,
-    stock: 12,
-    status: "Low Stock",
-    image: "", // Added image field
-  },
-  {
-    id: 3,
-    name: "Gaming Keyboard",
-    category: "Dresses",
-    price: 159.99,
-    stock: 0,
-    status: "Out of Stock",
-    image: "", // Added image field
-  },
-];
-
-const PRODUCT_CATEGORIES = [
-  "Tops",
-  "Skirts",
-  "Dresses",
-  "Jackets",
-  "Shoes",
-  "Pants",
-];
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  discount: number;
+  quantity: number;
+  tag: string;
+  colors: string[];
+  sizes: string[];
+  images: string[];
+  category_id: number;
+  created_at: string;
+  category_name?: string;
+}
 
 const Products = () => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [products, setProducts] = useState(mockProducts);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [newProduct, setNewProduct] = useState({
-    name: "",
-    category: "Tops",
+    title: "",
+    description: "",
     price: "",
-    stock: "",
-    status: "In Stock",
-    image: "", // Added image field
+    discount: "0",
+    quantity: "1",
+    tag: "",
+    colors: [] as string[],
+    sizes: [] as string[],
+    images: [] as string[],
+    category_id: "",
   });
+
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [tempColor, setTempColor] = useState("");
+  const [tempSize, setTempSize] = useState("");
 
-  const getStatusStyle = (status: string) => {
-    switch (status) {
-      case "In Stock":
-        return "bg-green-50 text-green-600";
-      case "Low Stock":
-        return "bg-yellow-50 text-yellow-600";
-      default:
-        return "bg-red-50 text-red-600";
-    }
-  };
+  // Fetch products on component mount
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get("http://127.0.0.1:5000/products");
+        setProducts(response.data.products || []);
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setError("Failed to fetch products. Please try again later.");
+        setProducts([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    fetchProducts();
+  }, []);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // Validate file type and size
-      const validTypes = ["image/jpeg", "image/png", "image/gif"];
-      const maxSize = 5 * 1024 * 1024; // 5MB
+    if (!file) return;
 
-      if (!validTypes.includes(file.type)) {
-        alert("Please upload a valid image (JPEG, PNG, or GIF)");
-        return;
-      }
+    const validTypes = ["image/jpeg", "image/png", "image/gif"];
+    const maxSize = 5 * 1024 * 1024; // 5MB
 
-      if (file.size > maxSize) {
-        alert("Image size should be less than 5MB");
-        return;
-      }
-
-      // Create a file reader to generate preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-        setNewProduct((prev) => ({
-          ...prev,
-          image: reader.result as string,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleAddProduct = () => {
-    // Validate input
-    if (!newProduct.name || !newProduct.price || !newProduct.stock) {
-      alert("Please fill in all fields");
+    if (!validTypes.includes(file.type)) {
+      alert("Please upload a valid image (JPEG, PNG, or GIF)");
       return;
     }
 
-    const productToAdd = {
-      ...newProduct,
-      id: products.length + 1,
-      price: parseFloat(newProduct.price),
-      stock: parseInt(newProduct.stock),
-    };
+    if (file.size > maxSize) {
+      alert("Image size should be less than 5MB");
+      return;
+    }
 
-    setProducts([...products, productToAdd]);
-
-    // Reset form and close modal
-    setNewProduct({
-      name: "",
-      category: "Tops",
-      price: "",
-      stock: "",
-      status: "In Stock",
-      image: "",
-    });
-    setImagePreview(null);
-    setIsAddModalOpen(false);
+    try {
+      setIsLoading(true);
+      const imageUrl = await uploadToCloudinary(file);
+      setImagePreview(URL.createObjectURL(file));
+      setNewProduct((prev) => ({
+        ...prev,
+        images: [...prev.images, imageUrl],
+      }));
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Failed to upload image");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleEditProduct = (product: any) => {
+  const handleAddColor = () => {
+    if (tempColor && !newProduct.colors.includes(tempColor)) {
+      setNewProduct((prev) => ({
+        ...prev,
+        colors: [...prev.colors, tempColor],
+      }));
+      setTempColor("");
+    }
+  };
+
+  const handleRemoveColor = (color: string) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      colors: prev.colors.filter((c) => c !== color),
+    }));
+  };
+
+  const handleAddSize = () => {
+    if (tempSize && !newProduct.sizes.includes(tempSize)) {
+      setNewProduct((prev) => ({
+        ...prev,
+        sizes: [...prev.sizes, tempSize],
+      }));
+      setTempSize("");
+    }
+  };
+
+  const handleRemoveSize = (size: string) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      sizes: prev.sizes.filter((s) => s !== size),
+    }));
+  };
+
+  const handleAddProduct = async () => {
+    if (!newProduct.title.trim()) {
+      alert("Product title is required");
+      return;
+    }
+
+    if (!newProduct.price || parseFloat(newProduct.price) <= 0) {
+      alert("Please enter a valid price");
+      return;
+    }
+
+    if (!newProduct.category_id) {
+      alert("Category ID is required");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      
+      const productData = {
+        title: newProduct.title.trim(),
+        description: newProduct.description.trim(),
+        price: parseFloat(newProduct.price),
+        discount: parseFloat(newProduct.discount),
+        quantity: parseInt(newProduct.quantity),
+        tag: newProduct.tag.trim(),
+        colors: newProduct.colors,
+        sizes: newProduct.sizes,
+        images: newProduct.images,
+        category_id: parseInt(newProduct.category_id),
+      };
+
+      const response = await axios.post(
+        "http://127.0.0.1:5000/products",
+        productData
+      );
+
+      setProducts([...products, response.data.product]);
+      
+      // Reset form
+      setNewProduct({
+        title: "",
+        description: "",
+        price: "",
+        discount: "0",
+        quantity: "1",
+        tag: "",
+        colors: [],
+        sizes: [],
+        images: [],
+        category_id: "",
+      });
+      setImagePreview(null);
+      setIsAddModalOpen(false);
+    } catch (error: any) {
+      console.error("Error adding product:", error.response?.data || error.message);
+      alert(
+        error.response?.data?.error ||
+          "Failed to add product. Please check your input and try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
   };
 
-  const handleSaveProduct = () => {
+  const handleSaveProduct = async () => {
     if (!editingProduct) return;
+  
+    try {
+      setIsLoading(true);
+      
+      const productData = { ...editingProduct };
+      delete productData.created_at;
+  
+      const response = await axios.put(
+        `http://127.0.0.1:5000/products/${editingProduct.id}`,
+        productData
+      );
 
-    setProducts(
-      products.map((p) => (p.id === editingProduct.id ? editingProduct : p))
+      setProducts(
+        products.map((p) =>
+          p.id === editingProduct.id ? response.data.product : p
+        )
+      );
+      setEditingProduct(null);
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("Failed to update product");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (productId: number) => {
+    try {
+      await axios.delete(`http://127.0.0.1:5000/products/${productId}`);
+      setProducts(products.filter((p) => p.id !== productId));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Failed to delete product");
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        Loading products...
+      </div>
     );
-    setEditingProduct(null);
-  };
+  }
 
-  const handleDeleteProduct = (productId: number) => {
-    setProducts(products.filter((p) => p.id !== productId));
-  };
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <p className="text-red-500">{error}</p>
+        <Button onClick={() => window.location.reload()}>Retry</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -177,67 +288,46 @@ const Products = () => {
               Add Product
             </button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add New Product</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {/* Image Upload Section */}
-              <div className="flex flex-col items-center">
-                <Label>Product Image</Label>
-                <div className="relative w-40 h-40 border-2 border-dashed rounded-lg flex items-center justify-center mt-2">
-                  {imagePreview ? (
-                    <img
-                      src={imagePreview}
-                      alt="Product Preview"
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  ) : (
-                    <div className="text-center text-gray-500">
-                      <ImagePlus className="w-12 h-12 mx-auto mb-2" />
-                      <p>Upload Image</p>
-                    </div>
-                  )}
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/png,image/gif"
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    onChange={handleImageUpload}
-                  />
-                </div>
-              </div>
-
-              {/* Existing input fields */}
+              {/* Title */}
               <div>
-                <Label htmlFor="name">Product Name</Label>
+                <Label htmlFor="title">Product Title*</Label>
                 <Input
-                  id="name"
-                  value={newProduct.name}
+                  id="title"
+                  value={newProduct.title}
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, name: e.target.value })
+                    setNewProduct({ ...newProduct, title: e.target.value })
                   }
-                  placeholder="Enter product name"
+                  placeholder="Enter product title"
+                  required
                 />
               </div>
+
+              {/* Description */}
               <div>
-                <Label htmlFor="category">Category</Label>
-                <select
-                  id="category"
-                  className="w-full p-2 border rounded bg-transparent "
-                  value={newProduct.category}
+                <Label htmlFor="description">Description*</Label>
+                <textarea
+                  id="description"
+                  className="w-full p-2 border rounded bg-transparent"
+                  value={newProduct.description}
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, category: e.target.value })
+                    setNewProduct({
+                      ...newProduct,
+                      description: e.target.value,
+                    })
                   }
-                >
-                  {PRODUCT_CATEGORIES.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="Enter product description"
+                  required
+                />
               </div>
+
+              {/* Price */}
               <div>
-                <Label htmlFor="price">Price (KSH)</Label>
+                <Label htmlFor="price">Price (KSH)*</Label>
                 <Input
                   id="price"
                   type="number"
@@ -245,37 +335,179 @@ const Products = () => {
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, price: e.target.value })
                   }
-                  placeholder="Enter price in KSH"
+                  placeholder="Enter price"
+                  required
                 />
               </div>
+
+              {/* Discount */}
               <div>
-                <Label htmlFor="stock">Stock</Label>
+                <Label htmlFor="discount">Discount</Label>
                 <Input
-                  id="stock"
+                  id="discount"
                   type="number"
-                  value={newProduct.stock}
+                  value={newProduct.discount}
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, stock: e.target.value })
+                    setNewProduct({ ...newProduct, discount: e.target.value })
                   }
-                  placeholder="Enter stock quantity"
+                  placeholder="Enter discount"
                 />
               </div>
+
+              {/* Quantity */}
               <div>
-                <Label htmlFor="status">Status</Label>
-                <select
-                  id="status"
-                  className="w-full p-2 border rounded bg-transparent hover:bg-"
-                  value={newProduct.status}
+                <Label htmlFor="quantity">Quantity*</Label>
+                <Input
+                  id="quantity"
+                  type="number"
+                  value={newProduct.quantity}
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, status: e.target.value })
+                    setNewProduct({ ...newProduct, quantity: e.target.value })
                   }
-                >
-                  <option value="In Stock">In Stock</option>
-                  <option value="Low Stock">Low Stock</option>
-                  <option value="Out of Stock">Out of Stock</option>
-                </select>
+                  placeholder="Enter quantity"
+                  required
+                />
               </div>
-              <div className="flex justify-end space-x-2">
+
+              {/* Tag */}
+              <div>
+                <Label htmlFor="tag">Tag*</Label>
+                <Input
+                  id="tag"
+                  value={newProduct.tag}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, tag: e.target.value })
+                  }
+                  placeholder="Enter product tag"
+                  required
+                />
+              </div>
+
+              {/* Colors */}
+              <div>
+                <Label htmlFor="colors">Colors</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="colors"
+                    value={tempColor}
+                    onChange={(e) => setTempColor(e.target.value)}
+                    placeholder="Add color"
+                  />
+                  <Button onClick={handleAddColor}>Add</Button>
+                </div>
+                {newProduct.colors.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {newProduct.colors.map((color) => (
+                      <span
+                        key={color}
+                        className="px-2 py-1 bg-gray-100 rounded flex items-center gap-1"
+                      >
+                        {color}
+                        <button
+                          onClick={() => handleRemoveColor(color)}
+                          className="text-red-500"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Sizes */}
+              <div>
+                <Label htmlFor="sizes">Sizes</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="sizes"
+                    value={tempSize}
+                    onChange={(e) => setTempSize(e.target.value)}
+                    placeholder="Add size"
+                  />
+                  <Button onClick={handleAddSize}>Add</Button>
+                </div>
+                {newProduct.sizes.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {newProduct.sizes.map((size) => (
+                      <span
+                        key={size}
+                        className="px-2 py-1 bg-gray-100 rounded flex items-center gap-1"
+                      >
+                        {size}
+                        <button
+                          onClick={() => handleRemoveSize(size)}
+                          className="text-red-500"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Images */}
+              <div>
+                <Label>Product Images</Label>
+                <div className="flex flex-wrap gap-4">
+                  {newProduct.images.map((image, index) => (
+                    <div key={index} className="relative w-24 h-24">
+                      <img
+                        src={image}
+                        alt={`Product preview ${index}`}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                      <button
+                        onClick={() =>
+                          setNewProduct((prev) => ({
+                            ...prev,
+                            images: prev.images.filter((_, i) => i !== index),
+                          }))
+                        }
+                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2">
+                  <Label htmlFor="image-upload">Add Image</Label>
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/jpeg,image/png,image/gif"
+                    className="mt-1 block w-full text-sm text-gray-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-md file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-blue-50 file:text-blue-700
+                      hover:file:bg-blue-100"
+                    onChange={handleImageUpload}
+                  />
+                </div>
+              </div>
+
+              {/* Category ID */}
+              <div>
+                <Label htmlFor="category_id">Category ID*</Label>
+                <Input
+                  id="category_id"
+                  type="number"
+                  value={newProduct.category_id}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      category_id: e.target.value,
+                    })
+                  }
+                  placeholder="Enter category ID"
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-4">
                 <Button
                   variant="outline"
                   onClick={() => setIsAddModalOpen(false)}
@@ -305,18 +537,16 @@ const Products = () => {
         </button>
       </div>
 
-      {/* Products Table/Cards */}
+      {/* Products Table */}
       <div className="bg-white rounded-2xl shadow-sm">
-        {/* Desktop Table View */}
-        <div className="hidden md:block overflow-x-auto">
+        <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b">
-                <th className="text-left py-4 px-6">Product</th>
-                <th className="text-left py-4 px-6">Category</th>
+                <th className="text-left py-4 px-6">Title</th>
                 <th className="text-left py-4 px-6">Price</th>
-                <th className="text-left py-4 px-6">Stock</th>
-                <th className="text-left py-4 px-6">Status</th>
+                <th className="text-left py-4 px-6">Quantity</th>
+                <th className="text-left py-4 px-6">Category</th>
                 <th className="text-left py-4 px-6">Actions</th>
               </tr>
             </thead>
@@ -325,137 +555,28 @@ const Products = () => {
                 <tr key={product.id} className="border-b last:border-0">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex-shrink-0"></div>
-                      <span className="font-medium">{product.name}</span>
+                      {product.images && product.images.length > 0 && (
+                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex-shrink-0">
+                          <img
+                            src={product.images[0]}
+                            alt={product.title}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                      )}
+                      <span className="font-medium">{product.title}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-gray-500">
-                    {product.category}
-                  </td>
-                  <td className="py-4 px-6">${product.price}</td>
-                  <td className="py-4 px-6">{product.stock}</td>
+                  <td className="py-4 px-6">KSH {product.price.toFixed(2)}</td>
+                  <td className="py-4 px-6">{product.quantity}</td>
+                  <td className="py-4 px-6">{product.category_id}</td>
                   <td className="py-4 px-6">
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm ${getStatusStyle(
-                        product.status
-                      )}`}
+                    <button
+                      className="text-gray-400 hover:text-gray-600 mr-2"
+                      onClick={() => handleEditProduct(product)}
                     >
-                      {product.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <Dialog
-                      open={editingProduct?.id === product.id}
-                      onOpenChange={(isOpen) =>
-                        !isOpen && setEditingProduct(null)
-                      }
-                    >
-                      <DialogTrigger asChild>
-                        <button
-                          className="text-gray-400 hover:text-gray-600 mr-2"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditProduct(product);
-                          }}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Edit Product</DialogTitle>
-                        </DialogHeader>
-                        {editingProduct && (
-                          <div className="space-y-4">
-                            <div>
-                              <Label htmlFor="name">Product Name</Label>
-                              <Input
-                                id="name"
-                                value={editingProduct.name}
-                                onChange={(e) =>
-                                  setEditingProduct({
-                                    ...editingProduct,
-                                    name: e.target.value,
-                                  })
-                                }
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor="category">Category</Label>
-                              <Input
-                                id="category"
-                                value={editingProduct.category}
-                                onChange={(e) =>
-                                  setEditingProduct({
-                                    ...editingProduct,
-                                    category: e.target.value,
-                                  })
-                                }
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor="price">Price</Label>
-                              <Input
-                                id="price"
-                                type="number"
-                                value={editingProduct.price}
-                                onChange={(e) =>
-                                  setEditingProduct({
-                                    ...editingProduct,
-                                    price: parseFloat(e.target.value),
-                                  })
-                                }
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor="stock">Stock</Label>
-                              <Input
-                                id="stock"
-                                type="number"
-                                value={editingProduct.stock}
-                                onChange={(e) =>
-                                  setEditingProduct({
-                                    ...editingProduct,
-                                    stock: parseInt(e.target.value),
-                                  })
-                                }
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor="status">Status</Label>
-                              <select
-                                id="status"
-                                className="w-full p-2 border rounded"
-                                value={editingProduct.status}
-                                onChange={(e) =>
-                                  setEditingProduct({
-                                    ...editingProduct,
-                                    status: e.target.value,
-                                  })
-                                }
-                              >
-                                <option value="In Stock">In Stock</option>
-                                <option value="Low Stock">Low Stock</option>
-                                <option value="Out of Stock">
-                                  Out of Stock
-                                </option>
-                              </select>
-                            </div>
-                            <div className="flex justify-end space-x-2">
-                              <Button
-                                variant="outline"
-                                onClick={() => setEditingProduct(null)}
-                              >
-                                Cancel
-                              </Button>
-                              <Button onClick={handleSaveProduct}>
-                                Save Changes
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                      </DialogContent>
-                    </Dialog>
+                      <Edit className="w-4 h-4" />
+                    </button>
                     <button
                       className="text-red-400 hover:text-red-600"
                       onClick={() => handleDeleteProduct(product.id)}
@@ -468,71 +589,91 @@ const Products = () => {
             </tbody>
           </table>
         </div>
+      </div>
 
-        {/* Mobile Card View */}
-        <div className="md:hidden">
-          {products.map((product) => (
-            <div key={product.id} className="border-b last:border-0 p-4">
-              <div
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() =>
-                  setExpandedRow(expandedRow === product.id ? null : product.id)
-                }
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex-shrink-0"></div>
-                  <div>
-                    <h3 className="font-medium">{product.name}</h3>
-                    <p className="text-sm text-gray-500">{product.category}</p>
-                  </div>
-                </div>
-                <ChevronDown
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
-                    expandedRow === product.id ? "transform rotate-180" : ""
-                  }`}
+      {/* Edit Product Dialog */}
+      {editingProduct && (
+        <Dialog
+          open={!!editingProduct}
+          onOpenChange={() => setEditingProduct(null)}
+        >
+          <DialogContent className="max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Edit Product</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="edit-title">Title</Label>
+                <Input
+                  id="edit-title"
+                  value={editingProduct.title}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      title: e.target.value,
+                    })
+                  }
                 />
               </div>
 
-              {expandedRow === product.id && (
-                <div className="mt-4 space-y-3 pl-15">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500">Price:</span>
-                    <span className="font-medium">${product.price}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500">Stock:</span>
-                    <span className="font-medium">{product.stock}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500">Status:</span>
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm ${getStatusStyle(
-                        product.status
-                      )}`}
-                    >
-                      {product.status}
-                    </span>
-                  </div>
-                  <div className="flex justify-center items-center space-x-4 border-t pt-2">
-                    <button
-                      className="text-gray-400 hover:text-gray-600"
-                      onClick={() => handleEditProduct(product)}
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button
-                      className="text-red-400 hover:text-red-600"
-                      onClick={() => handleDeleteProduct(product.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              )}
+              <div>
+                <Label htmlFor="edit-description">Description</Label>
+                <textarea
+                  id="edit-description"
+                  className="w-full p-2 border rounded bg-transparent"
+                  value={editingProduct.description}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      description: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="edit-price">Price</Label>
+                <Input
+                  id="edit-price"
+                  type="number"
+                  value={editingProduct.price}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      price: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="edit-quantity">Quantity</Label>
+                <Input
+                  id="edit-quantity"
+                  type="number"
+                  value={editingProduct.quantity}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      quantity: parseInt(e.target.value) || 0,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setEditingProduct(null)}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveProduct}>Save Changes</Button>
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

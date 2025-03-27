@@ -16,7 +16,7 @@ interface Product {
   tag: string;
   colors: string[];
   sizes: string[];
-  images: string[] | null;
+  images: string[];
   category_id: number;
   created_at: string;
 }
@@ -40,16 +40,31 @@ const ProductsPage: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get<ProductResponse>('http://127.0.0.1:5000/products');
-        setProducts(response.data.products || []);
-        setLoading(false);
+        const response = await axios.get('http://127.0.0.1:5000/products');
+        // Handle current backend response structure
+        const productsData = response.data.products || response.data;
+        const formattedProducts = Array.isArray(productsData) ? productsData.map(p => ({
+          id: p.id,
+          title: p.name,  // Map name to title
+          description: '', // Add empty description
+          price: p.price,
+          discount: 0,    // Default discount
+          quantity: p.stock || 1,
+          tag: '',        // Default tag
+          colors: [],     // Empty colors array
+          sizes: [],      // Empty sizes array
+          images: p.image ? [p.image] : [], // Single image as array
+          category_id: 1  // Default category
+        })) : [];
+        setProducts(formattedProducts);
       } catch (err) {
         setError('Failed to fetch products');
-        setLoading(false);
         console.error('Error details:', err);
+      } finally {
+        setLoading(false);
       }
     };
-
+  
     fetchProducts();
   }, []);
 
@@ -90,12 +105,28 @@ const ProductsPage: React.FC = () => {
       setIsExpanded(!isExpanded);
     };
 
+    const getMainImage = (images: any) => {
+      try {
+        if (Array.isArray(images)) {
+          return images[0];
+        } else if (typeof images === 'string') {
+          const parsed = JSON.parse(images);
+          return Array.isArray(parsed) ? parsed[0] : '/fallback.jpg';
+        }
+        return '/fallback.jpg';
+      } catch {
+        return '/fallback.jpg';
+      }
+    };
+    
+    const mainImage = getMainImage(product.images);
+
     // Safely parse images and ensure we have at least one image
-    const mainImage = Array.isArray(product.images) 
-      ? product.images[0] 
-      : (typeof product.images === 'string' 
-        ? JSON.parse(product.images)[0] 
-        : '/fallback.jpg');
+    // const mainImage = Array.isArray(product.images) 
+    //   ? product.images[0] 
+    //   : (typeof product.images === 'string' 
+    //     ? JSON.parse(product.images)[0] 
+    //     : '/fallback.jpg');
 
     return (
       <motion.div

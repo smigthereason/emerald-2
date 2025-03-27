@@ -48,40 +48,40 @@ def seed_database():
         # When creating products, use the correct category ID
         product_data = [
             {
-                "title": "Summer Dress",
-                "description": "A light and comfy dress for summer.",
-                "price": 49.99,
-                "discount": 5.00,
+                "title": "Button-Down Fitted Suit",
+                "description": "Fashionable and elegant skirt suit.",
+                "price": 4950,
+                "discount": 0,
                 "quantity": 10,
-                "tag": "Summer",
-                "colors": ["Red", "Blue", "Green"],
-                "sizes": ["S", "M", "L"],
+                "tag": "Official",
+                "colors": [ "White", "Yellow", "Red"],
+                "sizes": [ "M", "L"],
                 "category": "Dresses",
-                "local_images": ["dresses/d1.jpg", "dresses/d2.jpg"]
+                "local_images": ["dresses/t1.jpg", "dresses/t3.jpg", "dresses/t2.jpg"]
             },
             {
-                "title": "Denim Jeans",
-                "description": "Stylish and durable denim jeans.",
-                "price": 59.99,
+                "title": "Pleated Midi Dress",
+                "description": "Stylish and comfortable Summer dress.",
+                "price": 5900,
                 "discount": 10.00,
                 "quantity": 15,
-                "tag": "Winter",
-                "colors": ["Black", "Blue"],
+                "tag": "Summer",
+                "colors": ["Green", "White", "Purple"],
                 "sizes": ["M", "L", "XL"],
-                "category": "Jeans",
-                "local_images": ["pants/p1.jpeg", "pants/p2.jpeg"]
+                "category": "Dresses",
+                "local_images": ["dresses/t7.jpg", "dresses/t8.jpg", "dresses/t9.jpg"]
             },
             {
-                "title": "Ribbed Sleeveless Top",
-                "description": "Designed with a high neckline and a form-fitting silhouette, perfect for layering or wearing on its own.",
-                "price": 65.00,
+                "title": "Abstract Print Midi Dress",
+                "description": "blazer jacket with floral embellishments, worn over a navy, white, and red abstract print dress",
+                "price": 6500,
                 "discount": 10.00,
                 "quantity": 8,
                 "tag": "Tops",
-                "colors": ["Black", "Blue"],
+                "colors": ["Red", "Beige", "Blue"],
                 "sizes": ["M", "L", "XL"],
-                "category": "Tops",
-                "local_images": ["tops/t1.jpg", "tops/t2.jpg"]
+                "category": "Dresses",
+                "local_images": ["dresses/t4.jpg", "dresses/t5.jpg", "dresses/t6.jpg"]
             }
         ]
         
