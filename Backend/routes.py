@@ -140,56 +140,6 @@ def logout():
     BLACKLIST.add(jti)
     return jsonify({"success":"Logged out successfully"}), 200
 
-# # Product Routes
-# @routes_bp.route('/products', methods=['GET'])
-# def get_products():
-#     """Retrieve all products with optional filtering and pagination"""
-#     try:
-#         # Pagination
-#         page = request.args.get('page', 1, type=int)
-#         per_page = request.args.get('per_page', 10, type=int)
-        
-#         # Filtering options
-#         category = request.args.get('category')
-#         min_price = request.args.get('min_price', type=float)
-#         max_price = request.args.get('max_price', type=float)
-        
-#         # Base query
-#         query = Product.query
-        
-#         # Apply filters
-#         if category:
-#             query = query.filter_by(category=category)
-        
-#         if min_price is not None:
-#             query = query.filter(Product.price >= min_price)
-        
-#         if max_price is not None:
-#             query = query.filter(Product.price <= max_price)
-        
-#         # Paginate results
-#         paginated_products = query.paginate(page=page, per_page=per_page)
-        
-#         return jsonify({
-#             "products": [
-#                 {
-#                     "id": product.id,
-#                     "name": product.name,
-#                     "category": product.category,
-#                     "price": product.price,
-#                     "stock": product.stock,
-#                     "status": product.status,
-#                     "image": product.image
-#                 } for product in paginated_products.items
-#             ],
-#             "total_products": paginated_products.total,
-#             "page": page,
-#             "per_page": per_page,
-#             "total_pages": paginated_products.pages
-#         }), 200
-    
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
 
 @routes_bp.route('/products', methods=['GET'])
 def get_products():
@@ -254,20 +204,50 @@ def get_products():
         return jsonify({"error": "Failed to fetch products"}), 500
 
 
+# @routes_bp.route('/products/<int:product_id>', methods=['GET'])
+# def get_product(product_id):
+#     """Retrieve a specific product by ID"""
+#     product = Product.query.get_or_404(product_id)
+    
+#     return jsonify({
+#         "id": product.id,
+#         "name": product.name,
+#         "category": product.category,
+#         "price": product.price,
+#         "stock": product.stock,
+#         "status": product.status,
+#         "image": product.image
+#     }), 200
+
 @routes_bp.route('/products/<int:product_id>', methods=['GET'])
 def get_product(product_id):
-    """Retrieve a specific product by ID"""
-    product = Product.query.get_or_404(product_id)
+    """Retrieve a specific product by ID with proper field names"""
+    try:
+        product = Product.query.get_or_404(product_id)
+        
+        # Get category name
+        category = Category.query.get(product.category_id)
+        category_name = category.name if category else "Unknown"
+        
+        return jsonify({
+            "id": product.id,
+            "title": product.title,
+            "description": product.description,
+            "price": product.price,
+            "discount": product.discount,
+            "quantity": product.quantity,
+            "tag": product.tag,
+            "colors": product.colors if isinstance(product.colors, list) else json.loads(product.colors),
+            "sizes": product.sizes if isinstance(product.sizes, list) else json.loads(product.sizes),
+            "images": product.images if isinstance(product.images, list) else json.loads(product.images),
+            "category_id": product.category_id,
+            "category_name": category_name,
+            "created_at": product.created_at.isoformat() if product.created_at else None
+        }), 200
     
-    return jsonify({
-        "id": product.id,
-        "name": product.name,
-        "category": product.category,
-        "price": product.price,
-        "stock": product.stock,
-        "status": product.status,
-        "image": product.image
-    }), 200
+    except Exception as e:
+        app.logger.error(f"Error in get_product: {str(e)}", exc_info=True)
+        return jsonify({"error": "Failed to fetch product"}), 500
 
 # @routes_bp.route('/products', methods=['POST'])
 # @jwt_required()
@@ -571,9 +551,9 @@ def get_cart():
         'product_id': c.product_id, 
         'quantity': c.quantity,
         'product': {
-            'name': Product.query.get(c.product_id).name,
+            'title': Product.query.get(c.product_id).title,  # Changed from 'name' to 'title'
             'price': Product.query.get(c.product_id).price,
-            'image': Product.query.get(c.product_id).image
+            'images': Product.query.get(c.product_id).images  # Changed from 'image' to 'images'
         }
     } for c in cart_items]), 200
 
