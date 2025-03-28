@@ -357,191 +357,6 @@
 
 // export default ProductDetail;
 
-// import React, { useState, useEffect } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import { useCart } from "../../../Shared/hooks/CartContext";
-// import { useFavourites } from "../../../Shared/hooks/FavouritesContext";
-// import { IoArrowBack } from "react-icons/io5";
-// import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
-// import axios from "axios";
-
-// // Type definitions
-// export interface Product {
-//   id: number;
-//   title: string;
-//   description: string;
-//   price: number;
-//   discount: number;
-//   quantity: number;
-//   tag: string;
-//   colors: string[];
-//   sizes: string[];
-//   images: string[] | string;
-//   category_id: number;
-//   created_at: string;
-// }
-
-// const ProductDetail: React.FC = () => {
-//   const { id } = useParams<{ id: string }>();
-//   const navigate = useNavigate();
-//   const { addToCart } = useCart();
-//   const { favourites, toggleFavourite } = useFavourites();
-
-//   const [product, setProduct] = useState<Product | null>(null);
-//   const [loading, setLoading] = useState<boolean>(true);
-//   const [error, setError] = useState<string | null>(null);
-//   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-//   const [selectedImage, setSelectedImage] = useState<string>("");
-//   const [imageError, setImageError] = useState(false);
-
-//   useEffect(() => {
-//     const fetchProduct = async () => {
-//       try {
-//         const response = await axios.get<Product>(`http://127.0.0.1:5000/products/${id}`);
-//         const productData = response.data;
-
-//         // Ensure sizes is an array
-//         const parsedSizes =
-//           typeof productData.sizes === "string" ? JSON.parse(productData.sizes) : productData.sizes;
-
-//         // Ensure images is an array
-//         let parsedImages: string[] = [];
-//         if (typeof productData.images === "string") {
-//           try {
-//             parsedImages = JSON.parse(productData.images);
-//           } catch {
-//             parsedImages = [productData.images]; 
-//           }
-//         } else {
-//           parsedImages = productData.images || [];
-//         }
-
-//         setProduct({ ...productData, sizes: Array.isArray(parsedSizes) ? parsedSizes : [], images: parsedImages });
-//         setSelectedSize(parsedSizes?.[0] || null);
-//         setSelectedImage(parsedImages[0] || "/fallback.jpg"); 
-//       } catch (err) {
-//         setError("Failed to load product details");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProduct();
-//   }, [id]);
-
-//   const handleAddToCart = () => {
-//     if (product && selectedSize) {
-//       addToCart({ ...product, sizes: [selectedSize] });
-//     } else {
-//       alert("Please select a size before adding to cart!");
-//     }
-//   };
-
-//   const handleBuyNow = () => {
-//     if (product && selectedSize) {
-//       addToCart({ ...product, sizes: [selectedSize] });
-//       navigate("/checkout");
-//     } else {
-//       alert("Please select a size before buying!");
-//     }
-//   };
-
-//   const handleFavoriteToggle = () => {
-//     if (product) toggleFavourite(product.id.toString());
-//   };
-
-//   if (loading) return <div>Loading...</div>;
-//   if (error) return <div className="text-red-500">{error}</div>;
-//   if (!product) return <div>Product not found.</div>;
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 py-8">
-//       <div className="container mx-auto p-4">
-//         <button onClick={() => navigate(-1)} className="mb-4 flex items-center text-lg text-gray-600 hover:text-gray-800">
-//           <IoArrowBack className="mr-2" /> Back
-//         </button>
-
-//         <div className="grid md:grid-cols-2 gap-8">
-//           {/* Product Image Section */}
-//           <div className="flex flex-col items-center">
-//             <img
-//               src={imageError ? "/fallback.jpg" : selectedImage}
-//               alt={product.title}
-//               className="w-full max-w-md rounded-lg shadow-lg"
-//               onError={() => setImageError(true)}
-//             />
-
-//             {/* Thumbnails */}
-//             <div className="flex mt-4 space-x-2">
-//               {Array.isArray(product.images) &&
-//                 product.images.map((img, index) => (
-//                   <img
-//                     key={index}
-//                     src={img}
-//                     alt={`${product.title} ${index}`}
-//                     className={`w-16 h-16 object-cover rounded cursor-pointer border ${
-//                       selectedImage === img ? "border-red-500" : "border-gray-300"
-//                     }`}
-//                     onClick={() => {
-//                       setImageError(false);
-//                       setSelectedImage(img);
-//                     }}
-//                   />
-//                 ))}
-//             </div>
-//           </div>
-
-//           {/* Product Details */}
-//           <div className="bg-white p-6 rounded-lg shadow-lg">
-//             <h2 className="text-2xl font-bold mb-2">{product.title}</h2>
-//             <p className="text-gray-600 mb-4">{product.description}</p>
-
-//             <h4 className="text-lg font-semibold mb-2">Available Sizes</h4>
-//             <div className="flex space-x-3">
-//               {product.sizes.map((size) => (
-//                 <button
-//                   key={size}
-//                   className={`px-4 py-2 border rounded-md ${selectedSize === size ? "bg-red-500 text-white" : "border-gray-400"}`}
-//                   onClick={() => setSelectedSize(size)}
-//                 >
-//                   {size}
-//                 </button>
-//               ))}
-//             </div>
-
-//             <div className="flex items-center justify-between mt-6">
-//               <span className="text-2xl font-bold">${product.price.toFixed(2)}</span>
-//               <button onClick={handleFavoriteToggle} className="text-red-500 text-2xl">
-//                 {favourites.includes(product.id.toString()) ? <MdFavorite /> : <MdFavoriteBorder />}
-//               </button>
-//             </div>
-
-//             <div className="mt-6 flex space-x-4">
-//               <button
-//                 onClick={handleAddToCart}
-//                 className="px-6 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition"
-//               >
-//                 Add to Cart
-//               </button>
-//               <button
-//                 onClick={handleBuyNow}
-//                 className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-//               >
-//                 Buy Now
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProductDetail;
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../../Shared/hooks/CartContext";
@@ -549,9 +364,9 @@ import { useFavourites } from "../../../Shared/hooks/FavouritesContext";
 import { IoArrowBack } from "react-icons/io5";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import axios from "axios";
+import { motion } from "framer-motion";
 
-// Type definitions
-export interface Product {
+interface Product {
   id: number;
   title: string;
   description: string;
@@ -561,7 +376,7 @@ export interface Product {
   tag: string;
   colors: string[];
   sizes: string[];
-  images: string[] | string;
+  images: string[];
   category_id: number;
   created_at: string;
 }
@@ -578,35 +393,43 @@ const ProductDetail: React.FC = () => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [imageError, setImageError] = useState(false);
-  const [quantity, setQuantity] = useState<number>(1); // Default quantity
+  const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get<Product>(`http://127.0.0.1:5000/products/${id}`);
+        setLoading(true);
+        const response = await axios.get<Product>(
+          `http://127.0.0.1:5000/products/${id}`
+        );
         const productData = response.data;
 
-        // Ensure sizes is an array
-        const parsedSizes =
-          typeof productData.sizes === "string" ? JSON.parse(productData.sizes) : productData.sizes;
-
-        // Ensure images is an array
-        let parsedImages: string[] = [];
-        if (typeof productData.images === "string") {
-          try {
-            parsedImages = JSON.parse(productData.images);
-          } catch {
-            parsedImages = [productData.images]; // If parsing fails, use it as a single-image array
+        // Parse all array fields to ensure they're in the correct format
+        const parseArrayField = (field: any): string[] => {
+          if (Array.isArray(field)) return field;
+          if (typeof field === "string") {
+            try {
+              return JSON.parse(field);
+            } catch {
+              return [];
+            }
           }
-        } else {
-          parsedImages = productData.images || [];
-        }
+          return [];
+        };
 
-        setProduct({ ...productData, sizes: Array.isArray(parsedSizes) ? parsedSizes : [], images: parsedImages });
-        setSelectedSize(parsedSizes?.[0] || null);
-        setSelectedImage(parsedImages[0] || "/fallback.jpg"); // Set first image as default
+        const parsedProduct = {
+          ...productData,
+          sizes: parseArrayField(productData.sizes),
+          colors: parseArrayField(productData.colors),
+          images: parseArrayField(productData.images),
+        };
+
+        setProduct(parsedProduct);
+        setSelectedSize(parsedProduct.sizes[0] || null);
+        setSelectedImage(parsedProduct.images[0] || "/fallback.jpg");
       } catch (err) {
-        setError("Failed to load product details");
+        console.error("Error fetching product:", err);
+        setError("Failed to load product details. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -615,129 +438,237 @@ const ProductDetail: React.FC = () => {
     fetchProduct();
   }, [id]);
 
-  // const handleAddToCart = () => {
-  //   if (product && selectedSize) {
-  //     addToCart({ ...product, sizes: [selectedSize], quantity });
-  //   } else {
-  //     alert("Please select a size before adding to cart!");
-  //   }
-  // };
   const handleAddToCart = async () => {
-    if (product && selectedSize) {
-      try {
-        const response = await axios.post(
-          "http://127.0.0.1:5000/cart",
-          {
-            product_id: product.id,
-            quantity: quantity,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure user is authenticated
-              "Content-Type": "application/json",
-            },
-          }
-        );
-  
-        if (response.status === 201) {
-          addToCart({ ...product, sizes: [selectedSize], quantity });
-          alert("Product added to cart successfully!");
-        }
-      } catch (error) {
-        console.error("Error adding to cart:", error);
-        alert("Failed to add product to cart.");
-      }
-    } else {
+    if (!product || !selectedSize) {
       alert("Please select a size before adding to cart!");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login to add items to cart");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      // Add to backend
+      const response = await axios.post(
+        "http://127.0.0.1:5000/cart",
+        {
+          product_id: product.id,
+          quantity: quantity,
+          size: selectedSize,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        // Add to frontend cart context
+        addToCart(
+          {
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.images[0] || "/fallback.jpg",
+            quantity: quantity,
+            size: selectedSize,
+            uniqueId: `${product.id}-${selectedSize}`,
+          },
+          selectedSize,
+          quantity
+        );
+
+        alert("Product added to cart successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        alert("Session expired. Please login again.");
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        alert("Failed to add product to cart. Please try again.");
+      }
     }
   };
-  
-
   const handleBuyNow = () => {
-    if (product && selectedSize) {
-      addToCart({ ...product, sizes: [selectedSize], quantity });
-      navigate("/checkout");
-    } else {
+    if (!product || !selectedSize) {
       alert("Please select a size before buying!");
+      return;
     }
+
+    // Add to cart first
+    addToCart({
+      ...product,
+      sizes: [selectedSize],
+      quantity,
+      id: product.id.toString(),
+      image: product.images[0] || "/fallback.jpg",
+    });
+
+    // Then navigate to checkout
+    navigate("/checkout");
   };
 
   const handleFavoriteToggle = () => {
-    if (product) toggleFavourite(product.id.toString());
+    if (product) {
+      toggleFavourite(product.id.toString());
+    }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
-  if (!product) return <div>Product not found.</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#d66161]"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
+        <h2 className="text-xl font-semibold text-red-500 mb-4">{error}</h2>
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-lg text-[#d66161] hover:text-[#b55050]"
+        >
+          <IoArrowBack className="mr-2" /> Go Back
+        </button>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
+        <h2 className="text-xl font-semibold mb-4">Product not found</h2>
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-lg text-[#d66161] hover:text-[#b55050]"
+        >
+          <IoArrowBack className="mr-2" /> Go Back
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen bg-gray-100 py-8"
+    >
       <div className="container mx-auto p-4">
-        <button onClick={() => navigate(-1)} className="mb-4 flex items-center text-lg text-gray-600 hover:text-gray-800">
-          <IoArrowBack className="mr-2" /> Back
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-6 flex items-center text-lg text-gray-600 hover:text-[#d66161] transition-colors"
+        >
+          <IoArrowBack className="mr-2" /> Back to Products
         </button>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 bg-white rounded-lg shadow-lg p-6">
           {/* Product Image Section */}
-          <div className="flex flex-col items-center">
-            <img
-              src={imageError ? "/fallback.jpg" : selectedImage}
-              alt={product.title}
-              className="w-full max-w-md rounded-lg shadow-lg"
-              onError={() => setImageError(true)}
-            />
+          <div className="flex flex-col">
+            <div className="w-full h-96 md:h-[500px] bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
+              <img
+                src={imageError ? "/fallback.jpg" : selectedImage}
+                alt={product.title}
+                className="w-full h-full object-contain"
+                onError={() => setImageError(true)}
+              />
+            </div>
 
-            {/* Thumbnails */}
-            <div className="flex mt-4 space-x-2">
-              {Array.isArray(product.images) &&
-                product.images.map((img, index) => (
+            {/* Image Thumbnails */}
+            {product.images.length > 1 && (
+              <div className="flex mt-4 space-x-2 overflow-x-auto py-2">
+                {product.images.map((img, index) => (
                   <img
                     key={index}
                     src={img}
-                    alt={`${product.title} ${index}`}
-                    className={`w-16 h-16 object-cover rounded cursor-pointer border ${
-                      selectedImage === img ? "border-red-500" : "border-gray-300"
+                    alt={`${product.title} ${index + 1}`}
+                    className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${
+                      selectedImage === img
+                        ? "border-[#d66161]"
+                        : "border-transparent"
                     }`}
                     onClick={() => {
                       setImageError(false);
                       setSelectedImage(img);
                     }}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/fallback.jpg";
+                    }}
                   />
                 ))}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Product Details */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-2">{product.title}</h2>
+          <div className="flex flex-col">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+              {product.title}
+            </h1>
             <p className="text-gray-600 mb-4">{product.description}</p>
 
-            <h4 className="text-lg font-semibold mb-2">Available Sizes</h4>
-            <div className="flex space-x-3">
-              {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  className={`px-4 py-2 border rounded-md ${selectedSize === size ? "bg-red-500 text-white" : "border-gray-400"}`}
-                  onClick={() => setSelectedSize(size)}
-                >
-                  {size}
-                </button>
-              ))}
+            {/* Price Section */}
+            <div className="mb-6">
+              <span className="text-2xl font-bold text-[#d66161]">
+                ${(product.price - (product.discount || 0)).toFixed(2)}
+              </span>
+              {product.discount > 0 && (
+                <>
+                  <span className="ml-2 text-lg text-gray-500 line-through">
+                    ${product.price.toFixed(2)}
+                  </span>
+                  <span className="ml-2 bg-red-100 text-red-600 px-2 py-1 rounded text-sm">
+                    Save ${product.discount.toFixed(2)}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Size Selection */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Size</h3>
+              <div className="flex flex-wrap gap-2">
+                {product.sizes.map((size) => (
+                  <button
+                    key={size}
+                    className={`px-4 py-2 border rounded-md transition-colors ${
+                      selectedSize === size
+                        ? "bg-[#d66161] text-white border-[#d66161]"
+                        : "border-gray-300 hover:border-[#d66161]"
+                    }`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Quantity Selector */}
-            <div className="mt-6">
-              <h4 className="text-lg font-semibold mb-2">Quantity</h4>
-              <div className="flex items-center space-x-4">
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Quantity</h3>
+              <div className="flex items-center">
                 <button
-                  className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition"
+                  className="px-4 py-2 bg-gray-200 rounded-l-md hover:bg-gray-300 transition-colors"
                   onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
                 >
                   -
                 </button>
-                <span className="text-lg">{quantity}</span>
+                <span className="px-4 py-2 bg-gray-100">{quantity}</span>
                 <button
-                  className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition"
+                  className="px-4 py-2 bg-gray-200 rounded-r-md hover:bg-gray-300 transition-colors"
                   onClick={() => setQuantity((prev) => prev + 1)}
                 >
                   +
@@ -745,23 +676,35 @@ const ProductDetail: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between mt-6">
-              <span className="text-2xl font-bold">${product.price.toFixed(2)}</span>
-              <button onClick={handleFavoriteToggle} className="text-red-500 text-2xl">
-                {favourites.includes(product.id.toString()) ? <MdFavorite /> : <MdFavoriteBorder />}
-              </button>
-            </div>
+            {/* Action Buttons */}
+            <div className="flex flex-col space-y-3 mt-auto">
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={handleFavoriteToggle}
+                  className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                  aria-label="Add to favorites"
+                >
+                  {favourites.includes(product.id.toString()) ? (
+                    <MdFavorite className="text-red-500 text-2xl" />
+                  ) : (
+                    <MdFavoriteBorder className="text-gray-600 text-2xl" />
+                  )}
+                </button>
+                <span className="text-sm text-gray-500">
+                  {product.tag || "New Arrival"}
+                </span>
+              </div>
 
-            <div className="mt-6 flex space-x-4">
               <button
                 onClick={handleAddToCart}
-                className="px-6 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition"
+                className="w-full py-3 bg-white border-2 border-[#d66161] text-[#d66161] rounded-md hover:bg-[#d66161] hover:text-white transition-colors font-semibold"
               >
                 Add to Cart
               </button>
+
               <button
                 onClick={handleBuyNow}
-                className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                className="w-full py-3 bg-[#d66161] text-white rounded-md hover:bg-[#b55050] transition-colors font-semibold"
               >
                 Buy Now
               </button>
@@ -769,7 +712,7 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

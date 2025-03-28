@@ -40,22 +40,28 @@ const ProductsPage: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/products');
-        // Handle current backend response structure
-        const productsData = response.data.products || response.data;
-        const formattedProducts = Array.isArray(productsData) ? productsData.map(p => ({
+        const response = await axios.get<ProductResponse>('http://127.0.0.1:5000/products');
+        const productsData = response.data.products || [];
+        
+        // Properly format the products to match the expected structure
+        const formattedProducts = productsData.map(p => ({
           id: p.id,
-          title: p.name,  // Map name to title
-          description: '', // Add empty description
+          title: p.title,
+          description: p.description || 'No description available',
           price: p.price,
-          discount: 0,    // Default discount
-          quantity: p.stock || 1,
-          tag: '',        // Default tag
-          colors: [],     // Empty colors array
-          sizes: [],      // Empty sizes array
-          images: p.image ? [p.image] : [], // Single image as array
-          category_id: 1  // Default category
-        })) : [];
+          discount: p.discount || 0,
+          quantity: p.quantity || 1,
+          tag: p.tag || '',
+          colors: Array.isArray(p.colors) ? p.colors : 
+                (typeof p.colors === 'string' ? JSON.parse(p.colors) : []),
+          sizes: Array.isArray(p.sizes) ? p.sizes : 
+               (typeof p.sizes === 'string' ? JSON.parse(p.sizes) : []),
+          images: Array.isArray(p.images) ? p.images : 
+                (typeof p.images === 'string' ? JSON.parse(p.images) : []),
+          category_id: p.category_id || 1,
+          created_at: p.created_at || new Date().toISOString()
+        }));
+
         setProducts(formattedProducts);
       } catch (err) {
         setError('Failed to fetch products');
@@ -64,11 +70,11 @@ const ProductsPage: React.FC = () => {
         setLoading(false);
       }
     };
-  
+
     fetchProducts();
   }, []);
 
-  // Create a memoized shuffled copy so it doesn't change on every render.
+  // Create a memoized shuffled copy so it doesn't change on every render
   const shuffledProducts = useMemo(() => {
     return [...products].sort(() => Math.random() - 0.5);
   }, [products]);
@@ -105,28 +111,19 @@ const ProductsPage: React.FC = () => {
       setIsExpanded(!isExpanded);
     };
 
-    const getMainImage = (images: any) => {
+    const getMainImage = () => {
       try {
-        if (Array.isArray(images)) {
-          return images[0];
-        } else if (typeof images === 'string') {
-          const parsed = JSON.parse(images);
-          return Array.isArray(parsed) ? parsed[0] : '/fallback.jpg';
+        // Ensure we always have at least one image
+        if (product.images && product.images.length > 0) {
+          return product.images[0];
         }
         return '/fallback.jpg';
       } catch {
         return '/fallback.jpg';
       }
     };
-    
-    const mainImage = getMainImage(product.images);
 
-    // Safely parse images and ensure we have at least one image
-    // const mainImage = Array.isArray(product.images) 
-    //   ? product.images[0] 
-    //   : (typeof product.images === 'string' 
-    //     ? JSON.parse(product.images)[0] 
-    //     : '/fallback.jpg');
+    const mainImage = getMainImage();
 
     return (
       <motion.div
@@ -140,19 +137,26 @@ const ProductsPage: React.FC = () => {
         {/* Product Image */}
         <div className="relative group top-0">
           <img
-            className="w-56 sm:w-full h-[350px] sm:h-[400px] object-contain mx-auto mt-2 sm:mt-8 rounded-lg"
+            className="w-56 sm:w-full h-[25 0px] sm:h-[200px] object-contain mx-auto mt-2 sm:mt-8 rounded-lg"
             src={mainImage}
             alt={product.title}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/fallback.jpg';
+            }}
           />
 
           {/* Hover Icons for Large Screens */}
           <div className="absolute inset-0 hidden sm:flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="flex space-x-2">
-              <button onClick={handleFavouriteClick}>
+              <button 
+                onClick={handleFavouriteClick}
+                className="p-2 bg-white rounded-full hover:bg-red-100 transition-colors"
+              >
                 {favourites.includes(product.id.toString()) ? (
-                  <MdFavorite className="text-red-500 text-5xl" />
+                  <MdFavorite className="text-red-500 text-3xl" />
                 ) : (
-                  <MdFavoriteBorder className="text-white text-5xl" />
+                  <MdFavoriteBorder className="text-gray-700 text-3xl" />
                 )}
               </button>
             </div>
@@ -164,7 +168,10 @@ const ProductsPage: React.FC = () => {
           <button onClick={(e) => e.stopPropagation()}>
             <IoEyeSharp className="text-black text-3xl" />
           </button>
-          <button onClick={handleFavouriteClick}>
+          <button 
+            onClick={handleFavouriteClick}
+            className="p-1 bg-white rounded-full"
+          >
             {favourites.includes(product.id.toString()) ? (
               <MdFavorite className="text-red-500 text-3xl" />
             ) : (
@@ -194,14 +201,15 @@ const ProductsPage: React.FC = () => {
 
           <div className="flex flex-col justify-between items-center space-y-4">
             <span className="text-lg sm:text-2xl font-light">
-              ${product.price.toFixed(2)}
+              Ksh{product.price.toFixed(2)}
+            
             </span>
             <div className="flex flex-col sm:flex-row justify-evenly items-center gap-4 sm:gap-16">
               <button
                 className="px-4 py-2 border transition-transform duration-300 hover:-translate-y-1 border-[#d66161] text-[#d66161] rounded-full text-sm hover:bg-[#d66161] hover:text-white"
                 onClick={handleCardClick}
               >
-                Shop
+                View Details
               </button>
             </div>
           </div>
@@ -210,39 +218,58 @@ const ProductsPage: React.FC = () => {
     );
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#d66161]"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-red-500">
+        {error} - Please try again later
+      </div>
+    );
+  }
+
+  if (products.length === 0) {
+    return (
+      <div className="text-center py-8 text-gray-500">
+        No products available
+      </div>
+    );
+  }
 
   return (
-    <div className="py-8">
+    <div className="py-8 px-4">
       <h1 className="text-2xl font-bold text-center mb-8">Featured Items</h1>
-      <div className="grid grid-row-1 gap-8 mt-8 sm:grid-cols-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence>
           {visibleProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </AnimatePresence>
       </div>
-      {visibleCount < shuffledProducts.length && (
-        <div className="flex justify-center mt-8">
+      <div className="flex flex-col items-center mt-8 space-y-4">
+        {visibleCount < shuffledProducts.length && (
           <button
             onClick={loadMoreProducts}
             className="bg-white transition-transform duration-300 hover:-translate-y-1 text-[#d66161] px-6 py-2 rounded-full hover:bg-[#d66161] hover:text-white border border-[#d66161]"
           >
             Load More
           </button>
-        </div>
-      )}
-      {visibleCount > 6 && (
-        <div className="flex justify-center mt-4">
+        )}
+        {visibleCount > 6 && (
           <button
             onClick={seeLessProducts}
             className="bg-white transition-transform duration-300 hover:-translate-y-1 text-[#d66161] px-6 py-2 rounded-full hover:bg-[#d66161] hover:text-white border border-[#d66161]"
           >
             See Less
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
