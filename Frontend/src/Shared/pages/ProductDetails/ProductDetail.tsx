@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import React, { useState, useEffect, useRef } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import { useCart } from "../../../Shared/hooks/CartContext";
@@ -357,14 +358,14 @@
 
 // export default ProductDetail;
 
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useCart } from "../../../Shared/hooks/CartContext";
-import { useFavourites } from "../../../Shared/hooks/FavouritesContext";
-import { IoArrowBack } from "react-icons/io5";
-import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import axios from "axios";
 import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { IoArrowBack } from "react-icons/io5";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCart } from "../../../Shared/hooks/CartContext";
+import { useFavourites } from "../../../Shared/hooks/FavouritesContext";
 
 interface Product {
   id: number;
@@ -497,6 +498,7 @@ const ProductDetail: React.FC = () => {
       }
     }
   };
+
   const handleBuyNow = () => {
     if (!product || !selectedSize) {
       alert("Please select a size before buying!");
@@ -593,11 +595,10 @@ const ProductDetail: React.FC = () => {
                     key={index}
                     src={img}
                     alt={`${product.title} ${index + 1}`}
-                    className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${
-                      selectedImage === img
-                        ? "border-[#d66161]"
-                        : "border-transparent"
-                    }`}
+                    className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${selectedImage === img
+                      ? "border-[#d66161]"
+                      : "border-transparent"
+                      }`}
                     onClick={() => {
                       setImageError(false);
                       setSelectedImage(img);
@@ -643,11 +644,10 @@ const ProductDetail: React.FC = () => {
                 {product.sizes.map((size) => (
                   <button
                     key={size}
-                    className={`px-4 py-2 border rounded-md transition-colors ${
-                      selectedSize === size
-                        ? "bg-[#d66161] text-white border-[#d66161]"
-                        : "border-gray-300 hover:border-[#d66161]"
-                    }`}
+                    className={`px-4 py-2 border rounded-md transition-colors ${selectedSize === size
+                      ? "bg-[#d66161] text-white border-[#d66161]"
+                      : "border-gray-300 hover:border-[#d66161]"
+                      }`}
                     onClick={() => setSelectedSize(size)}
                   >
                     {size}
