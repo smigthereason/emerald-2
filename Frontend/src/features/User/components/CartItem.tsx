@@ -37,7 +37,7 @@
 //     }
 //     return 0; // ✅ Handle unexpected cases
 //   };
-  
+
 
 //   // Format number with thousands separator and KSH prefix
 //   const formatKSH = (amount: number): string => {
@@ -125,107 +125,68 @@
 // };
 
 // export default CartItem;
-import { useState } from "react";
-import { useCart } from "../../../Shared/hooks/CartContext";
-
+import React from 'react';
+import { useCart } from '../../../Shared/hooks/CartContext';
 interface CartItemProps {
-  item: {
-    uniqueId: string;
-    id: string;
-    image: string;
-    title: string;
-    size: string[];
-    selectedSize?: string;
-    price: number;
-  };
-  onRemove: (uniqueId: string) => void;
-  onQuantityChange: (uniqueId: string, quantity: number) => void;
+  id: string;
+  name: string;
+  price: number;
+  size: string;
+  image: string;
   quantity: number;
 }
 
-const CartItem = ({
-  item,
-  onRemove,
-  onQuantityChange,
-  quantity,
-}: CartItemProps) => {
-  const { updateCartItemSize } = useCart();
-  const [selectedSize, setSelectedSize] = useState<string>(
-    item.selectedSize || (Array.isArray(item.size) && item.size.length > 0 ? item.size[0] : "")
-  );
+const CartItem: React.FC<CartItemProps> = ({ id, name, price, size, image, quantity }) => {
+  const { updateQuantity, removeFromCart } = useCart();
 
-  const formatKSH = (amount: number): string => {
-    if (isNaN(amount)) return "KSH 0";
-    return `KSH ${amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+  const handleIncrease = () => {
+    updateQuantity(id, quantity + 1);
   };
 
-  const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity < 1) return;
-    onQuantityChange(item.uniqueId, newQuantity);
-  };
-
-  const handleSizeChange = (newSize: string) => {
-    setSelectedSize(newSize);
-    updateCartItemSize(item.uniqueId, newSize);
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      updateQuantity(id, quantity - 1);
+    } else {
+      removeFromCart(id);
+    }
   };
 
   return (
-    <div className="cart-item flex items-center space-x-8 bg-[#fff4f3] p-4 rounded-lg sm:h-[200px]">
+    <div className="flex items-center border-b py-4">
       <img
-        src={item.image}
-        alt={item.title}
-        className="w-44 h-44 object-contain rounded-3xl"
+        src={image || '/fallback.jpg'}
+        alt={name}
+        className="w-20 h-20 object-cover mr-4"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = '/fallback.jpg';
+        }}
       />
-      <div className="flex-1 relative right-0 sm:right-12">
-        <h3 className="font-light italic text-gray-800">{item.title}</h3>
-
-        <div className="flex flex-col">
-          <p className="text-gray-500 text-sm uppercase">Size: {selectedSize}</p>
-          <select
-            value={selectedSize}
-            onChange={(e) => handleSizeChange(e.target.value)}
-            className="border rounded p-1 text-sm bg-white w-1/3 mx-auto block text-center"
-          >
-            {Array.isArray(item.size) && item.size.length > 0 ? (
-              item.size.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))
-            ) : (
-              <option value="">No Sizes Available</option>
-            )}
-          </select>
-        </div>
-
-        <button
-          onClick={() => onRemove(item.uniqueId)}
-          className="text-red-500 text-sm mt-2 hover:transition-transform animate-pulse"
-        >
-          Remove
-        </button>
+      <div className="flex-grow">
+        <h3 className="font-medium">{name}</h3>
+        <p className="text-sm text-gray-600">Size: {size}</p>
+        <p className="font-bold">${price.toFixed(2)}</p>
       </div>
-
-      <div className="flex items-center space-x-3 absolute right-0 sm:right-40">
+      <div className="flex items-center">
         <button
-          onClick={() => handleQuantityChange(quantity - 1)}
-          disabled={quantity <= 1}
-          className="px-2 py-1 rounded-2xl hover:bg-[#d66161] hover:text-white"
+          onClick={handleDecrease}
+          className="w-8 h-8 flex items-center justify-center border rounded-full"
         >
           -
         </button>
-        <span>{quantity}</span>
+        <span className="mx-2">{quantity}</span>
         <button
-          onClick={() => handleQuantityChange(quantity + 1)}
-          className="px-2 py-1 rounded-2xl hover:bg-[#d66161] hover:text-white"
+          onClick={handleIncrease}
+          className="w-8 h-8 flex items-center justify-center border rounded-full"
         >
           +
         </button>
       </div>
-
-      <span className="font-medium relative right-0 sm:right-4">
-        {formatKSH(item.price * quantity)}
-      </span>
+      <button
+        onClick={() => removeFromCart(id)}
+        className="ml-4 text-red-500"
+      >
+        Remove
+      </button>
     </div>
   );
 };
