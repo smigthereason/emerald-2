@@ -623,15 +623,15 @@ const ProductDetail: React.FC = () => {
             {/* Price Section */}
             <div className="mb-6">
               <span className="text-2xl font-bold text-[#d66161]">
-                ${(product.price - (product.discount || 0)).toFixed(2)}
+                Ksh {(product.price - (product.discount || 0)).toFixed(2)}
               </span>
               {product.discount > 0 && (
                 <>
                   <span className="ml-2 text-lg text-gray-500 line-through">
-                    ${product.price.toFixed(2)}
+                    Ksh {product.price.toFixed(2)}
                   </span>
                   <span className="ml-2 bg-red-100 text-red-600 px-2 py-1 rounded text-sm">
-                    Save ${product.discount.toFixed(2)}
+                    Save Ksh{product.discount.toFixed(2)}
                   </span>
                 </>
               )}

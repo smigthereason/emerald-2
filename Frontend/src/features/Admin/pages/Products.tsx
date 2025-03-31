@@ -86,7 +86,7 @@ const Products = () => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    const validTypes = ["image/jpeg", "image/png", "image/gif"];
+    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
     const maxSize = 5 * 1024 * 1024; // 5MB
 
     try {
@@ -94,7 +94,7 @@ const Products = () => {
       const uploadPromises = Array.from(files).map(async (file) => {
         // Validate file type
         if (!validTypes.includes(file.type)) {
-          throw new Error("Please upload a valid image (JPEG, PNG, or GIF)");
+          throw new Error("Please upload a valid image (JPEG, PNG, or JPG)");
         }
 
         // Validate file size
@@ -102,8 +102,14 @@ const Products = () => {
           throw new Error("Image size should be less than 5MB");
         }
 
-        // Upload to Cloudinary
-        return await uploadToCloudinary(file);
+        try {
+          // Upload to Cloudinary
+          const url = await uploadToCloudinary(file);
+          return url;
+        } catch (uploadError) {
+          console.error("Upload error:", uploadError);
+          throw new Error("Failed to upload image to Cloudinary");
+        }
       });
 
       const uploadedUrls = await Promise.all(uploadPromises);
@@ -112,12 +118,6 @@ const Products = () => {
         ...prev,
         images: [...prev.images, ...uploadedUrls],
       }));
-
-      // Create previews for the newly uploaded images
-      const newPreviews = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setImagePreviews((prev) => [...prev, ...newPreviews]);
     } catch (error) {
       console.error("Error uploading images:", error);
       alert(error instanceof Error ? error.message : "Failed to upload images");

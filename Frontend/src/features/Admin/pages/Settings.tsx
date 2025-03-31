@@ -1,9 +1,14 @@
 import axios from "axios";
 import { Bell, ImagePlus, Lock, User } from "lucide-react";
 import { useEffect, useState } from "react";
-import { uploadToCloudinary } from '../../../lib/cloudinaryUtils'; // Adjust path as needed
+import { uploadToCloudinary } from "../../../lib/cloudinaryUtils"; // Adjust path as needed
 import { useAuth } from "../../../Shared/hooks/AuthContext"; // Adjust path as needed
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/Card";
 import { Label } from "../components/ui/Label";
 
 const Settings = () => {
@@ -47,34 +52,39 @@ const Settings = () => {
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfileForm(prev => ({ ...prev, [name]: value }));
+    setProfileForm((prev) => ({ ...prev, [name]: value }));
     setMessage({ type: "", text: "" });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPasswordForm(prev => ({ ...prev, [name]: value }));
+    setPasswordForm((prev) => ({ ...prev, [name]: value }));
     setMessage({ type: "", text: "" });
   };
 
   const handleNotificationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    setNotifications(prev => ({ ...prev, [name]: checked }));
+    setNotifications((prev) => ({ ...prev, [name]: checked }));
   };
 
   const togglePasswordVisibility = (field: keyof typeof passwordVisibility) => {
-    setPasswordVisibility(prev => ({ ...prev, [field]: !prev[field] }));
+    setPasswordVisibility((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
     const maxSize = 5 * 1024 * 1024;
 
     if (!validTypes.includes(file.type)) {
-      setMessage({ type: "error", text: "Please upload a valid image (JPEG, PNG, or GIF)" });
+      setMessage({
+        type: "error",
+        text: "Please upload a valid image (JPEG, PNG, or GIF)",
+      });
       return;
     }
 
@@ -92,22 +102,23 @@ const Settings = () => {
       const imageUrl = await uploadToCloudinary(file);
 
       // Update profile image in backend
-      await axios.post(
-        "http://127.0.0.1:5000/admin/profile/image",
-        { image_url: imageUrl },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const formData = new FormData();
+      formData.append("image", file);
 
-      setMessage({ type: "success", text: "Profile image updated successfully" });
+      await axios.post("http://127.0.0.1:5000/profile/image", formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setMessage({
+        type: "success",
+        text: "Profile image updated successfully",
+      });
     } catch (error) {
       console.error("Error uploading image:", error);
       setMessage({ type: "error", text: "Failed to upload image" });
-      // Revert to previous image if available
       setProfileImage(user?.image || null);
     } finally {
       setLoading(false);
@@ -117,16 +128,12 @@ const Settings = () => {
   const updateProfile = async () => {
     try {
       setLoading(true);
-      await axios.put(
-        "http://127.0.0.1:5000/admin/profile",
-        profileForm,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios.put("http://127.0.0.1:5000/admin/profile", profileForm, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
       setMessage({ type: "success", text: "Profile updated successfully" });
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -192,7 +199,13 @@ const Settings = () => {
       </div>
 
       {message.text && (
-        <div className={`p-3 rounded ${message.type === "error" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+        <div
+          className={`p-3 rounded ${
+            message.type === "error"
+              ? "bg-red-100 text-red-700"
+              : "bg-green-100 text-green-700"
+          }`}
+        >
           {message.text}
         </div>
       )}
@@ -328,7 +341,9 @@ const Settings = () => {
                 </Label>
                 <div className="relative">
                   <input
-                    type={passwordVisibility.currentPassword ? "text" : "password"}
+                    type={
+                      passwordVisibility.currentPassword ? "text" : "password"
+                    }
                     name="currentPassword"
                     value={passwordForm.currentPassword}
                     onChange={handlePasswordChange}
@@ -376,7 +391,9 @@ const Settings = () => {
                 </Label>
                 <div className="relative">
                   <input
-                    type={passwordVisibility.confirmPassword ? "text" : "password"}
+                    type={
+                      passwordVisibility.confirmPassword ? "text" : "password"
+                    }
                     name="confirmPassword"
                     value={passwordForm.confirmPassword}
                     onChange={handlePasswordChange}
@@ -429,7 +446,10 @@ const Settings = () => {
                   className="w-4 h-4 bg-gray-300 border-[#d66161] rounded focus:ring-[#d66161] checked:bg-[#d66161] checked:border-[#d66161]"
                   disabled={loading}
                 />
-                <label htmlFor="email-notifications" className="ml-2 text-sm text-gray-700">
+                <label
+                  htmlFor="email-notifications"
+                  className="ml-2 text-sm text-gray-700"
+                >
                   Email Notifications
                 </label>
               </div>
@@ -443,7 +463,10 @@ const Settings = () => {
                   className="w-4 h-4 bg-gray-300 border-[#d66161] rounded focus:ring-[#d66161] checked:bg-[#d66161] checked:border-[#d66161]"
                   disabled={loading}
                 />
-                <label htmlFor="push-notifications" className="ml-2 text-sm text-gray-700">
+                <label
+                  htmlFor="push-notifications"
+                  className="ml-2 text-sm text-gray-700"
+                >
                   Push Notifications
                 </label>
               </div>
@@ -457,7 +480,10 @@ const Settings = () => {
                   className="w-4 h-4 bg-gray-300 border-[#d66161] rounded focus:ring-[#d66161] checked:bg-[#d66161] checked:border-[#d66161]"
                   disabled={loading}
                 />
-                <label htmlFor="sms-notifications" className="ml-2 text-sm text-gray-700">
+                <label
+                  htmlFor="sms-notifications"
+                  className="ml-2 text-sm text-gray-700"
+                >
                   SMS Notifications
                 </label>
               </div>
@@ -470,4 +496,3 @@ const Settings = () => {
 };
 
 export default Settings;
-

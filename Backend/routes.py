@@ -30,9 +30,9 @@ routes_bp = Blueprint("routes", __name__)
 
 # Cloudinary configuration (ensure this is in your main app config)
 cloudinary.config(
-    cloud_name="dlp71jbrz",
-    api_key="553225451165873",
-    api_secret="nmzMz9WP9vpeMe0xODHP7z8uXV4"
+    cloud_name="desjrmpcn",
+    api_key="261357131737187",
+    api_secret="ySX7rPGgxElh11MUV7eHkSAmFj0"
 )
 
 # Constants for login attempt limits
@@ -719,25 +719,22 @@ def upload_profile_image():
     if image_file.filename == '':
         return jsonify({"error": "No selected file"}), 400
     
-    # Generate a unique filename
-    import uuid
-    ext = image_file.filename.split('.')[-1]
-    filename = f"user_{user.id}_{uuid.uuid4().hex}.{ext}"
-    
-    # In production, you would upload to cloud storage like S3
-    upload_folder = os.path.join(app.root_path, 'static', 'uploads')
-    os.makedirs(upload_folder, exist_ok=True)
-    filepath = os.path.join(upload_folder, filename)
-    image_file.save(filepath)
-    
-    # Update user's image path
-    user.image = f"/static/uploads/{filename}"
-    db.session.commit()
-    
-    return jsonify({
-        "message": "Image uploaded successfully",
-        "image_url": user.image
-    }), 200
+    try:
+        # Upload to Cloudinary
+        upload_result = cloudinary.uploader.upload(image_file)
+        image_url = upload_result.get('secure_url')
+        
+        # Update user's image
+        user.image = image_url
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Image uploaded successfully",
+            "image_url": image_url
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
     
 @routes_bp.route('/profile/current-password', methods=['GET'])
 @jwt_required()
@@ -772,4 +769,67 @@ def become_seller():
         "message": "You are now a seller!",
         "is_admin": user.is_admin
     }), 200
+ 
+@routes_bp.route('/contact', methods=['POST'])
+def handle_contact():
+    data = request.get_json()
     
+    required_fields = ['name', 'email', 'message', 'type']
+    for field in required_fields:
+        if field not in data:
+            return jsonify({'error': f'Missing required field: {field}'}), 400
+    
+    try:
+        new_message = ContactMessage(
+            user_id=data.get('userId'),
+            name=data['name'],
+            email=data['email'],
+            message=data['message'],
+            message_type=data['type'],
+            created_at=datetime.utcnow()
+        )
+        
+        db.session.add(new_message)
+        db.session.commit()
+        
+        return jsonify({'message': 'Your message has been submitted successfully'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+# Route to get messages for admin (add to routes.py)
+@routes_bp.route('/admin/messages', methods=['GET'])
+@admin_required
+def get_admin_messages():
+    try:
+        messages = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
+        
+        messages_data = []
+        for msg in messages:
+            messages_data.append({
+                'id': msg.id,
+                'userId': msg.user_id,
+                'name': msg.name,
+                'email': msg.email,
+                'message': msg.message,
+                'type': msg.message_type,
+                'date': msg.created_at.isoformat(),
+                'isRead': msg.is_read
+            })
+            
+        return jsonify({'messages': messages_data}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Route to mark message as read (add to routes.py)
+@routes_bp.route('/admin/messages/<int:message_id>/read', methods=['PUT'])
+@admin_required
+def mark_message_as_read(message_id):
+    try:
+        message = ContactMessage.query.get_or_404(message_id)
+        message.is_read = True
+        db.session.commit()
+        return jsonify({'success': True}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500   

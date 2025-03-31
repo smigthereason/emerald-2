@@ -1,62 +1,96 @@
-// src/features/Admin/pages/Messages.tsx
-import React, { useState } from 'react';
+
+// Update your Messages.tsx to fetch from the backend
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 interface Message {
   id: number;
-  sender: string;
-  subject: string;
-  content: string;
+  name: string;
+  email: string;
+  message: string;
+  type: string;
   date: string;
+  isRead: boolean;
 }
 
-// Sample static data for demonstration purposes.
-const messagesData: Message[] = [
-  {
-    id: 1,
-    sender: "John Doe",
-    subject: "Product Enquiry",
-    content: "I would like to know more about product X. Can you provide more details on its features and pricing?",
-    date: "2025-02-12",
-  },
-  {
-    id: 2,
-    sender: "Jane Smith",
-    subject: "Order Issue",
-    content: "I have an issue with my recent order. The product received doesn't match the description.",
-    date: "2025-02-11",
-  },
-];
-
 const Messages: React.FC = () => {
-  // We'll store reply text for each message keyed by message id.
+  const [messages, setMessages] = useState<Message[]>([]);
   const [replies, setReplies] = useState<{ [key: number]: string }>({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get('/api/admin/messages');
+        setMessages(response.data.messages);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, []);
 
   const handleReplyChange = (id: number, value: string) => {
     setReplies((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSendReply = (id: number) => {
-    // This is where you would integrate with your API to send the reply.
-    console.log(`Reply sent to message ${id}: ${replies[id]}`);
-    // Optionally, clear the reply field after sending.
-    setReplies((prev) => ({ ...prev, [id]: "" }));
+  const handleSendReply = async (id: number) => {
+    try {
+      const message = messages.find(m => m.id === id);
+      if (!message) return;
+
+      // Send the reply (you'll need to implement this endpoint)
+      await axios.post('http://127.0.0.1:5000/admin/messages/reply', {
+        messageId: id,
+        reply: replies[id],
+        recipientEmail: message.email
+      });
+
+      // Mark as read
+      await axios.put(`http://127.0.0.1:5000/admin/messages/${id}/read`);
+      
+      // Update local state
+      setMessages(prev => prev.map(msg => 
+        msg.id === id ? { ...msg, isRead: true } : msg
+      ));
+      
+      // Clear the reply
+      setReplies(prev => ({ ...prev, [id]: "" }));
+    } catch (error) {
+      console.error('Error sending reply:', error);
+    }
   };
+
+  if (isLoading) {
+    return <div className="p-6">Loading messages...</div>;
+  }
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-4">Customer Messages</h1>
       <div className="space-y-6">
-        {messagesData.map((message) => (
-          <div key={message.id} className="p-4 border rounded-lg shadow-sm">
+        {messages.map((message) => (
+          <div 
+            key={message.id} 
+            className={`p-4 border rounded-lg shadow-sm ${!message.isRead ? 'bg-blue-50' : ''}`}
+          >
             <div className="flex justify-between items-center mb-2">
               <div>
-                <h2 className="text-lg font-bold">{message.subject}</h2>
+                <h2 className="text-lg font-bold capitalize">{message.type}</h2>
                 <p className="text-sm text-gray-500">
-                  From: {message.sender} on {message.date}
+                  From: {message.name} ({message.email}) on {new Date(message.date).toLocaleDateString()}
                 </p>
               </div>
+              {!message.isRead && (
+                <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
+                  New
+                </span>
+              )}
             </div>
-            <p className="mb-4">{message.content}</p>
+            <p className="mb-4">{message.message}</p>
             <div>
               <textarea
                 className="w-full border border-[#d66161] rounded p-2 mb-2 bg-gray-300/50 text-black" 

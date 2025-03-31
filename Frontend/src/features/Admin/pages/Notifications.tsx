@@ -1,47 +1,49 @@
-// src/features/Admin/pages/Notification.tsx
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 interface Notification {
   id: number;
   message: string;
   date: string;
-  type: 'info' | 'warning' | 'error';
+  type: 'info' | 'warning' | 'error' | 'feedback' | 'enquiry';
 }
 
-// Sample notifications data
-const notificationsData: Notification[] = [
-  {
-    id: 1,
-    message: "New order received from John Doe.",
-    date: "2025-02-12 09:30",
-    type: "info",
-  },
-  {
-    id: 2,
-    message: "Product XYZ is running low on stock.",
-    date: "2025-02-11 14:45",
-    type: "warning",
-  },
-  {
-    id: 3,
-    message: "Server maintenance scheduled for tonight at 12 AM.",
-    date: "2025-02-10 17:00",
-    type: "info",
-  },
-  {
-    id: 4,
-    message: "Payment gateway error encountered in transaction #12345.",
-    date: "2025-02-09 16:20",
-    type: "error",
-  },
-];
-
 const Notification: React.FC = () => {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        // Fetch system notifications
+        const sysResponse = await axios.get('http://127.0.0.1:5000/notifications');
+        // Fetch contact messages as notifications
+        const contactResponse = await axios.get('/api/admin/messages?unread=true');
+        
+        const contactNotifications = contactResponse.data.messages.map(msg => ({
+          id: msg.id,
+          message: `New ${msg.type} from ${msg.name}: ${msg.message.substring(0, 50)}...`,
+          date: msg.date,
+          type: msg.type === 'feedback' ? 'feedback' : 'enquiry'
+        }));
+        
+        setNotifications([
+          ...sysResponse.data.notifications,
+          ...contactNotifications
+        ]);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-4">Recent Notifications</h1>
       <ul className="space-y-4">
-        {notificationsData.map((notification) => (
+        {notifications.map((notification) => (
           <li key={notification.id} className="p-4 border rounded-lg shadow-sm">
             <div className="flex justify-between items-center mb-2">
               <span
@@ -50,6 +52,10 @@ const Notification: React.FC = () => {
                     ? "text-yellow-600"
                     : notification.type === "error"
                     ? "text-red-600"
+                    : notification.type === "feedback"
+                    ? "text-purple-600"
+                    : notification.type === "enquiry"
+                    ? "text-blue-600"
                     : "text-blue-600"
                 }`}
               >

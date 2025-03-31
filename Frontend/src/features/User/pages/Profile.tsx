@@ -235,13 +235,7 @@ const Profile: React.FC = () => {
           </button>
         </div>
 
-        {/* <div className="mt-6 border-t pt-6">
-          <h2 className="text-xl font-semibold mb-4">Seller Options</h2>
-          <div className="flex items-center justify-between">
-            <p className="text-gray-600">Want to sell your products on our platform?</p>
-            <StartSellingButton />
-          </div>
-        </div> */}
+        
         {/* Seller Options Section */}
         {!user?.is_admin && (
           <div className="mt-6 border-t pt-6">

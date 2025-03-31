@@ -1,4 +1,4 @@
-import { BarChart2, DollarSign, Package, Users } from "lucide-react";
+// import { BarChart2, DollarSign, Package, Users } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -29,9 +29,7 @@ const Dashboard = () => {
               <p className="text-sm text-gray-500">Total Revenue</p>
               <h3 className="text-2xl font-semibold mt-1">Ksh 54,239</h3>
             </div>
-            <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-blue-500" />
-            </div>
+            
           </div>
           <p className="text-sm text-green-500 mt-2">+12% from last month</p>
         </div>
@@ -42,9 +40,7 @@ const Dashboard = () => {
               <p className="text-sm text-gray-500">Total Orders</p>
               <h3 className="text-2xl font-semibold mt-1">1,245</h3>
             </div>
-            <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-              <Package className="w-6 h-6 text-purple-500" />
-            </div>
+            
           </div>
           <p className="text-sm text-green-500 mt-2">+8% from last month</p>
         </div>
@@ -55,9 +51,7 @@ const Dashboard = () => {
               <p className="text-sm text-gray-500">Total Customers</p>
               <h3 className="text-2xl font-semibold mt-1">892</h3>
             </div>
-            <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
-              <Users className="w-6 h-6 text-orange-500" />
-            </div>
+           
           </div>
           <p className="text-sm text-red-500 mt-2">-3% from last month</p>
         </div>
@@ -68,9 +62,7 @@ const Dashboard = () => {
               <p className="text-sm text-gray-500">Average Order</p>
               <h3 className="text-2xl font-semibold mt-1">Ksh 1560</h3>
             </div>
-            <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-              <BarChart2 className="w-6 h-6 text-green-500" />
-            </div>
+           
           </div>
           <p className="text-sm text-green-500 mt-2">+5% from last month</p>
         </div>

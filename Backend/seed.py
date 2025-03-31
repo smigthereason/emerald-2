@@ -10,9 +10,9 @@ import cloudinary.uploader
 import os
 
 cloudinary.config(
-    cloud_name="dlp71jbrz",
-    api_key="553225451165873",
-    api_secret="nmzMz9WP9vpeMe0xODHP7z8uXV4"
+    cloud_name="desjrmpcn",
+    api_key="261357131737187",
+    api_secret="ySX7rPGgxElh11MUV7eHkSAmFj0"
 )
 
 def upload_images_to_cloudinary(image_paths):
