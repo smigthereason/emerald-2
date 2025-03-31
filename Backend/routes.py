@@ -98,7 +98,8 @@ def register():
 @routes_bp.route('/login', methods=['POST'])
 def login():
     email = request.json.get("email", None)
-    password_hash = request.json.get("password_hash", None)
+    password = request.json.get("password", None)
+    # password_hash = request.json.get("password_hash", None)
 
     user = User.query.filter_by(email=email).first()
 
