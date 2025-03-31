@@ -11,6 +11,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  Legend
 } from "recharts";
 
 const mockSalesData = [
@@ -42,12 +43,12 @@ const COLORS = [
 
 const Stats = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 p-2 sm:p-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Statistics</h1>
-        <div className="flex items-center gap-4">
-          <select className="bg-white px-4 py-2 rounded-lg text-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <h1 className="text-xl sm:text-2xl font-semibold">Statistics</h1>
+        <div className="flex items-center">
+          <select className="bg-white px-3 py-1 sm:px-4 sm:py-2 rounded-lg text-sm w-full sm:w-auto">
             <option>Last 7 days</option>
             <option>Last 30 days</option>
             <option>Last 3 months</option>
@@ -57,11 +58,11 @@ const Stats = () => {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Sales & Profit Chart */}
-        <div className="bg-gray-200 p-6 rounded-2xl shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Sales & Profit</h2>
-          <div className="h-80">
+        <div className="bg-white sm:bg-gray-200 p-3 sm:p-6 rounded-2xl shadow-sm">
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Sales & Profit</h2>
+          <div className="h-48 sm:h-64 lg:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={mockSalesData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -86,15 +87,15 @@ const Stats = () => {
         </div>
 
         {/* Category Distribution */}
-        <div className="bg-gray-200 p-6 rounded-2xl shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Category Distribution</h2>
-          <div className="h-80">
+        <div className="bg-white sm:bg-gray-200 p-3 sm:p-6 rounded-2xl shadow-sm">
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Category Distribution</h2>
+          <div className="h-48 sm:h-64 lg:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={mockCategoryData}
-                  innerRadius={60}
-                  outerRadius={100}
+                  innerRadius={40}
+                  outerRadius={70}
                   paddingAngle={5}
                   dataKey="value"
                 >
@@ -106,26 +107,16 @@ const Stats = () => {
                   ))}
                 </Pie>
                 <Tooltip />
+                <Legend />
               </PieChart>
             </ResponsiveContainer>
-            <div className="flex justify-center gap-6 -mt-4">
-              {mockCategoryData.map((category, index) => (
-                <div key={category.name} className="flex items-center gap-2">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: COLORS[index] }}
-                  />
-                  <span className="text-sm text-gray-600">{category.name}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
         {/* Monthly Revenue */}
-        <div className="bg-gray-200 p-6 rounded-2xl shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Monthly Revenue</h2>
-          <div className="h-80">
+        <div className="bg-white sm:bg-gray-200 p-3 sm:p-6 rounded-2xl shadow-sm">
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Monthly Revenue</h2>
+          <div className="h-48 sm:h-64 lg:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={mockSalesData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -139,30 +130,30 @@ const Stats = () => {
         </div>
 
         {/* Stats Summary */}
-        <div className="bg-gray-200 p-6 rounded-2xl shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Summary</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 bg-blue-50 rounded-xl">
-              <p className="text-sm text-gray-600">Total Sales</p>
-              <p className="text-2xl font-semibold text-blue-600">$24,156</p>
-              <p className="text-sm text-green-500 mt-1">
+        <div className="bg-white sm:bg-gray-200 p-3 sm:p-6 rounded-2xl shadow-sm">
+          <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Summary</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="p-3 sm:p-4 bg-blue-50 rounded-xl">
+              <p className="text-xs sm:text-sm text-gray-600">Total Sales</p>
+              <p className="text-xl sm:text-2xl font-semibold text-blue-600">Ksh 24,156</p>
+              <p className="text-xs sm:text-sm text-green-500 mt-1">
                 +12% from last month
               </p>
             </div>
-            <div className="p-4 bg-green-50 rounded-xl">
-              <p className="text-sm text-gray-600">Total Profit</p>
-              <p className="text-2xl font-semibold text-green-600">$18,240</p>
-              <p className="text-sm text-green-500 mt-1">+8% from last month</p>
+            <div className="p-3 sm:p-4 bg-green-50 rounded-xl">
+              <p className="text-xs sm:text-sm text-gray-600">Total Profit</p>
+              <p className="text-xl sm:text-2xl font-semibold text-green-600">Ksh 18,240</p>
+              <p className="text-xs sm:text-sm text-green-500 mt-1">+8% from last month</p>
             </div>
-            <div className="p-4 bg-purple-50 rounded-xl">
-              <p className="text-sm text-gray-600">Average Order</p>
-              <p className="text-2xl font-semibold text-purple-600">$156</p>
-              <p className="text-sm text-red-500 mt-1">-3% from last month</p>
+            <div className="p-3 sm:p-4 bg-purple-50 rounded-xl">
+              <p className="text-xs sm:text-sm text-gray-600">Average Order</p>
+              <p className="text-xl sm:text-2xl font-semibold text-purple-600">Ksh 1560</p>
+              <p className="text-xs sm:text-sm text-red-500 mt-1">-3% from last month</p>
             </div>
-            <div className="p-4 bg-orange-50 rounded-xl">
-              <p className="text-sm text-gray-600">Conversion Rate</p>
-              <p className="text-2xl font-semibold text-orange-600">2.4%</p>
-              <p className="text-sm text-green-500 mt-1">+5% from last month</p>
+            <div className="p-3 sm:p-4 bg-orange-50 rounded-xl">
+              <p className="text-xs sm:text-sm text-gray-600">Conversion Rate</p>
+              <p className="text-xl sm:text-2xl font-semibold text-orange-600">2.4%</p>
+              <p className="text-xs sm:text-sm text-green-500 mt-1">+5% from last month</p>
             </div>
           </div>
         </div>

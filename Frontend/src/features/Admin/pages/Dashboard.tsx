@@ -27,7 +27,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Total Revenue</p>
-              <h3 className="text-2xl font-semibold mt-1">$54,239</h3>
+              <h3 className="text-2xl font-semibold mt-1">Ksh 54,239</h3>
             </div>
             <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
               <DollarSign className="w-6 h-6 text-blue-500" />
@@ -66,7 +66,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Average Order</p>
-              <h3 className="text-2xl font-semibold mt-1">$123</h3>
+              <h3 className="text-2xl font-semibold mt-1">Ksh 1560</h3>
             </div>
             <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
               <BarChart2 className="w-6 h-6 text-green-500" />

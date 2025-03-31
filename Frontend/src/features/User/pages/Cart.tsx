@@ -210,7 +210,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../../../Shared/hooks/userContext";
+// import { useUserContext } from "../../../Shared/hooks/userContext";
+import { useAuth } from "../../../Shared/hooks/AuthContext";
 import { useCart } from "../../../Shared/hooks/CartContext";
 import axios from "axios";
 import CartItem from "../components/CartItem";
@@ -227,7 +228,9 @@ interface CartItemData {
 }
 
 const Cart = () => {
-  const { authToken } = useUserContext();
+  // const { authToken } = useUserContext();
+  const { user } = useAuth();
+  const authToken = localStorage.getItem("token");
   const {
     cart: localCart,
     removeFromCart: removeFromLocalCart,

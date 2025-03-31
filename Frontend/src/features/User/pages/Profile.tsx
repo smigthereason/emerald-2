@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../Shared/hooks/AuthContext";
 // Add this import at the top of the file
-import StartSellingButton from '../../../Shared/components/StartSellingButton';
+import StartSellingButton from "../../../Shared/components/StartSellingButton";
 
 interface Product {
   id: string;
@@ -68,21 +68,27 @@ const Profile: React.FC = () => {
     }
   };
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const formData = new FormData();
       formData.append("image", file);
 
       try {
-        const response = await axios.post("http://127.0.0.1:5000/profile/image", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.post(
+          "http://127.0.0.1:5000/profile/image",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
-        setProfileData(prev => ({
+        setProfileData((prev) => ({
           ...prev,
           image: response.data.image_url,
         }));
@@ -113,7 +119,7 @@ const Profile: React.FC = () => {
         updateUser({
           ...user,
           username: profileData.username,
-          email: profileData.email
+          email: profileData.email,
         });
       }
 
@@ -229,13 +235,25 @@ const Profile: React.FC = () => {
           </button>
         </div>
 
-        <div className="mt-6 border-t pt-6">
+        {/* <div className="mt-6 border-t pt-6">
           <h2 className="text-xl font-semibold mb-4">Seller Options</h2>
           <div className="flex items-center justify-between">
             <p className="text-gray-600">Want to sell your products on our platform?</p>
             <StartSellingButton />
           </div>
-        </div>
+        </div> */}
+        {/* Seller Options Section */}
+        {!user?.is_admin && (
+          <div className="mt-6 border-t pt-6">
+            <h2 className="text-xl font-semibold mb-4">Seller Options</h2>
+            <div className="flex items-center justify-between">
+              <p className="text-gray-600">
+                Want to sell your products on our platform?
+              </p>
+              <StartSellingButton />
+            </div>
+          </div>
+        )}
 
         {/* Orders & Password Section */}
         <div className="md:col-span-2 space-y-6">
@@ -258,10 +276,11 @@ const Profile: React.FC = () => {
                       items
                     </span>
                     <span
-                      className={`font-bold ${order.status === "Completed"
-                        ? "text-green-500"
-                        : "text-yellow-500"
-                        }`}
+                      className={`font-bold ${
+                        order.status === "Completed"
+                          ? "text-green-500"
+                          : "text-yellow-500"
+                      }`}
                     >
                       {order.status}
                     </span>

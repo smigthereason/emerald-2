@@ -19,7 +19,7 @@ import {
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/Label";
-import { uploadToCloudinary } from '../../../lib/cloudinaryUtils';
+import { uploadToCloudinary } from "../../../lib/cloudinaryUtils";
 
 interface Product {
   id: number;
@@ -83,33 +83,44 @@ const Products = () => {
   }, []);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     const validTypes = ["image/jpeg", "image/png", "image/gif"];
     const maxSize = 5 * 1024 * 1024; // 5MB
 
-    if (!validTypes.includes(file.type)) {
-      alert("Please upload a valid image (JPEG, PNG, or GIF)");
-      return;
-    }
-
-    if (file.size > maxSize) {
-      alert("Image size should be less than 5MB");
-      return;
-    }
-
     try {
       setIsLoading(true);
-      const imageUrl = await uploadToCloudinary(file);
-      setImagePreview(URL.createObjectURL(file));
+      const uploadPromises = Array.from(files).map(async (file) => {
+        // Validate file type
+        if (!validTypes.includes(file.type)) {
+          throw new Error("Please upload a valid image (JPEG, PNG, or GIF)");
+        }
+
+        // Validate file size
+        if (file.size > maxSize) {
+          throw new Error("Image size should be less than 5MB");
+        }
+
+        // Upload to Cloudinary
+        return await uploadToCloudinary(file);
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+
       setNewProduct((prev) => ({
         ...prev,
-        images: [...prev.images, imageUrl],
+        images: [...prev.images, ...uploadedUrls],
       }));
+
+      // Create previews for the newly uploaded images
+      const newPreviews = Array.from(files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
     } catch (error) {
-      console.error("Error uploading image:", error);
-      alert("Failed to upload image");
+      console.error("Error uploading images:", error);
+      alert(error instanceof Error ? error.message : "Failed to upload images");
     } finally {
       setIsLoading(false);
     }
@@ -167,7 +178,7 @@ const Products = () => {
 
     try {
       setIsLoading(true);
-      
+
       const productData = {
         title: newProduct.title.trim(),
         description: newProduct.description.trim(),
@@ -187,7 +198,7 @@ const Products = () => {
       );
 
       setProducts([...products, response.data.product]);
-      
+
       // Reset form
       setNewProduct({
         title: "",
@@ -204,7 +215,10 @@ const Products = () => {
       setImagePreview(null);
       setIsAddModalOpen(false);
     } catch (error: any) {
-      console.error("Error adding product:", error.response?.data || error.message);
+      console.error(
+        "Error adding product:",
+        error.response?.data || error.message
+      );
       alert(
         error.response?.data?.error ||
           "Failed to add product. Please check your input and try again."
@@ -220,13 +234,13 @@ const Products = () => {
 
   const handleSaveProduct = async () => {
     if (!editingProduct) return;
-  
+
     try {
       setIsLoading(true);
-      
+
       const productData = { ...editingProduct };
       delete productData.created_at;
-  
+
       const response = await axios.put(
         `http://127.0.0.1:5000/products/${editingProduct.id}`,
         productData

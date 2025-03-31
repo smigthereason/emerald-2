@@ -126,7 +126,7 @@ const Transactions = () => {
 
         return (
           <span className={type === "credit" ? "text-green-500" : "text-red-500"}>
-            ${amount.toFixed(2)}
+            Ksh {amount}
           </span>
         );
       },
@@ -176,7 +176,7 @@ const Transactions = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${loading.stats ? "..." : stats.totalRevenue.toFixed(2)}
+              Ksh{loading.stats ? "..." : stats.totalRevenue}
             </div>
             <p className="text-xs text-green-500 flex items-center mt-1">
               <TrendingUp className="w-3 h-3 mr-1" />
@@ -194,7 +194,7 @@ const Transactions = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${loading.stats ? "..." : stats.incoming.toFixed(2)}
+              Ksh {loading.stats ? "..." : stats.incoming}
             </div>
             <p className="text-xs text-green-500 flex items-center mt-1">
               <TrendingUp className="w-3 h-3 mr-1" />
@@ -212,7 +212,7 @@ const Transactions = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${loading.stats ? "..." : stats.outgoing.toFixed(2)}
+              Ksh {loading.stats ? "..." : stats.outgoing}
             </div>
             <p className="text-xs text-red-500 flex items-center mt-1">
               <TrendingUp className="w-3 h-3 mr-1" />
@@ -260,7 +260,7 @@ const Transactions = () => {
                     <p className="text-sm text-gray-500">{product.sales} units sold</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">${product.revenue.toFixed(2)}</p>
+                    <p className="font-medium">Ksh{product.revenue.toFixed(2)}</p>
                     <p className={`text-xs ${product.growth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                       {product.growth >= 0 ? '+' : ''}{product.growth}%
                     </p>
@@ -296,7 +296,7 @@ const mockTransactions: Transaction[] = [
   {
     id: "1",
     customer: "John Doe",
-    amount: 299.99,
+    amount: 2990,
     status: "completed",
     date: "2024-02-15",
     type: "credit"
@@ -304,7 +304,7 @@ const mockTransactions: Transaction[] = [
   {
     id: "2",
     customer: "Jane Smith",
-    amount: 199.50,
+    amount: 19950,
     status: "pending",
     date: "2024-02-14",
     type: "debit"
@@ -312,7 +312,7 @@ const mockTransactions: Transaction[] = [
   {
     id: "3",
     customer: "Mike Johnson",
-    amount: 499.99,
+    amount: 4799,
     status: "completed",
     date: "2024-02-13",
     type: "credit"
@@ -320,7 +320,7 @@ const mockTransactions: Transaction[] = [
   {
     id: "4",
     customer: "Sarah Williams",
-    amount: 149.99,
+    amount: 14980,
     status: "failed",
     date: "2024-02-12",
     type: "debit"
@@ -328,7 +328,7 @@ const mockTransactions: Transaction[] = [
   {
     id: "5",
     customer: "Alex Brown",
-    amount: 399.99,
+    amount: 39965,
     status: "completed",
     date: "2024-02-11",
     type: "credit"
@@ -375,8 +375,8 @@ const mockTopProducts: ProductStat[] = [
 
 const mockStats: TransactionStats = {
   totalRevenue: 45231.89,
-  incoming: 24875.50,
-  outgoing: 15350.25,
+  incoming: 24875,
+  outgoing: 15350,
   monthlyGrowth: 20.1
 };
 

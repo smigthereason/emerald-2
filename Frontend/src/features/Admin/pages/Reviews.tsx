@@ -6,7 +6,6 @@ const Reviews = () => {
     {
       id: 1,
       customer: 'Emily Johnson',
-      avatar: '/api/placeholder/40/40',
       rating: 5,
       date: '2025-02-13',
       product: 'Wireless Headphones Pro',
@@ -18,7 +17,6 @@ const Reviews = () => {
     {
       id: 2,
       customer: 'Michael Chen',
-      avatar: '/api/placeholder/40/40',
       rating: 4,
       date: '2025-02-12',
       product: 'Smart Watch Series X',
@@ -30,7 +28,6 @@ const Reviews = () => {
     {
       id: 3,
       customer: 'Sarah Williams',
-      avatar: '/api/placeholder/40/40',
       rating: 2,
       date: '2025-02-11',
       product: 'Bluetooth Speaker Mini',
@@ -144,11 +141,11 @@ const Reviews = () => {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4">
-                    <img
+                    {/* <img
                       src={review.avatar}
                       alt={review.customer}
                       className="w-10 h-10 rounded-full"
-                    />
+                    /> */}
                     <div>
                       <div className="flex items-center space-x-2">
                         <h3 className="font-medium text-gray-900">
@@ -162,9 +159,9 @@ const Reviews = () => {
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 mt-1">
-                        <div className="flex">
+                        {/* <div className="flex">
                           {renderStars(review.rating)}
-                        </div>
+                        </div> */}
                         <span className="text-sm text-gray-500">
                           {review.date}
                         </span>

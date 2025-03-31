@@ -17,6 +17,8 @@ from models import db, User, RevokedToken, Product, Category, Cart, Favorite, Or
 from datetime import datetime, timedelta
 import os
 import json
+import cloudinary
+import cloudinary.uploader
 
 app = Flask(__name__) 
 
@@ -25,6 +27,13 @@ app = Flask(__name__)
 bcrypt = Bcrypt()
 auth_bp = Blueprint("auth", __name__)
 routes_bp = Blueprint("routes", __name__)
+
+# Cloudinary configuration (ensure this is in your main app config)
+cloudinary.config(
+    cloud_name="dlp71jbrz",
+    api_key="553225451165873",
+    api_secret="nmzMz9WP9vpeMe0xODHP7z8uXV4"
+)
 
 # Constants for login attempt limits
 MAX_FAILED_ATTEMPTS = 3
@@ -249,174 +258,83 @@ def get_product(product_id):
         app.logger.error(f"Error in get_product: {str(e)}", exc_info=True)
         return jsonify({"error": "Failed to fetch product"}), 500
 
+
+
 # @routes_bp.route('/products', methods=['POST'])
-# @jwt_required()
 # def create_product():
-#     """Create a new product with comprehensive validation"""
 #     try:
 #         data = request.get_json()
         
-#         # Validate required fields
-#         required_fields = ['name', 'category', 'price', 'stock', 'status']
+#         # Update required fields to match your model
+#         required_fields = ['title', 'description', 'price', 'tag', 'colors', 'sizes', 'category_id']
 #         for field in required_fields:
 #             if field not in data:
-#                 return jsonify({"error": f"{field} is required"}), 400
+#                 return jsonify({"error": f"Missing required field: {field}"}), 400
         
-#         # Validate category
-#         if data['category'] not in PRODUCT_CATEGORIES:
-#             return jsonify({"error": "Invalid category"}), 400
-        
-#         # Validate price and stock
-#         try:
-#             price = float(data['price'])
-#             stock = int(data['stock'])
-            
-#             if price < 0:
-#                 return jsonify({"error": "Price must be non-negative"}), 400
-            
-#             if stock < 0:
-#                 return jsonify({"error": "Stock must be non-negative"}), 400
-#         except ValueError:
-#             return jsonify({"error": "Invalid price or stock format"}), 400
-        
-#         # Validate status
-#         valid_statuses = ['In Stock', 'Low Stock', 'Out of Stock']
-#         if data['status'] not in valid_statuses:
-#             return jsonify({"error": "Invalid status"}), 400
-        
-#         # Create new product
+#         # Create product with your model's structure
 #         new_product = Product(
-#             name=data['name'],
-#             category=data['category'],
-#             price=price,
-#             stock=stock,
-#             status=data['status'],
-#             image=data.get('image', '')
+#             title=data['title'],
+#             description=data['description'],
+#             price=float(data['price']),
+#             discount=float(data.get('discount', 0.0)),
+#             quantity=int(data.get('quantity', 1)),
+#             tag=data['tag'],
+#             colors=data['colors'],
+#             sizes=data['sizes'],
+#             images=data.get('images', []),
+#             category_id=int(data['category_id'])
 #         )
+
+#         # Validate discount
+#         try:
+#             new_product.validate_discount()
+#         except ValueError as e:
+#             return jsonify({"error": str(e)}), 400
         
 #         db.session.add(new_product)
 #         db.session.commit()
         
 #         return jsonify({
-#             "message": "Product created successfully", 
+#             "message": "Product created successfully",
 #             "product": {
 #                 "id": new_product.id,
-#                 "name": new_product.name,
-#                 "category": new_product.category,
+#                 "title": new_product.title,
+#                 "description": new_product.description,
 #                 "price": new_product.price,
-#                 "stock": new_product.stock,
-#                 "status": new_product.status,
-#                 "image": new_product.image
+#                 "discount": new_product.discount,
+#                 "quantity": new_product.quantity,
+#                 "tag": new_product.tag,
+#                 "colors": new_product.colors,
+#                 "sizes": new_product.sizes,
+#                 "images": new_product.images,
+#                 "category_id": new_product.category_id,
+#                 "created_at": new_product.created_at.isoformat()
 #             }
 #         }), 201
     
+#     except ValueError as e:
+#         return jsonify({"error": "Invalid number format"}), 400
 #     except Exception as e:
 #         db.session.rollback()
 #         return jsonify({"error": str(e)}), 500
-
-# @routes_bp.route('/products/<int:product_id>', methods=['PUT'])
-# @jwt_required()
-# def update_product(product_id):
-#     """Update an existing product"""
-#     try:
-#         product = Product.query.get_or_404(product_id)
-#         data = request.get_json()
-        
-#         # Update fields that are present in the request
-#         if 'name' in data:
-#             product.name = data['name']
-        
-#         if 'category' in data:
-#             if data['category'] not in PRODUCT_CATEGORIES:
-#                 return jsonify({"error": "Invalid category"}), 400
-#             product.category = data['category']
-        
-#         if 'price' in data:
-#             try:
-#                 price = float(data['price'])
-#                 if price < 0:
-#                     return jsonify({"error": "Price must be non-negative"}), 400
-#                 product.price = price
-#             except ValueError:
-#                 return jsonify({"error": "Invalid price format"}), 400
-        
-#         if 'stock' in data:
-#             try:
-#                 stock = int(data['stock'])
-#                 if stock < 0:
-#                     return jsonify({"error": "Stock must be non-negative"}), 400
-#                 product.stock = stock
-#             except ValueError:
-#                 return jsonify({"error": "Invalid stock format"}), 400
-        
-#         if 'status' in data:
-#             valid_statuses = ['In Stock', 'Low Stock', 'Out of Stock']
-#             if data['status'] not in valid_statuses:
-#                 return jsonify({"error": "Invalid status"}), 400
-#             product.status = data['status']
-        
-#         if 'image' in data:
-#             product.image = data['image']
-        
-#         db.session.commit()
-        
-#         return jsonify({
-#             "message": "Product updated successfully",
-#             "product": {
-#                 "id": product.id,
-#                 "name": product.name,
-#                 "category": product.category,
-#                 "price": product.price,
-#                 "stock": product.stock,
-#                 "status": product.status,
-#                 "image": product.image
-#             }
-#         }), 200
-    
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({"error": str(e)}), 500
-
-# @routes_bp.route('/products/<int:product_id>', methods=['DELETE'])
-# @jwt_required()
-# def delete_product(product_id):
-#     """Delete a product"""
-#     try:
-#         product = Product.query.get_or_404(product_id)
-        
-#         db.session.delete(product)
-#         db.session.commit()
-        
-#         return jsonify({
-#             "message": "Product deleted successfully"
-#         }), 200
-    
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({"error": str(e)}), 500
-
-
-# @routes_bp.route('/products', methods=['POST'])
-# # @admin_required
-# def create_product():
-#     data = request.get_json()
-#     product = Product(**data)
-#     db.session.add(product)
-#     db.session.commit()
-#     return jsonify({"message": "Product created successfully"}), 201
 
 @routes_bp.route('/products', methods=['POST'])
 def create_product():
     try:
         data = request.get_json()
         
-        # Update required fields to match your model
+        # Required fields
         required_fields = ['title', 'description', 'price', 'tag', 'colors', 'sizes', 'category_id']
         for field in required_fields:
             if field not in data:
                 return jsonify({"error": f"Missing required field: {field}"}), 400
         
-        # Create product with your model's structure
+        # Process images - they should already be uploaded from frontend
+        images = data.get('images', [])
+        if not isinstance(images, list):
+            return jsonify({"error": "Images must be an array"}), 400
+        
+        # Create the product
         new_product = Product(
             title=data['title'],
             description=data['description'],
@@ -426,7 +344,7 @@ def create_product():
             tag=data['tag'],
             colors=data['colors'],
             sizes=data['sizes'],
-            images=data.get('images', []),
+            images=images,  # Use the Cloudinary URLs sent from frontend
             category_id=int(data['category_id'])
         )
 
@@ -457,7 +375,7 @@ def create_product():
             }
         }), 201
     
-    except ValueError as e:
+    except ValueError:
         return jsonify({"error": "Invalid number format"}), 400
     except Exception as e:
         db.session.rollback()
@@ -834,5 +752,24 @@ def check_password_exists():
     # For security, never return the actual password hash
     return jsonify({
         "has_password": user.password_hash is not None
+    }), 200
+    
+@routes_bp.route('/profile/become-seller', methods=['POST'])
+@jwt_required()
+def become_seller():
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email=current_user_email).first()
+    
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    # Update user to admin/seller
+    user.is_admin = True
+    db.session.commit()
+    
+    return jsonify({
+        "success": True,
+        "message": "You are now a seller!",
+        "is_admin": user.is_admin
     }), 200
     
