@@ -33,12 +33,11 @@ const Login: React.FC = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(formData.signIn.email, formData.signIn.password);
+      await login(formData.signIn.email, formData.signIn.password); // This should be correct
     } catch (err) {
       setError("Invalid credentials. Please try again.");
     }
-  };
-
+};
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

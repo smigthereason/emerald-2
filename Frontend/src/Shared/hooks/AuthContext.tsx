@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(true);
       const response = await axios.post("http://127.0.0.1:5000/login", {
         email,
-        password: password,
+        password,
       });
 
       const { access_token, is_admin } = response.data;
