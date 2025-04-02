@@ -33,21 +33,24 @@ const Login: React.FC = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(formData.signIn.email, formData.signIn.password); // This should be correct
-    } catch (err) {
-      setError("Invalid credentials. Please try again.");
+      setError("");
+      await login(formData.signIn.email, formData.signIn.password);
+    } catch (err: any) {
+      setError(err.message || "Invalid credentials. Please try again.");
     }
-};
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setError("");
       await signup(
         formData.signUp.username,
         formData.signUp.email,
         formData.signUp.password
       );
-    } catch (err) {
-      setError("Registration failed. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "Registration failed. Please try again.");
     }
   };
 
@@ -127,7 +130,7 @@ const Login: React.FC = () => {
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full p-3 mb-4 border bg-gray-300 border-gray-200 bg-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
+                className="w-full p-3 mb-4 border bg-gray-300 border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300"
                 value={formData.signUp.email}
                 onChange={(e) =>
                   handleInputChange("signUp", "email", e.target.value)

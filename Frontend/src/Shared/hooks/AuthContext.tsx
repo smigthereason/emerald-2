@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +28,9 @@ const AuthContext = createContext<AuthContextType>({
   signup: async () => {},
 });
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,24 +76,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
+      console.log("Login attempt with:", { email });
       const response = await axios.post("http://127.0.0.1:5000/login", {
         email,
         password,
       });
+      console.log("Login response:", response.data);
 
-      const { access_token, is_admin } = response.data;
+      const { access_token, user: userData } = response.data;
       localStorage.setItem("token", access_token);
 
-      const userResponse = await axios.get("http://127.0.0.1:5000/current_user", {
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
-
-      const userData = userResponse.data;
       const user = {
         id: userData.id,
         username: userData.username,
         email: userData.email,
-        role: is_admin ? "admin" : "user",
+        role: userData.is_admin ? "admin" : "user",
         image: userData.image,
       };
 
@@ -100,15 +98,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAuthenticated(true);
       localStorage.setItem("user", JSON.stringify(user));
 
-      // Redirect based on role
-      if (is_admin) {
+      if (userData.is_admin) {
         navigate("/admin/dashboard");
       } else {
         navigate("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
-      throw error;
+      console.error("Error details:", error.response?.data);
+      throw new Error(error.response?.data?.error || "Invalid credentials. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -117,16 +115,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signup = async (username: string, email: string, password: string) => {
     try {
       setIsLoading(true);
-      await axios.post("http://127.0.0.1:5000/register", {
+      const response = await axios.post("http://127.0.0.1:5000/register", {
         username,
         email,
-        password: password,
+        password,
       });
-      // Auto-login after signup
-      await login(email, password);
-    } catch (error) {
+      console.log("Registration successful:", response.data);
+      
+      // After successful registration, explicitly login
+      try {
+        await login(email, password);
+      } catch (loginError) {
+        console.error("Auto-login after registration failed:", loginError);
+        // Navigate to login page if auto-login fails
+        navigate("/login");
+        throw new Error("Registration successful, but login failed. Please try logging in.");
+      }
+    } catch (error: any) {
       console.error("Signup failed:", error);
-      throw error;
+      throw new Error(error.response?.data?.error || "Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -134,9 +141,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await axios.post("http://127.0.0.1:5000/logout", {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.post(
+          "http://127.0.0.1:5000/logout",
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      }
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
@@ -149,7 +163,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout, signup }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, isLoading, login, logout, signup }}
+    >
       {children}
     </AuthContext.Provider>
   );
