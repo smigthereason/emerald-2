@@ -68,53 +68,109 @@ def admin_required(fn):
 
 # Authentication Routes
 @routes_bp.route('/register', methods=['POST'])
+@cross_origin(
+    origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    methods=["POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+    supports_credentials=True
+)
 def register():
-    if request.method == 'OPTIONS':  
-        return '', 200
-    
+    if request.method == "OPTIONS":
+        response = jsonify({"message": "OK"})
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:5173")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response, 200
     data = request.get_json()
     
-    if 'username' not in data or 'email' not in data or 'password' not in data:
-        return jsonify({'error': 'Missing required fields'}), 400
-    
-    existing_user = User.query.filter_by(email=data['email']).first()
-    if existing_user:
-        return jsonify({'error': 'User with this email already exists'}), 400
-    
-    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-
-    new_user = User(
-        username=data['username'],
-        email=data['email'],
-        password_hash=hashed_password,
-        is_admin=False
-    )
-
-    db.session.add(new_user)
-    db.session.commit()
-
-    return jsonify({'success': 'User registered successfully'}), 201
+    try:
+        # Validate input
+        if not all(key in data for key in ['username', 'email', 'password']):
+            return jsonify({"error": "Missing required fields"}), 400
+        
+        # Check if user exists
+        existing_user = User.query.filter_by(email=data['email']).first()
+        if existing_user:
+            return jsonify({"error": "Email already exists"}), 400
+        
+        # Create user with hashed password
+        hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+        user = User(
+            username=data['username'],
+            email=data['email'],
+            password_hash=hashed_password,
+            is_admin=False
+        )
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        # Return success message
+        return jsonify({
+            "message": "User registered successfully",
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "is_admin": user.is_admin
+            }
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
 
 @routes_bp.route('/login', methods=['POST'])
+@cross_origin(
+    origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    methods=["POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+    supports_credentials=True
+)
 def login():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    # password_hash = request.json.get("password_hash", None)
-
+    if request.method == "OPTIONS":
+        response = jsonify({"message": "OK"})
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:5173")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response, 200
+    
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+    
+    email = data.get("email")
+    password = data.get("password")
+    
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
+    
     user = User.query.filter_by(email=email).first()
-
-    if user and bcrypt.check_password_hash(user.password_hash, password_hash):
-        access_token = create_access_token(identity=user.email)  
-        refresh_token = create_refresh_token(identity=user.email)
-
-        return jsonify({
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-            "is_admin": user.is_admin  
-        })
-    else:
-        return jsonify({"message": "Invalid username or password"}), 401
-
+    
+    if not user:
+        return jsonify({"error": "Invalid credentials"}), 401
+    
+    if not bcrypt.check_password_hash(user.password_hash, password):
+        return jsonify({"error": "Invalid credentials"}), 401
+    
+    # Create tokens
+    access_token = create_access_token(identity={"email": user.email, "id": user.id})
+    refresh_token = create_refresh_token(identity={"email": user.email, "id": user.id})
+    
+    # Return successful response
+    return jsonify({
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "is_admin": user.is_admin,
+            "image": user.image if hasattr(user, 'image') else None
+        }
+    }), 200
+    
 @routes_bp.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh():
